@@ -144,7 +144,6 @@ const loadData = () => {
     .post(baseURI, { userToken: dataModel.currentUser.userToken })
     .then((result) => {
       //alert(JSON.stringify(result.data));
-      console.log(result);
       if (result.data != null) {
         subjects.value = result.data;
       }
@@ -156,15 +155,17 @@ const updateOpenReviews = () => {
     .post(baseURI, { userToken: dataModel.currentUser.userToken })
     .then((result) => {
       //alert(JSON.stringify(result.data));
-      console.log(result);
       if (result.data != null) {
         subjects.value = result.data;
       }
     });
 };
 const getTitle = () => {
-  if (reviewType.value == "Completed") return "My Completed Reviews";
-  else return "My Open Reviews";
+  console.log(reviewType);
+  if (reviewType == "Completed") {
+    return "My Completed Reviews";
+  }
+  return "My Open Reviews";
 };
 
 onMounted(() => {

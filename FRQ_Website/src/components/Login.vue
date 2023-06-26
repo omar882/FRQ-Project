@@ -16,10 +16,10 @@ const login = (event) => {
     .post(baseURI, { userName: username.value, password: password.value })
     .then((result) => {
       //alert(JSON.stringify(result.data));
-      if (result.data != null) {
+      console.log(result);
+      if (result.data != "") {
         dataModel.currentUser = result.data;
         //this.loadData();
-        alert("yooo");
         router.push("/home");
       }
     });
@@ -29,7 +29,7 @@ const loadData = () => {
   axios.post(baseURI, { token: dataModel.currentUser.token }).then((result) => {
     //alert(JSON.stringify(result.data));
 
-    if (result.data != null) {
+    if (result.data != "") {
       dataModel.subjects = result.data;
       alert(dataModel.subjects);
     }
