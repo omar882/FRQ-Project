@@ -1,0 +1,330 @@
+<script setup>
+import axios from "axios";
+import { globals, dataModel } from "../dataModel.js";
+import { ref, defineProps, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { useToast } from "primevue/usetoast";
+
+import StudentCompletedLst from "@/components/StudentCompletedLst.vue";
+const props = defineProps(["reviewType"]);
+const router = useRouter();
+const toast = useToast();
+let reviewType = props.reviewType;
+const isCustom = ref(false);
+const isAutoReview = ref(false);
+const newReviewDialogVisible = ref(false);
+const urgencyOptions = ref([
+  { name: "Urgent within 24 hours", value: 1 },
+  { name: "Normal Within 3 days", value: 2 },
+]);
+const urgencySelection = ref({ name: "Urgent within 24 hours", value: 1 });
+const questions = ref([
+  { name: "Question 1", value: 1 },
+  { name: "Question 2", value: 2 },
+  { name: "Question 3", value: 3 },
+]);
+const selectedQuestion = ref({ name: "Question 1", value: 1 });
+const years = ref([
+  { name: "2022", value: 1 },
+  { name: "2021", value: 2 },
+  { name: "2020", value: 3 },
+]);
+const selectedSubjectYear = ref({ name: "2022", value: 1 });
+const subjects = ref([]);
+const selectedSubject = ref(null); //{ name: 'AP English', code: 'AP_ENG' },//dataModel.subjects[0], //{ name: 'AP English', code: 'AP_ENG' },
+const customQuestionText = ref("");
+const files = ref([]);
+const uploadControl = ref(null);
+const serverGeneratedReviewId = ref(null);
+const customQuestionAnswer = ref("");
+const fileUploader = ref(null);
+//reviewType: String,
+
+const addNewReview = () => {
+  newReviewDialogVisible.value = true;
+};
+function onAdvancedUpload() {
+  toast.add({
+    severity: "info",
+    summary: "Success",
+    detail: "File Uploaded",
+    life: 3000,
+  });
+}
+function questionTypeChange(evt) {}
+function submit() {
+  //alert(JSON.stringify(this.files));
+
+  const baseURI = globals.serverUrl + "postreview";
+
+  //alert(baseURI + " - " +dataModel.currentUser.userToken);
+  //alert("1 " + this.isCustom);
+  //alert("2 " + this.isAutoReview);
+  //alert("3 " + this.urgencySelection);
+  //alert("4 " + this.selectedQuestion);
+  //alert("5 " + this.selectedSubjectYear);
+  //alert("6 " + this.selectedSubject);
+  //alert("7 " + this.customQuestionText);
+
+  var reqBody = {
+    userToken: dataModel.currentUser.userToken,
+    isCustom: isCustom.value,
+    isAutoReview: isAutoReview.value,
+    urgencySelection: urgencySelection.value,
+    selectedQuestion: selectedQuestion.value,
+    selectedSubjectYear: selectedSubjectYear.value,
+    selectedSubject: selectedSubject.value,
+    customQuestionText: customQuestionText.value,
+  };
+
+  //alert(JSON.stringify(reqBody));
+
+  axios.post(baseURI, reqBody).then((result) => {
+    //alert(result.data);
+
+    if (result.data != null) {
+      serverGeneratedReviewId.value = result.data.serverGeneratedReviewId;
+      //alert(this.serverGeneratedReviewId);
+
+      alert(
+        "Files = " +
+          files.value.length +
+          " - isAutoReview = " +
+          isAutoReview.value
+      );
+      if (files.value.length > 0 && !this.isAutoReview) {
+        fileUploader.value.upload();
+        router.push("/home");
+      } else {
+        //this.dataModel.recentlyAddedItemsForReview.push(itemToBeReviewed);
+        alert("We should hide the dialog");
+        newReviewDialogVisible.value = false;
+        router.push("/home");
+      }
+    }
+  });
+}
+const beforeUpload = (request) => {
+  //alert("beforeUpload " + JSON.stringify(request));
+
+  request.xhr.setRequestHeader(
+    "serverGeneratedReviewId",
+    this.serverGeneratedReviewId
+  );
+
+  return request;
+};
+const uploadProgress = (progress) => {
+  //alert(JSON.stringify(progress));
+  if (progress.progress == 100) {
+    var itemToBeReviewed = {
+      userToken: dataModel.currentUser.userToken,
+      isCustom: isCustom.value,
+      isAutoReview: isAutoReview.value,
+      urgencySelection: urgencySelection.value,
+      selectedQuestion: selectedQuestion.value,
+      selectedSubjectYear: selectedSubjectYear.value,
+      selectedSubject: selectedSubject.value,
+      customQuestionText: customQuestionText.value,
+      serverGeneratedReviewId: serverGeneratedReviewId.value,
+    };
+
+    dataModel.recentlyAddedItemsForReview.push(itemToBeReviewed);
+    newReviewDialogVisible.value = false;
+  }
+};
+const onSelectedFiles = (event) => {
+  files.value = event.files;
+  //alert(JSON.stringify(event));
+  uploadControl.value = event.src;
+};
+const loadData = () => {
+  const baseURI = globals.serverUrl + "subjects";
+  axios
+    .post(baseURI, { userToken: dataModel.currentUser.userToken })
+    .then((result) => {
+      //alert(JSON.stringify(result.data));
+      console.log(result);
+      if (result.data != null) {
+        subjects.value = result.data;
+      }
+    });
+};
+const updateOpenReviews = () => {
+  const baseURI = globals.serverUrl + "openreviews";
+  axios
+    .post(baseURI, { userToken: dataModel.currentUser.userToken })
+    .then((result) => {
+      //alert(JSON.stringify(result.data));
+      console.log(result);
+      if (result.data != null) {
+        subjects.value = result.data;
+      }
+    });
+};
+const getTitle = () => {
+  if (reviewType.value == "Completed") return "My Completed Reviews";
+  else return "My Open Reviews";
+};
+
+onMounted(() => {
+  loadData();
+  //alert("review mounted");
+  //alert(dataModel.subjects +"  " +JSON.stringify(dataModel.subjects));
+});
+</script>
+
+<template>
+  <Fieldset>
+    <template #legend>
+      <div>
+        <span class="pi pi-verified mr-2"></span>
+        <span class="font-bold text-lg">{{ getTitle() }}</span>
+      </div>
+    </template>
+    <p class="m-0">
+      <ScrollPanel style="width: 100%; height: 200px">
+        <StudentCompletedLst :review-type="reviewType" />
+      </ScrollPanel>
+    </p>
+
+    <div
+      v-if="reviewType === 'InReview'"
+      class="flex justify-content-end text-primary"
+    >
+      <Button
+        label="New Review"
+        @click="newReviewDialogVisible = true"
+      ></Button>
+    </div>
+  </Fieldset>
+
+  <Dialog
+    v-model:visible="newReviewDialogVisible"
+    modal
+    header="Create New Review"
+    :style="{ width: '80vw' }"
+    appendToBody="true"
+  >
+    <div class="card flex justify-content-left flex-column gap-2">
+      <Dropdown
+        v-model="selectedSubject"
+        :options="subjects"
+        optionLabel="name"
+        placeholder="Select a Subject"
+        :class="['w-full md:w-14rem']"
+      />
+
+      <SelectButton
+        v-model="value"
+        :options="options"
+        aria-labelledby="basic"
+      />
+
+      <div class="card flex justify-content-left">
+        <div class="flex align-items-left">
+          <Checkbox
+            v-model="isCustom"
+            inputId="officialQuestion"
+            :binary="true"
+            name="isCustomQuestion"
+            @click="questionTypeChange"
+          />
+          <label for="officialQuestion" class="ml-2">Is Custom Question?</label>
+        </div>
+      </div>
+
+      <div
+        div
+        class="card flex justify-content-left flex-column gap-2"
+        v-if="!isCustom"
+      >
+        <Dropdown
+          v-model="selectedSubjectYear"
+          :options="years"
+          optionLabel="name"
+          placeholder="Select a Year"
+          class="w-full md:w-14rem"
+        />
+        <Dropdown
+          v-model="selectedQuestion"
+          :options="questions"
+          optionLabel="name"
+          placeholder="Select a Question"
+          class="w-full md:w-14rem"
+        />
+      </div>
+
+      <div div class="card flex justify-content-left" v-if="isCustom">
+        <Textarea v-model="customQuestionText" rows="5" style="width: 100%" />
+      </div>
+
+      <div class="card flex justify-content-left">
+        <div class="flex align-items-left">
+          <Checkbox
+            v-model="isAutoReview"
+            inputId="autoReview"
+            :binary="true"
+            name="isAutoReview"
+            @click="!isAutoReview"
+          />
+          <label for="autoReview" class="ml-2"
+            >Do you want to use auto review?</label
+          >
+        </div>
+      </div>
+
+      <div class="card flex justify-content-left" v-if="!isAutoReview">
+        <SelectButton
+          v-model="urgencySelection"
+          :options="urgencyOptions"
+          optionLabel="name"
+          aria-labelledby="basic"
+        />
+      </div>
+
+      <div v-if="!isAutoReview">
+        <Divider align="center" type="solid">
+          <b>My Answer Attachments</b>
+        </Divider>
+        <div class="card">
+          <FileUpload
+            ref="fileUploader"
+            v-model="filesToUpload"
+            name="files"
+            url="http://127.0.0.1:3001/upload_files"
+            @upload="onAdvancedUpload($event)"
+            :multiple="true"
+            accept="image/*"
+            :maxFileSize="1000000"
+            :showUploadButton="false"
+            :showCancelButton="false"
+            @select="onSelectedFiles"
+            :auto="false"
+            @before-send="beforeUpload"
+            @progress="uploadProgress"
+          >
+            <template #empty>
+              <p>Drag and drop files to here to upload.</p>
+            </template>
+          </FileUpload>
+        </div>
+      </div>
+
+      <div v-if="isAutoReview">
+        <Divider align="center" type="solid">
+          <b> Your Answer </b>
+        </Divider>
+        <div div class="card flex justify-content-left">
+          <Textarea
+            v-model="customQuestionAnswer"
+            rows="5"
+            style="width: 100%"
+          />
+        </div>
+      </div>
+
+      <Button label="Submit" @click="submit"></Button>
+    </div>
+  </Dialog>
+</template>
