@@ -74,14 +74,16 @@ export default {
 
       <div class="card">
         <div class="card-container blue-container overflow-hidden">
-          <div class="flex">
+          <div
+            class="flex md:flex-row flex-column align-items-center justify-content-center"
+          >
             <div
-              class="flex-1 flex align-items-center justify-content-center font-bold text-white m-2 px-5 py-3 border-round"
+              class="flex flex-row align-items-center justify-content-center font-bold text-white md:w-6 w-12 m-1 border-round"
             >
               <StudentCompletedReviews review-type="Completed" />
             </div>
             <div
-              class="flex-1 flex align-items-center justify-content-center font-bold text-white m-2 px-5 py-3 border-round"
+              class="flex flex-row align-items-center justify-content-center font-bold text-white md:w-6 w-12 m-1 border-round"
             >
               <StudentCompletedReviews review-type="InReview" />
             </div>

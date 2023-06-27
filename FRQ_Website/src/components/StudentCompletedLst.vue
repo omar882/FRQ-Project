@@ -61,45 +61,29 @@ onMounted(() => {
     <DataTable
       v-if="reviewType == 'InReview'"
       :value="questions"
-      tableStyle="min-width: 50rem"
+      tableStyle="min-width: 100%"
     >
-      <Column field="date" header="Date" style="min-width: 200px" sortable>
+      <Column field="date" header="Date" sortable>
         <template #body="{ data }">
           {{ formatDate(data.submissionDate) }}
         </template>
       </Column>
-      <Column
-        field="subjectName"
-        header="Subject"
-        style="min-width: 200px"
-      ></Column>
-      <Column
-        field="customQuestionText"
-        header="Question"
-        style="min-width: 200px"
-      ></Column>
+      <Column field="subjectName" header="Subject"></Column>
+      <Column field="customQuestionText" header="Question"></Column>
     </DataTable>
 
     <DataTable
       v-else="reviewType == 'Completed'"
       :value="questions"
-      tableStyle="min-width: 50rem"
+      tableStyle="min-width: 100%"
     >
-      <Column field="date" header="Date" style="min-width: 200px" sortable>
+      <Column field="date" header="Date" sortable>
         <template #body="{ data }">
           {{ formatDate(data.submissionDate) }}
         </template>
       </Column>
-      <Column
-        field="subjectName"
-        header="Subject"
-        style="min-width: 200px"
-      ></Column>
-      <Column
-        field="customQuestionText"
-        header="Question"
-        style="min-width: 200px"
-      ></Column>
+      <Column field="subjectName" header="Subject"></Column>
+      <Column field="customQuestionText" header="Question"></Column>
     </DataTable>
   </div>
 </template>

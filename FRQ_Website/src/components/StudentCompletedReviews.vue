@@ -178,156 +178,166 @@ onMounted(() => {
 </script>
 
 <template>
-  <Fieldset>
-    <template #legend>
-      <div>
-        <span class="pi pi-verified mr-2"></span>
-        <span class="font-bold text-lg">{{ getTitle() }}</span>
-      </div>
-    </template>
-    <p class="m-0">
-      <ScrollPanel style="width: 100%; height: 200px">
-        <StudentCompletedLst :review-type="reviewType" ref="questionList" />
-      </ScrollPanel>
-    </p>
-
-    <div
-      v-if="reviewType === 'InReview'"
-      class="flex justify-content-end text-primary"
-    >
-      <Button
-        label="New Review"
-        @click="newReviewDialogVisible = true"
-      ></Button>
-    </div>
-  </Fieldset>
-
-  <Dialog
-    v-model:visible="newReviewDialogVisible"
-    modal
-    header="Create New Review"
-    :style="{ width: '80vw' }"
-    appendToBody="true"
-  >
-    <div class="card flex justify-content-left flex-column gap-2">
-      <Dropdown
-        v-model="selectedSubject"
-        :options="subjects"
-        optionLabel="name"
-        placeholder="Select a Subject"
-        :class="['w-full md:w-14rem']"
-      />
-
-      <SelectButton
-        v-model="value"
-        :options="options"
-        aria-labelledby="basic"
-      />
-
-      <div class="card flex justify-content-left">
-        <div class="flex align-items-left">
-          <Checkbox
-            v-model="isCustom"
-            inputId="officialQuestion"
-            :binary="true"
-            name="isCustomQuestion"
-            @click="questionTypeChange"
-          />
-          <label for="officialQuestion" class="ml-2">Is Custom Question?</label>
+  <div class="container">
+    <Fieldset>
+      <template #legend>
+        <div>
+          <span class="pi pi-verified mr-2"></span>
+          <span class="font-bold text-lg">{{ getTitle() }}</span>
         </div>
-      </div>
+      </template>
+      <p class="m-0">
+        <ScrollPanel style="width: 100%; height: 200px">
+          <StudentCompletedLst :review-type="reviewType" ref="questionList" />
+        </ScrollPanel>
+      </p>
 
       <div
-        div
-        class="card flex justify-content-left flex-column gap-2"
-        v-if="!isCustom"
+        v-if="reviewType === 'InReview'"
+        class="flex justify-content-end text-primary"
       >
+        <Button
+          label="New Review"
+          @click="newReviewDialogVisible = true"
+        ></Button>
+      </div>
+    </Fieldset>
+
+    <Dialog
+      v-model:visible="newReviewDialogVisible"
+      modal
+      header="Create New Review"
+      :style="{ width: '80vw' }"
+      appendToBody="true"
+    >
+      <div class="card flex justify-content-left flex-column gap-2">
         <Dropdown
-          v-model="selectedSubjectYear"
-          :options="years"
+          v-model="selectedSubject"
+          :options="subjects"
           optionLabel="name"
-          placeholder="Select a Year"
-          class="w-full md:w-14rem"
+          placeholder="Select a Subject"
+          :class="['w-full md:w-14rem']"
         />
-        <Dropdown
-          v-model="selectedQuestion"
-          :options="questions"
-          optionLabel="name"
-          placeholder="Select a Question"
-          class="w-full md:w-14rem"
-        />
-      </div>
 
-      <div div class="card flex justify-content-left" v-if="isCustom">
-        <Textarea v-model="customQuestionText" rows="5" style="width: 100%" />
-      </div>
-
-      <div class="card flex justify-content-left">
-        <div class="flex align-items-left">
-          <Checkbox
-            v-model="isAutoReview"
-            inputId="autoReview"
-            :binary="true"
-            name="isAutoReview"
-            @click="!isAutoReview"
-          />
-          <label for="autoReview" class="ml-2"
-            >Do you want to use auto review?</label
-          >
-        </div>
-      </div>
-
-      <div class="card flex justify-content-left" v-if="!isAutoReview">
         <SelectButton
-          v-model="urgencySelection"
-          :options="urgencyOptions"
-          optionLabel="name"
+          v-model="value"
+          :options="options"
           aria-labelledby="basic"
         />
-      </div>
 
-      <div v-if="!isAutoReview">
-        <Divider align="center" type="solid">
-          <b>My Answer Attachments</b>
-        </Divider>
-        <div class="card">
-          <FileUpload
-            ref="fileUploader"
-            v-model="filesToUpload"
-            name="files"
-            url="http://127.0.0.1:3001/upload_files"
-            @upload="onAdvancedUpload($event)"
-            :multiple="true"
-            accept="image/*"
-            :maxFileSize="1000000"
-            :showUploadButton="false"
-            :showCancelButton="false"
-            @select="onSelectedFiles"
-            :auto="false"
-            @before-send="beforeUpload"
-            @progress="uploadProgress"
-          >
-            <template #empty>
-              <p>Drag and drop files to here to upload.</p>
-            </template>
-          </FileUpload>
+        <div class="card flex justify-content-left">
+          <div class="flex align-items-left">
+            <Checkbox
+              v-model="isCustom"
+              inputId="officialQuestion"
+              :binary="true"
+              name="isCustomQuestion"
+              @click="questionTypeChange"
+            />
+            <label for="officialQuestion" class="ml-2"
+              >Is Custom Question?</label
+            >
+          </div>
         </div>
-      </div>
 
-      <div v-if="isAutoReview">
-        <Divider align="center" type="solid">
-          <b> Your Answer </b>
-        </Divider>
-        <div div class="card flex justify-content-left">
-          <Textarea
-            v-model="customQuestionAnswer"
-            rows="5"
-            style="width: 100%"
+        <div
+          div
+          class="card flex justify-content-left flex-column gap-2"
+          v-if="!isCustom"
+        >
+          <Dropdown
+            v-model="selectedSubjectYear"
+            :options="years"
+            optionLabel="name"
+            placeholder="Select a Year"
+            class="w-full md:w-14rem"
+          />
+          <Dropdown
+            v-model="selectedQuestion"
+            :options="questions"
+            optionLabel="name"
+            placeholder="Select a Question"
+            class="w-full md:w-14rem"
           />
         </div>
-      </div>
 
-      <Button label="Submit" @click="submit"></Button>
-    </div>
-  </Dialog>
+        <div div class="card flex justify-content-left" v-if="isCustom">
+          <Textarea v-model="customQuestionText" rows="5" style="width: 100%" />
+        </div>
+
+        <div class="card flex justify-content-left">
+          <div class="flex align-items-left">
+            <Checkbox
+              v-model="isAutoReview"
+              inputId="autoReview"
+              :binary="true"
+              name="isAutoReview"
+              @click="!isAutoReview"
+            />
+            <label for="autoReview" class="ml-2"
+              >Do you want to use auto review?</label
+            >
+          </div>
+        </div>
+
+        <div class="card flex justify-content-left" v-if="!isAutoReview">
+          <SelectButton
+            v-model="urgencySelection"
+            :options="urgencyOptions"
+            optionLabel="name"
+            aria-labelledby="basic"
+          />
+        </div>
+
+        <div v-if="!isAutoReview">
+          <Divider align="center" type="solid">
+            <b>My Answer Attachments</b>
+          </Divider>
+          <div class="card">
+            <FileUpload
+              ref="fileUploader"
+              v-model="filesToUpload"
+              name="files"
+              url="http://127.0.0.1:3001/upload_files"
+              @upload="onAdvancedUpload($event)"
+              :multiple="true"
+              accept="image/*"
+              :maxFileSize="1000000"
+              :showUploadButton="false"
+              :showCancelButton="false"
+              @select="onSelectedFiles"
+              :auto="false"
+              @before-send="beforeUpload"
+              @progress="uploadProgress"
+            >
+              <template #empty>
+                <p>Drag and drop files to here to upload.</p>
+              </template>
+            </FileUpload>
+          </div>
+        </div>
+
+        <div v-if="isAutoReview">
+          <Divider align="center" type="solid">
+            <b> Your Answer </b>
+          </Divider>
+          <div div class="card flex justify-content-left">
+            <Textarea
+              v-model="customQuestionAnswer"
+              rows="5"
+              style="width: 100%"
+            />
+          </div>
+        </div>
+
+        <Button label="Submit" @click="submit"></Button>
+      </div>
+    </Dialog>
+  </div>
 </template>
+<style scoped>
+.container {
+  width: 100%;
+  height: 100%;
+}
+</style>
