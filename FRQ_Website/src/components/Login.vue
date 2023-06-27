@@ -10,7 +10,7 @@ const password = ref("");
 
 const login = (event) => {
   //alert(this.username + " - " + this.password);
-
+  console.log("in");
   const baseURI = globals.serverUrl + "login";
   axios
     .post(baseURI, { userName: username.value, password: password.value })
@@ -19,6 +19,7 @@ const login = (event) => {
       console.log(result);
       if (result.data != "") {
         dataModel.currentUser = result.data;
+
         //this.loadData();
         router.push("/home");
       }

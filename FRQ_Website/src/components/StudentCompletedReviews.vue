@@ -10,6 +10,7 @@ const props = defineProps(["reviewType"]);
 const router = useRouter();
 const toast = useToast();
 let reviewType = props.reviewType;
+const questionList = ref(null);
 const isCustom = ref(false);
 const isAutoReview = ref(false);
 const newReviewDialogVisible = ref(false);
@@ -99,6 +100,7 @@ function submit() {
         //this.dataModel.recentlyAddedItemsForReview.push(itemToBeReviewed);
         alert("We should hide the dialog");
         newReviewDialogVisible.value = false;
+        questionList.value.updateCompletedReviews();
         router.push("/home");
       }
     }
@@ -185,7 +187,7 @@ onMounted(() => {
     </template>
     <p class="m-0">
       <ScrollPanel style="width: 100%; height: 200px">
-        <StudentCompletedLst :review-type="reviewType" />
+        <StudentCompletedLst :review-type="reviewType" ref="questionList" />
       </ScrollPanel>
     </p>
 
