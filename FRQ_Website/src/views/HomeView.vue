@@ -4,7 +4,7 @@ import { globals, dataModel } from "../dataModel.js";
 
 //import Button from 'primevue/Button'
 import TopHeader from "@/components/TopHeader.vue";
-import StudentCompletedReviews from "@/components/StudentCompletedReviews.vue";
+import StudentReviews from "@/components/StudentReviews.vue";
 
 export default {
   data() {
@@ -15,7 +15,7 @@ export default {
   },
   components: {
     TopHeader,
-    StudentCompletedReviews,
+    StudentReviews,
   },
   computed: {
     isLoggedIn() {
@@ -80,12 +80,12 @@ export default {
             <div
               class="flex flex-row align-items-center justify-content-center font-bold text-white md:w-6 w-12 m-1 border-round"
             >
-              <StudentCompletedReviews review-type="Completed" />
+              <StudentReviews review-type="Completed" />
             </div>
             <div
               class="flex flex-row align-items-center justify-content-center font-bold text-white md:w-6 w-12 m-1 border-round"
             >
-              <StudentCompletedReviews review-type="InReview" />
+              <StudentReviews review-type="InReview" />
             </div>
           </div>
         </div>

@@ -5,7 +5,7 @@ import { ref, defineProps, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useToast } from "primevue/usetoast";
 
-import StudentCompletedLst from "@/components/StudentCompletedLst.vue";
+import StudentReviewsTable from "@/components/StudentReviewsTable.vue";
 const props = defineProps(["reviewType"]);
 const router = useRouter();
 const toast = useToast();
@@ -76,6 +76,7 @@ function submit() {
     selectedSubjectYear: selectedSubjectYear.value,
     selectedSubject: selectedSubject.value,
     customQuestionText: customQuestionText.value,
+    userAnswer: customQuestionAnswer.value,
   };
 
   //alert(JSON.stringify(reqBody));
@@ -98,7 +99,6 @@ function submit() {
         router.push("/home");
       } else {
         //this.dataModel.recentlyAddedItemsForReview.push(itemToBeReviewed);
-        alert("We should hide the dialog");
         newReviewDialogVisible.value = false;
         questionList.value.updateCompletedReviews();
         router.push("/home");
@@ -163,7 +163,7 @@ const updateOpenReviews = () => {
     });
 };
 const getTitle = () => {
-  console.log(reviewType);
+  //console.log(reviewType);
   if (reviewType == "Completed") {
     return "My Completed Reviews";
   }
@@ -188,7 +188,7 @@ onMounted(() => {
       </template>
       <p class="m-0">
         <ScrollPanel style="width: 100%; height: 200px">
-          <StudentCompletedLst :review-type="reviewType" ref="questionList" />
+          <StudentReviewsTable :review-type="reviewType" ref="questionList" />
         </ScrollPanel>
       </p>
 
