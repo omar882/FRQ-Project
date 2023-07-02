@@ -219,11 +219,7 @@ onMounted(() => {
           :class="['w-full md:w-14rem']"
         />
 
-        <SelectButton
-          v-model="value"
-          :options="options"
-          aria-labelledby="basic"
-        />
+        <SelectButton v-model="value" aria-labelledby="basic" />
 
         <div class="card flex justify-content-left">
           <div class="flex align-items-left">
@@ -296,7 +292,6 @@ onMounted(() => {
           <div class="card">
             <FileUpload
               ref="fileUploader"
-              v-model="filesToUpload"
               name="files"
               url="http://127.0.0.1:3001/upload_files"
               @upload="onAdvancedUpload($event)"

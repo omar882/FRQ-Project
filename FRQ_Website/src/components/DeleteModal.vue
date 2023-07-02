@@ -4,7 +4,6 @@ const props = defineProps(["data"]);
 const visible = ref(props.data.showDeleteModal);
 const emit = defineEmits(["delete"]);
 let test = true;
-console.log("loaded");
 const handleDelete = () => {
   visible.value = false;
   emit("delete");
@@ -14,7 +13,6 @@ const handleDelete = () => {
 <template>
   <div class="card flex">
     <Dialog
-      :draggable="false"
       v-model:visible="visible"
       modal
       :header="'Are you sure you want to delete?'"

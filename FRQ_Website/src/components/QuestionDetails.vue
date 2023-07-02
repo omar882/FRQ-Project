@@ -1,5 +1,9 @@
 <script setup>
 import { ref, defineProps, defineEmits, watch } from "vue";
+import { globals, dataModel } from "../dataModel.js";
+import axios from "axios";
+const emit = defineEmits(["updateTable"]);
+
 const props = defineProps(["data"]);
 const visible = ref(props.data.showData);
 import DeleteModal from "@/components/DeleteModal.vue";
@@ -16,9 +20,16 @@ const viewDeleteModal = () => {
   };
 };
 const handleDelete = () => {
-  console.log("in");
   visible.value = false;
   DeleteModalKey.value++;
+  let id = props.data.info.id;
+  console.log("deleting...");
+  var baseURI = globals.serverUrl + "removeFRQ";
+
+  axios.post(baseURI, { id: id }).then((result) => {
+    console.log(result + " I hope it worked");
+  });
+  emit("updateTable");
 };
 </script>
 

@@ -64,6 +64,15 @@ app.post("/subjects", (req, res) => {
     res.send(result);
   });
 });
+app.post("/removeFRQ", (req, res) => {
+  const body = req.body;
+  console.log("body");
+  console.log(body);
+  appLibrary.deleteFRQ(body.id).then((result) => {
+    res.send(result);
+    console.log(result);
+  });
+});
 
 app.post("/login", async (req, res) => {
   const userCredintial = req.body;

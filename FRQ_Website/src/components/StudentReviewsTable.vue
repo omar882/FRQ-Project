@@ -80,7 +80,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <QuestionDetails v-if="showData" :data="questionData"></QuestionDetails>
+  <QuestionDetails
+    v-if="showData"
+    :data="questionData"
+    @updateTable="updateCompletedReviews()"
+  ></QuestionDetails>
 
   <div class="card" ref="dataTable">
     <table class="table">

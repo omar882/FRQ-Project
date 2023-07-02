@@ -207,7 +207,20 @@ class AppLibrary {
       return null;
     }
   }
-
+  async deleteFRQ(id) {
+    console.log(id);
+    var insertQuery = `DELETE FROM frq.frqs WHERE (id = ${id})`;
+    //DELETE FROM frq.frqs WHERE (id = 45);
+    console.log("----------");
+    console.log(insertQuery);
+    try {
+      const result = await this.mySQLInsert(insertQuery);
+      return result;
+    } catch (error) {
+      console.log(JSON.stringify(error));
+      return null;
+    }
+  }
   async addQuestion(name, year, subjectId, files) {
     var insertQuery = `INSERT INTO questions (name, year, subjectId, files) VALUES ('${name}', '${year}', '${subjectId}', '${files}')`;
 
