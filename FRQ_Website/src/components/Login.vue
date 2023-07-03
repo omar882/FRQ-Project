@@ -46,21 +46,21 @@ const loadData = () => {
           class="md:w-6 flex flex-column md:align-items-end align-items-center justify-content-end gap-3 py-5"
         >
           <div class="flex align-items-center gap-2 w-7">
-            <label class="w-2">Username</label>
+            <label class="flex w-3 justify-content-end">Username</label>
             <InputText
               id="username"
               type="text"
-              class="w-full w-10 ml-2"
+              class="flex w-full w-9 ml-2"
               v-model="username"
             />
           </div>
           <div class="flex flex-column align-items-center gap-2 w-7">
             <div class="flex flex-row gap-2 align-items-center w-12">
-              <label class="w-2">Password</label>
+              <label class="flex w-3 justify-content-end">Password</label>
               <InputText
                 id="password"
                 type="password"
-                class="w-full w-10 ml-2"
+                class="w-full w-9 ml-2"
                 v-model="password"
               />
             </div>

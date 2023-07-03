@@ -1,64 +1,37 @@
-<script>
+<script setup>
 import axios from "axios";
+import { computed, onBeforeMount, ref } from "vue";
 import { globals, dataModel } from "../dataModel.js";
-
-//import Button from 'primevue/Button'
+import { useRouter } from "vue-router";
 import TopHeader from "@/components/TopHeader.vue";
 import StudentReviews from "@/components/StudentReviews.vue";
+import Test from "@/components/Test.vue";
 
-export default {
-  data() {
-    return {
-      globals,
-      dataModel,
-    };
+const router = useRouter();
+const menu = ref();
+const items = ref([
+  {
+    label: "wow",
+    items: [
+      {
+        label: "Log out",
+        command: () => {
+          dataModel.currentUser = null;
+          router.push("/login");
+        },
+      },
+      {
+        label: "My profile",
+      },
+    ],
   },
-  components: {
-    TopHeader,
-    StudentReviews,
-  },
-  computed: {
-    isLoggedIn() {
-      // `this` points to the component instance
-      return dataModel.currentUser == null ? false : true;
-    },
-    currentView() {
-      if (this.isLoggedIn()) {
-        this.$router.push({ path: "/home" });
-      } else this.$router.push({ path: "/login" });
-    },
-    test() {
-      alert("Test");
-    },
-  },
-  methods: {
-    goToDashboard() {
-      if (isLoggedIn()) {
-        this.$router.push("/dashboard");
-      } else {
-        this.$router.push("/login");
-      }
-    },
-    gotoLogin() {
-      this.$router.push({ path: "/login" });
-    },
-    getUserInfo() {
-      return JSON.stringify(this.dataModel.currentUser);
-    },
-  },
-  beforeCreate: function () {
-    //alert('lll ' + (dataModel.currentUser == null));
-    if (dataModel.currentUser == null) this.$router.push({ path: "/login" });
-    //else
-    //    this.loadData();
-
-    //this.computed.test();
-    //this.computed.currentView() // Calls the method before page loads
-  },
-  mounted: function () {
-    //alert("Home view mounted");
-    //this.loadData();
-  },
+]);
+onBeforeMount(() => {
+  if (dataModel.currentUser == null) router.push({ path: "/login" });
+});
+const toggleUserPopup = (event) => {
+  console.log(event);
+  menu.value.toggle(event);
 };
 </script>
 
@@ -66,12 +39,20 @@ export default {
   <div class="card" style="width: 100%">
     <div style="width: 100%">
       <div style="width: 100%">
-        <TopHeader :user="dataModel" />
+        <TopHeader :user="dataModel" @togglePopupVisibility="toggleUserPopup" />
+
+        <Menu
+          ref="menu"
+          :popup="true"
+          :model="items"
+          :pt="{
+            submenuHeader: { class: 'hidden' },
+          }"
+        ></Menu>
       </div>
       <div>
         <Divider />
       </div>
-
       <div class="card">
         <div class="card-container blue-container overflow-hidden">
           <div
@@ -95,3 +76,4 @@ export default {
     </div>
   </div>
 </template>
+<style scoped></style>

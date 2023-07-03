@@ -151,17 +151,7 @@ const loadData = () => {
       }
     });
 };
-const updateOpenReviews = () => {
-  const baseURI = globals.serverUrl + "openreviews";
-  axios
-    .post(baseURI, { userToken: dataModel.currentUser.userToken })
-    .then((result) => {
-      //alert(JSON.stringify(result.data));
-      if (result.data != null) {
-        subjects.value = result.data;
-      }
-    });
-};
+
 const getTitle = () => {
   //console.log(reviewType);
   if (reviewType == "Completed") {

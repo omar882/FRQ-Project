@@ -9,12 +9,6 @@ let test = true;
 const handleDelete = () => {
   visible.value = false;
   emit("delete");
-  toast.add({
-    severity: "info",
-    summary: "Confirmed",
-    detail: "You have accepted",
-    life: 3000,
-  });
 };
 </script>
 
@@ -27,8 +21,6 @@ const handleDelete = () => {
       :style="{ width: '30vw', height: '' }"
     >
       <template #footer>
-        <p>{{}}</p>
-
         <div class="flex flex-wrap justify-content-between">
           <Button class="color-red" label="No" text @click="visible = false" />
           <Button

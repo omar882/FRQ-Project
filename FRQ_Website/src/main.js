@@ -5,6 +5,8 @@ import "primeflex/primeflex.css";
 import "primevue/resources/themes/lara-light-blue/theme.css";
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
+import "./index.css";
+import "./flags.css";
 
 import PrimeVue from "primevue/config";
 import AutoComplete from "primevue/autocomplete";
@@ -127,7 +129,16 @@ export default router;
 const app = createApp(App);
 
 app.use(PrimeVue, { ripple: true });
+app.use(ConfirmationService);
 app.use(ToastService);
+app.use(DialogService);
+app.use(router);
+app.directive("tooltip", Tooltip);
+app.directive("badge", BadgeDirective);
+app.directive("ripple", Ripple);
+app.directive("styleclass", StyleClass);
+app.directive("focustrap", FocusTrap);
+
 app.component("Accordion", Accordion);
 app.component("AccordionTab", AccordionTab);
 app.component("AutoComplete", AutoComplete);

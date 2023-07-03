@@ -13,25 +13,16 @@ const selectedRows = ref();
 const showData = ref(false);
 
 let questionData;
-const datatable = ref(null);
 const viewData = (selectedRows) => {
-  //console.log(datatable);
   if (selectedRows != null) {
     showData.value = true;
-
-    //console.log(selectedRows);
     questionData = {
       info: selectedRows,
       showData: showData,
     };
   }
-
-  //datatable.value.selection = {};
-
-  //console.log(datatable.value.selection);
 };
 
-const addNewReview = () => {};
 const updateCompletedReviews = () => {
   console.log("updating table...");
   var baseURI = null;
@@ -47,12 +38,8 @@ const updateCompletedReviews = () => {
   axios
     .post(baseURI, { userToken: dataModel.currentUser.userToken })
     .then((result) => {
-      //alert(JSON.stringify(result.data));
-
       if (result.data != null) {
-        //this.subjects = result.data;
         questions.value = JSON.parse(JSON.stringify(result.data));
-        //console.log(questions.value);
       }
     });
 };
@@ -106,37 +93,6 @@ const updateTable = () => {
         </td>
       </tr>
     </table>
-    <!-- <DataTable
-        v-model:selection="selectedRows"
-        selectionMode="single"
-        ref="datatable"
-        v-if="reviewType == 'InReview'"
-        :value="questions"
-        tableStyle="min-width: 100%"
-        @click="viewData(selectedRows)"
-      >
-        <Column field="date" header="Date" sortable>
-          <template #body="{ data }">
-            {{ formatDate(data.submissionDate) }}
-          </template>
-        </Column>
-        <Column field="subjectName" header="Subject"></Column>
-        <Column field="customQuestionText" header="Question"></Column>
-      </DataTable>
-
-      <DataTable
-        v-else="reviewType == 'Completed'"
-        :value="questions"
-        tableStyle="min-width: 100%"
-      >
-        <Column field="date" header="Date" sortable>
-          <template #body="{ data }">
-            {{ formatDate(data.submissionDate) }}
-          </template>
-        </Column>
-        <Column field="subjectName" header="Subject"></Column>
-        <Column field="customQuestionText" header="Question"></Column>
-      </DataTable> -->
   </div>
 </template>
 

@@ -1,15 +1,22 @@
 <script setup>
-import { ref, defineProps, onMounted } from "vue";
+import { ref, defineProps, onMounted, defineEmits } from "vue";
 import { globals, dataModel } from "../dataModel.js";
 const props = defineProps(["user"]);
+const emit = defineEmits(["togglePopupVisibility"]);
+
+const loggedIn = ref(false);
+const visible = ref(false);
+const userPopupVisibility = ref(false);
+const firstLetter = props.user.currentUser.email.charAt(0).toUpperCase();
+
 onMounted(() => {
   if (props.user != null) {
     loggedIn.value = true;
   }
 });
-const loggedIn = ref(false);
-const visible = ref(false);
-const firstLetter = props.user.currentUser.email.charAt(0).toUpperCase();
+const toggleUserPopup = (event) => {
+  emit("togglePopupVisibility", event);
+};
 </script>
 
 <template>
@@ -48,12 +55,20 @@ const firstLetter = props.user.currentUser.email.charAt(0).toUpperCase();
         <Avatar
           v-if="loggedIn"
           :label="firstLetter"
-          class="mr-2"
+          class="mr-2 userSelect"
           size="large"
           style="background-color: #2196f3; color: #ffffff; cursor: pointer"
           shape="circle"
+          @click="toggleUserPopup"
         />
       </div>
     </div>
   </div>
 </template>
+<style scoped>
+.userSelect {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+</style>
