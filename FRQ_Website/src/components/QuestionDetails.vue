@@ -20,7 +20,6 @@ const viewDeleteModal = () => {
   };
 };
 const handleDelete = () => {
-  visible.value = false;
   DeleteModalKey.value++;
   let id = props.data.info.id;
   console.log("deleting...");
@@ -28,8 +27,11 @@ const handleDelete = () => {
 
   axios.post(baseURI, { id: id }).then((result) => {
     console.log(result + " I hope it worked");
+    console.log("this should be before update table");
+    console.log("table should have been updated");
+    emit("updateTable");
+    visible.value = false;
   });
-  emit("updateTable");
 };
 </script>
 

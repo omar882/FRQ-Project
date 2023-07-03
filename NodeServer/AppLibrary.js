@@ -13,8 +13,8 @@ var con = mysql.createConnection(dbConnection);
 class AppLibrary {
   async login(email, password) {
     const student = await this.getStudent(email, password);
-    console.log(student.length);
-    console.log(student);
+    //console.log(student.length);
+    //console.log(student);
 
     if (student.length == 0) return "";
 
@@ -63,7 +63,7 @@ class AppLibrary {
     var todayDate = this.formatDate(today);
 
     var student = await this.getStudentFromToken(userToken);
-    console.log(subjectId);
+    //console.log(subjectId);
 
     await this.addFRQ(
       subjectId,
@@ -210,11 +210,11 @@ class AppLibrary {
     }
   }
   async deleteFRQ(id) {
-    console.log(id);
+    //console.log(id);
     var insertQuery = `DELETE FROM frq.frqs WHERE (id = ${id})`;
     //DELETE FROM frq.frqs WHERE (id = 45);
-    console.log("----------");
-    console.log(insertQuery);
+    //console.log("----------");
+    //console.log(insertQuery);
     try {
       const result = await this.mySQLInsert(insertQuery);
       return result;

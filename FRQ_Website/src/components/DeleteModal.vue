@@ -1,5 +1,7 @@
 <script setup>
 import { ref, defineProps, defineEmits, watch } from "vue";
+import { useToast } from "primevue/usetoast";
+const toast = useToast();
 const props = defineProps(["data"]);
 const visible = ref(props.data.showDeleteModal);
 const emit = defineEmits(["delete"]);
@@ -7,6 +9,12 @@ let test = true;
 const handleDelete = () => {
   visible.value = false;
   emit("delete");
+  toast.add({
+    severity: "info",
+    summary: "Confirmed",
+    detail: "You have accepted",
+    life: 3000,
+  });
 };
 </script>
 

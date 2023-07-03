@@ -33,6 +33,7 @@ const viewData = (selectedRows) => {
 
 const addNewReview = () => {};
 const updateCompletedReviews = () => {
+  console.log("updating table...");
   var baseURI = null;
   if (reviewType == "Completed")
     baseURI = globals.serverUrl + "completedreviews";
@@ -73,18 +74,22 @@ onMounted(() => {
     { field: "subjectId", header: "Subject" },
     { field: "customQuestionText", header: "Question" },
   ];
-  updateCompletedReviews();
+  -+updateCompletedReviews();
   //this.questions = [{ code: '123', name: '123', category: '123', quantity: '123' }, { code: '123', name: '123', category: '123', quantity: '123' }];
   //alert(JSON.stringify(this.products));
 });
+const updateTable = () => {
+  console.log("updating table...  ");
+  updateCompletedReviews();
+};
 </script>
 
 <template>
   <QuestionDetails
     v-if="showData"
     :data="questionData"
-    @updateTable="updateCompletedReviews()"
-  ></QuestionDetails>
+    @update-table="updateTable"
+  />
 
   <div class="card" ref="dataTable">
     <table class="table">

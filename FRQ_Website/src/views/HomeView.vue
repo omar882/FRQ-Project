@@ -66,7 +66,7 @@ export default {
   <div class="card" style="width: 100%">
     <div style="width: 100%">
       <div style="width: 100%">
-        <TopHeader />
+        <TopHeader :user="dataModel" />
       </div>
       <div>
         <Divider />

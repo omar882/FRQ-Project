@@ -37,19 +37,19 @@ const upload = multer({ dest: "uploads/" });
 app.post("/upload_files", upload.array("files"), uploadFiles);
 
 function uploadFiles(req, res) {
-  console.log(req.body);
-  console.log(req.files);
-  console.log(req.header("serverGeneratedReviewId"));
+  //console.log(req.body);
+  //console.log(req.files);
+  //console.log(req.header("serverGeneratedReviewId"));
   res.json({ message: "Successfully uploaded files" });
 }
 
 app.post("/upload", upload.array("files", 6), (req, res, next) => {
   const reqFiles = [];
   const url = req.protocol + "://" + req.get("host");
-  console.log(req.files[0].filename);
+  //console.log(req.files[0].filename);
   for (var i = 0; i < req.files.length; i++) {
     reqFiles.push(url + "/public/" + req.files[i].filename);
-    console.log(url + "/public/" + req.files[i].filename);
+    //console.log(url + "/public/" + req.files[i].filename);
   }
 });
 
@@ -60,17 +60,17 @@ app.get("/", (req, res) => {
 app.post("/subjects", (req, res) => {
   const body = req.body;
   appLibrary.getAllSubjects().then((result) => {
-    console.log(result);
+    //console.log(result);
     res.send(result);
   });
 });
 app.post("/removeFRQ", (req, res) => {
+  console.log("deleting");
   const body = req.body;
-  console.log("body");
-  console.log(body);
+
   appLibrary.deleteFRQ(body.id).then((result) => {
     res.send(result);
-    console.log(result);
+    //console.log(result);
   });
 });
 
@@ -100,17 +100,17 @@ app.post("/signup", async (req, res) => {
 });
 
 app.post("/postreview", async (req, res) => {
-  console.log("Post review");
+  //console.log("Post review");
   const reviewData = req.body;
 
-  console.log(reviewData);
+  //console.log(reviewData);
   //console.log(reviewData.selectedSubject.id);
   var studentId = null;
   appLibrary.getStudentFromToken(reviewData.token).then((result) => {
     studentId = result.studentId;
   });
-  console.log(studentId);
-  console.log(reviewData.userAnswer);
+  //console.log(studentId);
+  //console.log(reviewData.userAnswer);
   appLibrary
     .postReview(
       reviewData.userToken,
@@ -125,22 +125,22 @@ app.post("/postreview", async (req, res) => {
     )
     .then((result) => {
       res.send(result);
-      console.log(result);
+      //console.log(result);
     });
 });
 
 app.post("/completedreviews", async (req, res) => {
-  console.log("completedreviews");
+  //console.log("completedreviews");
   const reviewData = req.body;
 
-  console.log(JSON.stringify(reviewData));
+  //console.log(JSON.stringify(reviewData));
   //console.log(reviewData.selectedSubject.id);
   var studentId = null;
   await appLibrary.getStudentFromToken(reviewData.userToken).then((result) => {
-    console.log(result);
-    console.log(JSON.parse(JSON.stringify(result))); //.studentId;
+    //console.log(result);
+    //console.log(JSON.parse(JSON.stringify(result))); //.studentId;
     studentId = JSON.parse(JSON.stringify(result))[0].studentId;
-    console.log(studentId);
+    //console.log(studentId);
     appLibrary.getStudentCompletedFRQs(studentId).then((result) => {
       res.send(result);
     });
@@ -148,17 +148,17 @@ app.post("/completedreviews", async (req, res) => {
 });
 
 app.post("/openreviews", async (req, res) => {
-  console.log("openreviews");
+  //console.log("openreviews");
   const reviewData = req.body;
 
-  console.log(JSON.stringify(reviewData));
+  //console.log(JSON.stringify(reviewData));
   //console.log(reviewData.selectedSubject.id);
   var studentId = null;
   await appLibrary.getStudentFromToken(reviewData.userToken).then((result) => {
-    console.log(result);
-    console.log(JSON.parse(JSON.stringify(result))); //.studentId;
+    //console.log(result);
+    //console.log(JSON.parse(JSON.stringify(result))); //.studentId;
     studentId = JSON.parse(JSON.stringify(result))[0].studentId;
-    console.log(studentId);
+    //console.log(studentId);
     appLibrary.getStudentNotCompletedFRQs(studentId).then((result) => {
       res.send(result);
     });
@@ -166,7 +166,7 @@ app.post("/openreviews", async (req, res) => {
 });
 
 app.post("/upload2", (req, res) => {
-  console.log(req);
+  //console.log(req);
   res.send("Submitted");
 });
 
