@@ -22,16 +22,9 @@ const handleDelete = () => {
         <p>{{}}</p>
 
         <div class="flex flex-wrap justify-content-between">
-          <Button
-            class="color-red"
-            label="No"
-            icon="pi pi-delete-left"
-            text
-            @click="visible = false"
-          />
+          <Button class="color-red" label="No" text @click="visible = false" />
           <Button
             label="Yes"
-            icon="pi pi-times"
             text
             justify-content-end
             style="color: red"

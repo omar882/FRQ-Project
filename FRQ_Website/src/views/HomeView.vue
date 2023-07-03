@@ -80,7 +80,7 @@ export default {
             <div
               class="flex flex-row align-items-center justify-content-center font-bold text-white md:w-6 w-12 m-1 border-round"
             >
-              <StudentReviews review-type="Completed" />
+              <StudentReviews review-type="Completed" class="" />
             </div>
             <div
               class="flex flex-row align-items-center justify-content-center font-bold text-white md:w-6 w-12 m-1 border-round"
@@ -91,7 +91,7 @@ export default {
         </div>
       </div>
 
-      <div>Current user {{ this.getUserInfo() }}</div>
+      <!-- <div>Current user {{ this.getUserInfo() }}</div> -->
     </div>
   </div>
 </template>

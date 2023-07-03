@@ -1,29 +1,36 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Home from "@/views/HomeView.vue";
 import Login from "@/views/LoginView.vue";
-import { dataModel } from '../dataModel.js'
+import SignUp from "@/views/SignUpView.vue";
+
+import { dataModel } from "../dataModel.js";
 
 const routes = [
-    {
-        path: "/",
-        name: "Home",
-        component: Home,
-    },
-    {
-        path: "/home",
-        name: "Home",
-        component: Home,
-    },
-    {
-        path: "/login",
-        name: "Login",
-        component: Login,
-    },
+  {
+    path: "/",
+    name: "Home",
+    component: Home,
+  },
+  {
+    path: "/home",
+    name: "Home",
+    component: Home,
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
+  },
+  {
+    path: "/signup",
+    name: "Signup",
+    component: SignUp,
+  },
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes,
+  history: createWebHistory(),
+  routes,
 });
 
 /*

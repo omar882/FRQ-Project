@@ -75,9 +75,25 @@ app.post("/removeFRQ", (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  const userCredintial = req.body;
+  const userCredential = req.body;
   appLibrary
-    .login(userCredintial.userName, userCredintial.password)
+    .login(userCredential.userName, userCredential.password)
+    .then((result) => {
+      res.send(result);
+    });
+});
+app.post("/signup", async (req, res) => {
+  const userCredential = req.body;
+  appLibrary
+    .addStudent(
+      userCredential.userName,
+      userCredential.lastname,
+      userCredential.dateofbirth,
+      1,
+      userCredential.grade,
+      userCredential.email,
+      userCredential.password
+    )
     .then((result) => {
       res.send(result);
     });

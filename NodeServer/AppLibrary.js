@@ -128,13 +128,15 @@ class AppLibrary {
     lastName,
     birthDate,
     schoolId,
-    registrationDate,
     schoolGrade,
     email,
     password
   ) {
+    var today = Date.now();
+    today = new Date(today);
+    var todayDate = this.formatDate(today);
     var passwordHash = this.createHash(password);
-    var insertQuery = `INSERT INTO students (firstname, lastName, birthDate, schoolId, registrationDate, schoolGrade, email, passwordHash) VALUES ('${firstName}', '${lastName}', '${birthDate}', ${schoolId}, '${registrationDate}', ${schoolGrade}, '${email}', '${passwordHash}')`;
+    var insertQuery = `INSERT INTO students (firstname, lastName, birthDate, schoolId, registrationDate, schoolGrade, email, passwordHash) VALUES ('${firstName}', '${lastName}', '${birthDate}', ${schoolId}, '${todayDate}', ${schoolGrade}, '${email}', '${passwordHash}')`;
 
     try {
       const result = await this.mySQLInsert(insertQuery);

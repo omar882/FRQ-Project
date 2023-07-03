@@ -179,7 +179,7 @@ onMounted(() => {
 
 <template>
   <div class="container">
-    <Fieldset>
+    <Fieldset class="container">
       <template #legend>
         <div>
           <span class="pi pi-verified mr-2"></span>
@@ -194,9 +194,10 @@ onMounted(() => {
 
       <div
         v-if="reviewType === 'InReview'"
-        class="flex justify-content-end text-primary"
+        class="flex justify-content-end text-primary m-1"
       >
         <Button
+          v-if="reviewType !== 'Completed'"
           label="New Review"
           @click="newReviewDialogVisible = true"
         ></Button>
@@ -333,6 +334,6 @@ onMounted(() => {
 <style scoped>
 .container {
   width: 100%;
-  height: 100%;
+  height: 25rem;
 }
 </style>
