@@ -7,6 +7,7 @@ import TopHeader from "@/components/TopHeader.vue";
 import StudentReviews from "@/components/StudentReviews.vue";
 import Test from "@/components/Test.vue";
 
+const completedTable = ref(0);
 const router = useRouter();
 const menu = ref();
 const items = ref([
@@ -61,12 +62,19 @@ const toggleUserPopup = (event) => {
             <div
               class="flex flex-row align-items-center justify-content-center font-bold text-white md:w-6 w-12 m-1 border-round"
             >
-              <StudentReviews review-type="Completed" class="" />
+              <StudentReviews
+                :key="completedTable"
+                review-type="Completed"
+                class=""
+              />
             </div>
             <div
               class="flex flex-row align-items-center justify-content-center font-bold text-white md:w-6 w-12 m-1 border-round"
             >
-              <StudentReviews review-type="InReview" />
+              <StudentReviews
+                @updateTable="completedTable++"
+                review-type="InReview"
+              />
             </div>
           </div>
         </div>

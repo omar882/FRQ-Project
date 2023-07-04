@@ -1,11 +1,12 @@
 <script setup>
 import axios from "axios";
 import { globals, dataModel } from "../dataModel.js";
-import { ref, defineProps, onMounted } from "vue";
+import { ref, defineProps, onMounted, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useToast } from "primevue/usetoast";
-
 import StudentReviewsTable from "@/components/StudentReviewsTable.vue";
+
+const emit = defineEmits(["updateTable"]);
 const props = defineProps(["reviewType"]);
 const router = useRouter();
 const toast = useToast();
@@ -177,8 +178,12 @@ onMounted(() => {
         </div>
       </template>
       <p class="m-0">
-        <ScrollPanel style="width: 100%; height: 200px">
-          <StudentReviewsTable :review-type="reviewType" ref="questionList" />
+        <ScrollPanel style="width: 100%; height: 500px">
+          <StudentReviewsTable
+            @updateTable="emit('updateTable()')"
+            :review-type="reviewType"
+            ref="questionList"
+          />
         </ScrollPanel>
       </p>
 
@@ -324,6 +329,6 @@ onMounted(() => {
 <style scoped>
 .container {
   width: 100%;
-  height: 25rem;
+  height: 40rem;
 }
 </style>

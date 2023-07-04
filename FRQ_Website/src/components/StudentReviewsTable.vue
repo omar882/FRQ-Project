@@ -1,11 +1,19 @@
 <script setup>
 import { globals, dataModel } from "../dataModel.js";
 import axios from "axios";
-import { ref, defineProps, onMounted, watch, defineExpose } from "vue";
+import {
+  ref,
+  defineProps,
+  onMounted,
+  watch,
+  defineExpose,
+  defineEmits,
+} from "vue";
 import { useMouse } from "@vueuse/core";
 import QuestionDetails from "@/components/QuestionDetails.vue";
 const { x, y, sourceType } = useMouse();
 const props = defineProps(["reviewType"]);
+const emit = defineEmits(["updateTable"]);
 let reviewType = props.reviewType;
 const questions = ref(null);
 const columns = ref(null);
@@ -61,20 +69,31 @@ onMounted(() => {
     { field: "subjectId", header: "Subject" },
     { field: "customQuestionText", header: "Question" },
   ];
-  -+updateCompletedReviews();
+  updateCompletedReviews();
   //this.questions = [{ code: '123', name: '123', category: '123', quantity: '123' }, { code: '123', name: '123', category: '123', quantity: '123' }];
   //alert(JSON.stringify(this.products));
 });
+const updateTableInterval = () => {
+  console.log(questions.value.length);
+  console.log(reviewType);
+
+  if (questions.value.length > 0 && reviewType === "InReview") {
+    emit("updateTable");
+    console.log("updating table...  ");
+    updateCompletedReviews();
+  }
+};
 const updateTable = () => {
-  console.log("updating table...  ");
   updateCompletedReviews();
 };
+setInterval(updateTableInterval, 10000);
 </script>
 
 <template>
   <QuestionDetails
     v-if="showData"
     :data="questionData"
+    :reviewType="reviewType"
     @update-table="updateTable"
   />
 

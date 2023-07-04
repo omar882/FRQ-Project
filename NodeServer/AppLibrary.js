@@ -198,7 +198,11 @@ class AppLibrary {
     submissionDate,
     serverGeneratedReviewId
   ) {
-    var insertQuery = `INSERT INTO frqs (subjectId, studentId, isAutoReview, isCustomQuestion, urgency, selectedYear, selectedQuestion, customQuestionText, submissionDate, serverGeneratedReviewId,userAnswer) VALUES (${subjectId}, ${studentId}, ${isAutoReview}, ${isCustomQuestion}, ${urgency}, ${selectedYear}, ${selectedQuestion}, '${customQuestionText}', '${submissionDate}', '${serverGeneratedReviewId}', '${userAnswer}')`;
+    var insertQuery = `INSERT INTO frqs (subjectId, studentId, isAutoReview, isCustomQuestion, urgency, selectedYear, selectedQuestion, customQuestionText, submissionDate, serverGeneratedReviewId,userAnswer) VALUES (${subjectId}, ${studentId}, ${isAutoReview}, ${isCustomQuestion}, ${urgency}, ${selectedYear}, ${selectedQuestion}, ${con.escape(
+      customQuestionText
+    )}, '${submissionDate}', '${serverGeneratedReviewId}', ${con.escape(
+      userAnswer
+    )})`;
 
     try {
       const result = await this.mySQLInsert(insertQuery);
@@ -208,6 +212,7 @@ class AppLibrary {
       return null;
     }
   }
+
   async deleteFRQ(id) {
     //console.log(id);
     var insertQuery = `DELETE FROM frq.frqs WHERE (id = ${id})`;
@@ -312,6 +317,25 @@ class AppLibrary {
     }
   }
 
+  async updateReview(reviewId, autoReviewAnswer) {
+    console.log("updating review...");
+    var now = Date.now();
+    now = new Date(now);
+    var query = `UPDATE frq.frqs SET isReviewed = 1, autoReviewAnswer = "${con.escape(
+      autoReviewAnswer
+    )}",reviewDate = '${this.formatDate(now)}' WHERE (id = ${reviewId})`;
+
+    try {
+      var result = await this.mySQLUpdate(query);
+      console.log(result);
+      result = JSON.parse(JSON.stringify(result));
+      return result;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
   mySQLQuery(query) {
     return new Promise((resolve, reject) => {
       con.query(query, (error, results) => {
@@ -328,6 +352,18 @@ class AppLibrary {
   mySQLInsert(insertQuery) {
     return new Promise((resolve, reject) => {
       con.query(insertQuery, (error, results) => {
+        if (error) {
+          return reject(error);
+        }
+
+        return resolve(results);
+      });
+    });
+  }
+
+  mySQLUpdate(updateQuery) {
+    return new Promise((resolve, reject) => {
+      con.query(updateQuery, (error, results) => {
         if (error) {
           return reject(error);
         }

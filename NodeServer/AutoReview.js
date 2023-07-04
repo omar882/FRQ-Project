@@ -26,7 +26,7 @@ class AutoReview {
       "'."
     );
   }
-  async reviewFRQ(subjectName, customQuestionText, userAnswer) {
+  async reviewFRQ(reviewId, subjectName, customQuestionText, userAnswer) {
     //console.log(this.getPrompt(subjectName, customQuestionText, userAnswer));
     const chatCompletion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
@@ -37,7 +37,11 @@ class AutoReview {
         },
       ],
     });
-    //console.log(chatCompletion.data.choices[0].message.content);
+    console.log("in");
+    appLibrary.updateReview(
+      reviewId,
+      chatCompletion.data.choices[0].message.content
+    );
     return chatCompletion;
   }
 
@@ -46,13 +50,14 @@ class AutoReview {
       //console.log(result);
       const answer = [];
       for (var i = 0; i < result.length; i++) {
+        console.log("this review:");
+        console.log(result[i]);
         this.reviewFRQ(
+          result[i].id,
           result[i].subjectName,
           result[i].customQuestionText,
           result[i].userAnswer
-        ).then((res) => {
-          answer[i] = res;
-        });
+        ).then((res) => {});
       }
     });
   }

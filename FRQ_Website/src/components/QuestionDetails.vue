@@ -4,8 +4,9 @@ import { globals, dataModel } from "../dataModel.js";
 import axios from "axios";
 const emit = defineEmits(["updateTable"]);
 
-const props = defineProps(["data"]);
+const props = defineProps(["data", "reviewType"]);
 const visible = ref(props.data.showData);
+const reviewType = props.reviewType;
 import DeleteModal from "@/components/DeleteModal.vue";
 const showDeleteModal = ref(false);
 let deleteModalData = {};
@@ -42,7 +43,7 @@ const handleDelete = () => {
       v-model:visible="visible"
       modal
       :header="props.data.info.subjectName + ' Question'"
-      :style="{ width: '30vw', height: '' }"
+      :style="{ width: '50vw', height: '' }"
     >
       <DeleteModal
         :data="deleteModalData"
@@ -61,6 +62,12 @@ const handleDelete = () => {
         <span>Your Answer was: </span>
         <span style="font-weight: initial">
           {{ props.data.info.userAnswer }}</span
+        >
+      </h3>
+      <h3 v-if="reviewType === 'Completed'">
+        <span>Feedback: </span>
+        <span style="font-weight: initial">
+          {{ props.data.info.autoReviewAnswer }}</span
         >
       </h3>
 
