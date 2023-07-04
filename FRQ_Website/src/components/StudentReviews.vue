@@ -19,6 +19,7 @@ const urgencyOptions = ref([
   { name: "Urgent within 24 hours", value: 1 },
   { name: "Normal Within 3 days", value: 2 },
 ]);
+const studentTable = ref(0);
 const urgencySelection = ref({ name: "Urgent within 24 hours", value: 1 });
 const questions = ref([
   { name: "Question 1", value: 1 },
@@ -55,18 +56,7 @@ function onAdvancedUpload() {
 }
 function questionTypeChange(evt) {}
 function submit() {
-  //alert(JSON.stringify(this.files));
-
   const baseURI = globals.serverUrl + "postreview";
-
-  //alert(baseURI + " - " +dataModel.currentUser.userToken);
-  //alert("1 " + this.isCustom);
-  //alert("2 " + this.isAutoReview);
-  //alert("3 " + this.urgencySelection);
-  //alert("4 " + this.selectedQuestion);
-  //alert("5 " + this.selectedSubjectYear);
-  //alert("6 " + this.selectedSubject);
-  //alert("7 " + this.customQuestionText);
 
   var reqBody = {
     userToken: dataModel.currentUser.userToken,
@@ -80,28 +70,18 @@ function submit() {
     userAnswer: customQuestionAnswer.value,
   };
 
-  //alert(JSON.stringify(reqBody));
-
   axios.post(baseURI, reqBody).then((result) => {
-    //alert(result.data);
-
     if (result.data != null) {
       serverGeneratedReviewId.value = result.data.serverGeneratedReviewId;
-      //alert(this.serverGeneratedReviewId);
 
-      alert(
-        "Files = " +
-          files.value.length +
-          " - isAutoReview = " +
-          isAutoReview.value
-      );
       if (files.value.length > 0 && !this.isAutoReview) {
         fileUploader.value.upload();
         router.push("/home");
       } else {
         //this.dataModel.recentlyAddedItemsForReview.push(itemToBeReviewed);
         newReviewDialogVisible.value = false;
-        questionList.value.updateCompletedReviews();
+        //questionList.value.updateCompletedReviews();
+        studentTable.value++;
         router.push("/home");
       }
     }
@@ -178,11 +158,12 @@ onMounted(() => {
         </div>
       </template>
       <p class="m-0">
-        <ScrollPanel style="width: 100%; height: 500px">
+        <ScrollPanel style="width: 100%; height: 400px">
           <StudentReviewsTable
             @updateTable="emit('updateTable')"
             :review-type="reviewType"
             ref="questionList"
+            :key="studentTable"
           />
         </ScrollPanel>
       </p>
@@ -329,6 +310,6 @@ onMounted(() => {
 <style scoped>
 .container {
   width: 100%;
-  height: 40rem;
+  height: 35rem;
 }
 </style>
