@@ -7,7 +7,7 @@ CREATE TABLE `accesstokens` (
   `expirationTime` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=337 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=359 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `frqs` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -18,18 +18,18 @@ CREATE TABLE `frqs` (
   `urgency` tinyint(1) NOT NULL,
   `selectedYear` int DEFAULT NULL,
   `selectedQuestion` tinyint(1) DEFAULT NULL,
-  `customQuestionText` varchar(4096) DEFAULT NULL,
+  `customQuestionText` longtext,
   `answerFilesList` varchar(4096) DEFAULT NULL,
-  `autoReviewAnswer` varchar(4096) DEFAULT NULL,
+  `autoReviewAnswer` longtext,
   `submissionDate` datetime NOT NULL,
   `reviewDate` datetime DEFAULT NULL,
   `isReviewed` tinyint DEFAULT '0',
   `assignedTo` int DEFAULT NULL,
   `serverGeneratedReviewId` varchar(120) NOT NULL,
-  `userAnswer` varchar(2048) NOT NULL DEFAULT 'null',
+  `userAnswer` longtext NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `questions` (
   `id` int NOT NULL AUTO_INCREMENT,

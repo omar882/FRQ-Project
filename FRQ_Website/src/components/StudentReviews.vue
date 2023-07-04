@@ -180,7 +180,7 @@ onMounted(() => {
       <p class="m-0">
         <ScrollPanel style="width: 100%; height: 500px">
           <StudentReviewsTable
-            @updateTable="emit('updateTable()')"
+            @updateTable="emit('updateTable')"
             :review-type="reviewType"
             ref="questionList"
           />
