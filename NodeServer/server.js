@@ -5,11 +5,12 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const multer = require("multer");
 const AppLibrary = require("./AppLibrary");
+const AutoReview = require("./AutoReview");
 
 const app = express();
 
 const appLibrary = new AppLibrary();
-
+const autoReview = new AutoReview();
 app.use(helmet());
 
 // using bodyParser to parse JSON bodies into JS objects
@@ -33,8 +34,19 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ dest: "uploads/" });
-
 app.post("/upload_files", upload.array("files"), uploadFiles);
+
+//
+//  SetInterval
+//
+setInterval(() => {
+  callFindReviews();
+}, 10000);
+//
+//
+function callFindReviews() {
+  autoReview.findReviews();
+}
 
 function uploadFiles(req, res) {
   //console.log(req.body);
@@ -65,7 +77,7 @@ app.post("/subjects", (req, res) => {
   });
 });
 app.post("/removeFRQ", (req, res) => {
-  console.log("deleting");
+  console.log();
   const body = req.body;
 
   appLibrary.deleteFRQ(body.id).then((result) => {
@@ -79,9 +91,12 @@ app.post("/login", async (req, res) => {
   appLibrary
     .login(userCredential.userName, userCredential.password)
     .then((result) => {
+      console.log(result);
+
       res.send(result);
     });
 });
+
 app.post("/signup", async (req, res) => {
   const userCredential = req.body;
   appLibrary

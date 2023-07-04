@@ -32,13 +32,13 @@ class AppLibrary {
       this.formatDate(tomorrow)
     );
 
-    var loginResponse = JSON.stringify({
+    var loginResponse = {
       firstName: student[0].firstName,
       lastName: student[0].lastName,
       email: student[0].email,
       userToken: accessToken,
       tokenExpiration: this.formatDate(tomorrow),
-    });
+    };
 
     return loginResponse;
   }
@@ -198,8 +198,7 @@ class AppLibrary {
     submissionDate,
     serverGeneratedReviewId
   ) {
-    var insertQuery = `INSERT INTO frqs (subjectId, studentId, isAutoReview, isCustomQuestion, urgency, selectedYear, selectedQuestion, customQuestionText, submissionDate, serverGeneratedReviewId,userAnswer)
-                VALUES (${subjectId}, ${studentId}, ${isAutoReview}, ${isCustomQuestion}, ${urgency}, ${selectedYear}, ${selectedQuestion}, '${customQuestionText}', '${submissionDate}', '${serverGeneratedReviewId}', '${userAnswer}')`;
+    var insertQuery = `INSERT INTO frqs (subjectId, studentId, isAutoReview, isCustomQuestion, urgency, selectedYear, selectedQuestion, customQuestionText, submissionDate, serverGeneratedReviewId,userAnswer) VALUES (${subjectId}, ${studentId}, ${isAutoReview}, ${isCustomQuestion}, ${urgency}, ${selectedYear}, ${selectedQuestion}, '${customQuestionText}', '${submissionDate}', '${serverGeneratedReviewId}', '${userAnswer}')`;
 
     try {
       const result = await this.mySQLInsert(insertQuery);
@@ -251,6 +250,20 @@ class AppLibrary {
     var query = `Select frqsList.*, subjects.name as subjectName from frq.subjects inner join 
         (
         SELECT * FROM frq.frqs where (isReviewed != true or isReviewed = null) and studentId = ${studentId}
+        ) as frqsList on frqsList.subjectId = subjects.id`;
+
+    try {
+      var result = await this.mySQLQuery(query);
+      result = JSON.parse(JSON.stringify(result));
+      return result;
+    } catch (error) {
+      return null;
+    }
+  }
+  async getNotCompletedFRQsAutoReview() {
+    var query = `Select frqsList.*, subjects.name as subjectName from frq.subjects inner join 
+        (
+        SELECT * FROM frq.frqs where (isReviewed != true or isReviewed = null) and isAutoReview = 1
         ) as frqsList on frqsList.subjectId = subjects.id`;
 
     try {
