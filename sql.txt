@@ -1,0 +1,72 @@
+CREATE DATABASE `frq` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE TABLE `accesstokens` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `token` varchar(120) NOT NULL,
+  `studentId` varchar(45) DEFAULT NULL,
+  `startTime` datetime NOT NULL,
+  `expirationTime` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=337 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `frqs` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `subjectId` varchar(45) NOT NULL,
+  `studentId` int NOT NULL,
+  `isAutoReview` tinyint NOT NULL,
+  `isCustomQuestion` tinyint NOT NULL,
+  `urgency` tinyint(1) NOT NULL,
+  `selectedYear` int DEFAULT NULL,
+  `selectedQuestion` tinyint(1) DEFAULT NULL,
+  `customQuestionText` varchar(4096) DEFAULT NULL,
+  `answerFilesList` varchar(4096) DEFAULT NULL,
+  `autoReviewAnswer` varchar(4096) DEFAULT NULL,
+  `submissionDate` datetime NOT NULL,
+  `reviewDate` datetime DEFAULT NULL,
+  `isReviewed` tinyint DEFAULT '0',
+  `assignedTo` int DEFAULT NULL,
+  `serverGeneratedReviewId` varchar(120) NOT NULL,
+  `userAnswer` varchar(2048) NOT NULL DEFAULT 'null',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `questions` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `year` int DEFAULT NULL,
+  `name` varchar(45) NOT NULL,
+  `subjectId` int NOT NULL,
+  `files` varchar(4096) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `schools` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(60) DEFAULT NULL,
+  `state` varchar(2) NOT NULL,
+  `address` varchar(240) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `students` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `firstName` varchar(45) NOT NULL,
+  `lastName` varchar(45) NOT NULL,
+  `birthDate` date NOT NULL,
+  `schoolId` int NOT NULL,
+  `registrationDate` datetime NOT NULL,
+  `schoolGrade` tinyint(1) NOT NULL,
+  `email` varchar(120) NOT NULL,
+  `passwordHash` varchar(120) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `subjects` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
