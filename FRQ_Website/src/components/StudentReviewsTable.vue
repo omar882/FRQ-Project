@@ -32,7 +32,7 @@ const viewData = (selectedRows) => {
 };
 
 const updateCompletedReviews = () => {
-  console.log("updating table...");
+  console.log("updating table... " + reviewType);
   var baseURI = null;
   if (reviewType == "Completed")
     baseURI = globals.serverUrl + "completedreviews";
@@ -74,12 +74,8 @@ onMounted(() => {
   //alert(JSON.stringify(this.products));
 });
 const updateTableInterval = () => {
-  console.log(questions.value.length);
-  console.log(reviewType);
-
   if (questions.value.length > 0 && reviewType === "InReview") {
     emit("updateTable");
-    console.log("updating table...  ");
     updateCompletedReviews();
   }
 };

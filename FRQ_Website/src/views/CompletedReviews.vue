@@ -5,7 +5,6 @@ import { globals, dataModel } from "../dataModel.js";
 import { useRouter } from "vue-router";
 import TopHeader from "@/components/TopHeader.vue";
 import StudentReviews from "@/components/StudentReviews.vue";
-import Test from "@/components/Test.vue";
 
 const completedTable = ref(0);
 const router = useRouter();
@@ -57,23 +56,15 @@ const toggleUserPopup = (event) => {
       <div class="card">
         <div class="card-container blue-container overflow-hidden">
           <div
-            class="flex md:flex-row flex-column align-items-center justify-content-center"
+            class="flex md:flex-row flex-column align-items-center justify-content-center w-full"
           >
             <div
-              class="flex flex-row align-items-center justify-content-center font-bold text-white md:w-6 w-12 m-1 border-round"
+              class="flex flex-row align-items-center justify-content-center font-bold text-white w-full m-1 border-round"
             >
               <StudentReviews
                 :key="completedTable"
                 review-type="Completed"
                 class=""
-              />
-            </div>
-            <div
-              class="flex flex-row align-items-center justify-content-center font-bold text-white md:w-6 w-12 m-1 border-round"
-            >
-              <StudentReviews
-                @updateTable="completedTable++"
-                review-type="InReview"
               />
             </div>
           </div>

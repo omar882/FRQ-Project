@@ -3,7 +3,14 @@ import { ref, defineProps, defineEmits, watch } from "vue";
 import { globals, dataModel } from "../dataModel.js";
 import axios from "axios";
 const emit = defineEmits(["updateTable"]);
-
+let header =
+  props.data.info.subjectName +
+  " Question" +
+  " - " +
+  props.data.info.reviewDate.substring(0, 10);
+if (props.data.info.isAutoReview === 1) {
+  header = header + " - AI Review";
+}
 const props = defineProps(["data", "reviewType"]);
 const visible = ref(props.data.showData);
 const reviewType = props.reviewType;
@@ -27,9 +34,6 @@ const handleDelete = () => {
   var baseURI = globals.serverUrl + "removeFRQ";
 
   axios.post(baseURI, { id: id }).then((result) => {
-    console.log(result + " I hope it worked");
-    console.log("this should be before update table");
-    console.log("table should have been updated");
     emit("updateTable");
     visible.value = false;
   });
@@ -39,12 +43,21 @@ const handleDelete = () => {
 <template>
   <div class="card flex">
     <Dialog
+      maximizable
       :draggable="false"
       v-model:visible="visible"
       modal
-      :header="props.data.info.subjectName + ' Question'"
-      :style="{ width: '50vw', height: '' }"
+      :style="{ width: '70vw', height: '' }"
     >
+      <template #header>
+        <div
+          class="flex flex-row align-items-start justify-content-center w-full h-full"
+        >
+          <h2 class="m-0 h-full align-self-start justify-content-center">
+            {{ header }}
+          </h2>
+        </div>
+      </template>
       <DeleteModal
         :data="deleteModalData"
         v-if="showDeleteModal"
@@ -52,28 +65,28 @@ const handleDelete = () => {
         @delete="handleDelete"
       ></DeleteModal>
 
-      <h3>
+      <h2>
         <span> The Question is: </span>
-        <span style="font-weight: initial">
-          {{ props.data.info.customQuestionText }}</span
-        >
-      </h3>
-      <h3>
+      </h2>
+      <span style="font-weight: initial" class="">
+        {{ props.data.info.customQuestionText }}</span
+      >
+
+      <h2>
         <span>Your Answer was: </span>
-        <span style="font-weight: initial">
-          {{ props.data.info.userAnswer }}</span
-        >
-      </h3>
-      <h3 v-if="reviewType === 'Completed'">
+      </h2>
+      <span style="font-weight: initial">
+        {{ props.data.info.userAnswer }}</span
+      >
+
+      <h2 v-if="reviewType === 'Completed'">
         <span>Feedback: </span>
-        <span style="font-weight: initial">
-          {{ props.data.info.autoReviewAnswer }}</span
-        >
-      </h3>
+      </h2>
+      <span style="font-weight: initial">
+        {{ props.data.info.autoReviewAnswer }}</span
+      >
 
       <template #footer>
-        <p>{{ props.data.info.submissionDate.substring(0, 10) }}</p>
-
         <div class="flex flex-wrap justify-content-between">
           <Button
             @click="viewDeleteModal()"

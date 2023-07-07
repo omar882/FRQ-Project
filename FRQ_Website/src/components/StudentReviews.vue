@@ -74,15 +74,13 @@ function submit() {
     if (result.data != null) {
       serverGeneratedReviewId.value = result.data.serverGeneratedReviewId;
 
-      if (files.value.length > 0 && !this.isAutoReview) {
+      if (files.value.length > 0 && !isAutoReview.value) {
         fileUploader.value.upload();
-        router.push("/home");
       } else {
         //this.dataModel.recentlyAddedItemsForReview.push(itemToBeReviewed);
         newReviewDialogVisible.value = false;
-        //questionList.value.updateCompletedReviews();
+        questionList.value.updateCompletedReviews();
         studentTable.value++;
-        router.push("/home");
       }
     }
   });

@@ -1,8 +1,7 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-//import router from './router'
 import "primeflex/primeflex.css";
-import "primevue/resources/themes/lara-light-blue/theme.css";
+import "primevue/resources/themes/bootstrap4-light-blue/theme.css";
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
 import "./index.css";
@@ -105,6 +104,7 @@ import TreeSelect from "primevue/treeselect";
 import TreeTable from "primevue/treetable";
 import TriStateCheckbox from "primevue/tristatecheckbox";
 import VirtualScroller from "primevue/virtualscroller";
+import { usePrimeVue } from "primevue/config";
 
 //import { createRouter, createWebHistory } from 'vue-router'
 import router from "./router";

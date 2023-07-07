@@ -41,12 +41,14 @@ const loadData = () => {
 <template>
   <div class="card flex align-items-center justify-content-center">
     <div class="card w-full">
-      <div class="flex flex-column md:flex-row justify-content-center">
+      <div
+        class="flex flex-column justify-content-center align-items-center w-full"
+      >
         <div
-          class="md:w-6 flex flex-column md:align-items-end align-items-center justify-content-end gap-3 py-5"
+          class="flex flex-column align-items-center justify-content-center gap-3 py-5 w-full"
         >
-          <div class="flex align-items-center gap-2 w-7">
-            <label class="flex w-3 justify-content-end">Username</label>
+          <div class="flex align-items-center justify-content-center gap-2 w-5">
+            <label class="flex w-1 justify-content-end">Username</label>
             <InputText
               id="username"
               type="text"
@@ -54,9 +56,11 @@ const loadData = () => {
               v-model="username"
             />
           </div>
-          <div class="flex flex-column align-items-center gap-2 w-7">
-            <div class="flex flex-row gap-2 align-items-center w-12">
-              <label class="flex w-3 justify-content-end">Password</label>
+          <div class="flex flex-column align-items-center gap-2 w-5">
+            <div
+              class="flex flex-row justify-content-center gap-2 align-items-center w-12"
+            >
+              <label class="flex w-1 justify-content-end">Password</label>
               <InputText
                 id="password"
                 type="password"
@@ -68,18 +72,17 @@ const loadData = () => {
               @click="login"
               label="Login"
               icon="pi pi-user"
-              class="w-10rem"
+              class="w-10rem mt-5"
             ></Button>
           </div>
         </div>
-        <div class="w-full md:w-1">
-          <Divider layout="vertical" class="hidden md:flex"><b>OR</b></Divider>
-          <Divider layout="horizontal" class="flex md:hidden" align="center"
+        <div class="flex w-full md:w-1 justify-content-center">
+          <Divider layout="horizontal" class="flex" align="center"
             ><b>OR</b></Divider
           >
         </div>
         <div
-          class="w-full md:w-6 flex align-items-center md:justify-content-start justify-content-center py-5"
+          class="w-full md:w-6 flex align-items-center justify-content-center py-5"
         >
           <Button
             label="Sign Up"
