@@ -1,10 +1,10 @@
 <script setup>
 import axios from "axios";
-import { globals, dataModel } from "../dataModel.js";
+import { globals, dataModel } from "../../dataModel.js";
 import { ref, defineProps, onMounted, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useToast } from "primevue/usetoast";
-import StudentReviewsTable from "@/components/StudentReviewsTable.vue";
+import StudentReviewsTable from "./StudentReviewsTable.vue";
 
 const emit = defineEmits(["updateTable"]);
 const props = defineProps(["reviewType"]);

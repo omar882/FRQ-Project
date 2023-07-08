@@ -1,7 +1,9 @@
 <script setup>
 import { ref, defineProps, defineEmits, watch } from "vue";
-import { globals, dataModel } from "../dataModel.js";
+import { globals, dataModel } from "../../dataModel.js";
 import axios from "axios";
+import DeleteModal from "./DeleteModal.vue";
+
 const emit = defineEmits(["updateTable"]);
 let header =
   props.data.info.subjectName +
@@ -14,7 +16,6 @@ if (props.data.info.isAutoReview === 1) {
 const props = defineProps(["data", "reviewType"]);
 const visible = ref(props.data.showData);
 const reviewType = props.reviewType;
-import DeleteModal from "@/components/DeleteModal.vue";
 const showDeleteModal = ref(false);
 let deleteModalData = {};
 let DeleteModalKey = ref(0);

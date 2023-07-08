@@ -1,5 +1,5 @@
 <script setup>
-import { globals, dataModel } from "../dataModel.js";
+import { globals, dataModel } from "../../dataModel.js";
 import axios from "axios";
 import {
   ref,
@@ -10,7 +10,7 @@ import {
   defineEmits,
 } from "vue";
 import { useMouse } from "@vueuse/core";
-import QuestionDetails from "@/components/QuestionDetails.vue";
+import QuestionDetails from "./QuestionDetails.vue";
 const { x, y, sourceType } = useMouse();
 const props = defineProps(["reviewType"]);
 const emit = defineEmits(["updateTable"]);

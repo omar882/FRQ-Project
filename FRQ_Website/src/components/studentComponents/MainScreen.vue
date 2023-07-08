@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import { globals } from "../dataModel.js";
+import { globals } from "../../dataModel.js";
 import { ref } from "vue";
 
 const name = "Vue.js";

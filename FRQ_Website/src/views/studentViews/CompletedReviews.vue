@@ -1,10 +1,10 @@
 <script setup>
 import axios from "axios";
 import { computed, onBeforeMount, ref } from "vue";
-import { globals, dataModel } from "../dataModel.js";
+import { globals, dataModel } from "../../dataModel.js";
 import { useRouter } from "vue-router";
-import TopHeader from "@/components/TopHeader.vue";
-import StudentReviews from "@/components/StudentReviews.vue";
+import TopHeader from "../../components/studentComponents/TopHeader.vue";
+import StudentReviews from "../../components/studentComponents/StudentReviews.vue";
 
 const completedTable = ref(0);
 const router = useRouter();
@@ -62,10 +62,9 @@ const toggleUserPopup = (event) => {
             >
               <StudentReviews
                 :key="completedTable"
-                review-type="InReview"
+                review-type="Completed"
                 class=""
               />
-              <p>diff</p>
             </div>
           </div>
         </div>

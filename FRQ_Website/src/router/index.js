@@ -1,42 +1,40 @@
 import { createWebHistory, createRouter } from "vue-router";
-import CompletedReviews from "@/views/CompletedReviews.vue";
-import OpenReviews from "@/views/OpenReviews.vue";
+import studentCompletedReviews from "@/views/studentViews/CompletedReviews.vue";
+import studentOpenReviews from "@/views/studentViews/OpenReviews.vue";
 
-import Login from "@/views/LoginView.vue";
-import SignUp from "@/views/SignUpView.vue";
-
-import { dataModel } from "../dataModel.js";
+import studentLogin from "@/views/studentViews/LoginView.vue";
+import studentSignUp from "@/views/studentViews/SignUpView.vue";
 
 const routes = [
   {
     path: "/",
     name: "default",
-    component: CompletedReviews,
+    component: studentCompletedReviews,
   },
   {
     path: "/home",
     name: "Home",
-    component: CompletedReviews,
+    component: studentCompletedReviews,
   },
   {
     path: "/login",
     name: "Login",
-    component: Login,
+    component: studentLogin,
   },
   {
     path: "/signup",
     name: "Signup",
-    component: SignUp,
+    component: studentSignUp,
   },
   {
     path: "/completedreviews",
     name: "Completed Reviews",
-    component: CompletedReviews,
+    component: studentCompletedReviews,
   },
   {
     path: "/openreviews",
     name: "Open Reviews",
-    component: OpenReviews,
+    component: studentOpenReviews,
   },
 ];
 

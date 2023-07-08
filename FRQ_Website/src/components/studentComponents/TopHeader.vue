@@ -1,6 +1,6 @@
 <script setup>
 import { ref, defineProps, onMounted, defineEmits } from "vue";
-import { globals, dataModel } from "../dataModel.js";
+import { globals, dataModel } from "../../dataModel.js";
 import { useRouter } from "vue-router";
 const router = useRouter();
 const props = defineProps(["user"]);

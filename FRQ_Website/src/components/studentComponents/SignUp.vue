@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import { globals, dataModel } from "../dataModel.js";
+import { globals, dataModel } from "../../dataModel.js";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
