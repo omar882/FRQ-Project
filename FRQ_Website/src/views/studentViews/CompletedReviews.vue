@@ -27,7 +27,6 @@ const items = ref([
     ],
   },
 ]);
-onBeforeMount(() => {});
 const toggleUserPopup = (event) => {
   console.log(event);
   menu.value.toggle(event);

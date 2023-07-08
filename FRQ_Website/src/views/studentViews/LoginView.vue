@@ -3,7 +3,6 @@ import Login from "../../components/studentComponents/Login.vue";
 </script>
 
 <template>
-  in
   <div class="flex justify-content-center">
     <Image
       src="logo.png"

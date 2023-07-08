@@ -4,25 +4,26 @@ import studentOpenReviews from "@/views/studentViews/OpenReviews.vue";
 
 import studentLogin from "@/views/studentViews/LoginView.vue";
 import studentSignUp from "@/views/studentViews/SignUpView.vue";
+import homeView from "@/views/homeView.vue";
 
 const routes = [
   {
     path: "/",
     name: "default",
-    component: studentCompletedReviews,
+    component: homeView,
   },
   {
     path: "/home",
     name: "Home",
-    component: studentCompletedReviews,
+    component: homeView,
   },
   {
-    path: "/login",
+    path: "/studentlogin",
     name: "Login",
     component: studentLogin,
   },
   {
-    path: "/signup",
+    path: "/studentsignup",
     name: "Signup",
     component: studentSignUp,
   },
