@@ -7,7 +7,10 @@ const router = useRouter();
 const name = "Vue.js";
 const username = ref("");
 const password = ref("");
-
+const addWeeksToDate = (dateObj, numberOfWeeks) => {
+  dateObj.setDate(dateObj.getDate() + numberOfWeeks * 7);
+  return dateObj;
+};
 const login = (event) => {
   //alert(this.username + " - " + this.password);
   //console.log("in");
@@ -18,6 +21,14 @@ const login = (event) => {
       //alert(JSON.stringify(result.data));
       //console.log(result);
       if (result.data != "") {
+        console.log(result.data);
+        const now = new Date();
+        now.setDate(now.getDate(), 1);
+
+        localStorage.setItem("userToken", result.data.userToken);
+        localStorage.setItem("expiration", now);
+        console.log(result.data);
+
         dataModel.currentUser = result.data;
 
         //this.loadData();
@@ -29,7 +40,6 @@ const loadData = () => {
   const baseURI = globals.serverUrl + "subjects";
   axios.post(baseURI, { token: dataModel.currentUser.token }).then((result) => {
     //alert(JSON.stringify(result.data));
-
     if (result.data != "") {
       dataModel.subjects = result.data;
       alert(dataModel.subjects);

@@ -76,6 +76,14 @@ app.post("/subjects", (req, res) => {
     res.send(result);
   });
 });
+
+app.post("/getExpirationtime", (req, res) => {
+  const body = req.body;
+
+  appLibrary.getExpirationFromToken(req.body.userToken).then((result) => {
+    res.send(result);
+  });
+});
 app.post("/removeFRQ", (req, res) => {
   console.log();
   const body = req.body;
@@ -147,13 +155,13 @@ app.post("/postreview", async (req, res) => {
 app.post("/completedreviews", async (req, res) => {
   //console.log("completedreviews");
   const reviewData = req.body;
-
+  console.log(reviewData);
   //console.log(JSON.stringify(reviewData));
   //console.log(reviewData.selectedSubject.id);
   var studentId = null;
   await appLibrary.getStudentFromToken(reviewData.userToken).then((result) => {
-    //console.log(result);
-    //console.log(JSON.parse(JSON.stringify(result))); //.studentId;
+    console.log(result);
+    console.log(JSON.parse(JSON.stringify(result))[0]); //.studentId;
     studentId = JSON.parse(JSON.stringify(result))[0].studentId;
     //console.log(studentId);
     appLibrary.getStudentCompletedFRQs(studentId).then((result) => {

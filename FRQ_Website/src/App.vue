@@ -1,55 +1,41 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
-</script>
+import { dataModel, globals } from "./dataModel.js";
+import { onBeforeMount, onMounted, ref, toRaw } from "vue";
+import { RouterLink, RouterView, useRouter } from "vue-router";
+import axios from "axios";
+const router = useRouter();
+const loaded = ref(false);
+onMounted(() => {
+  console.log("mounting...");
 
-<script>
-import { dataModel } from "./dataModel.js";
+  const baseURI = globals.serverUrl + "getExpirationtime";
+  var userToken = localStorage.getItem("userToken");
+  if (dataModel.currentUser != null) {
+    loaded.value = true;
 
-export default {
-  data() {
-    return {
-      dataModel,
-    };
-  },
-  computed: {
-    // a computed getter
-    /*
-            isLoggedIn() {
-                // `this` points to the component instance
-                return (dataModel.currentUser == null) ? false : true
-            },
-            currentView() {
-                if (this.isLoggedIn()) {
-                    this.$router.push({ path: '/home' })
-                } else
-                    this.$router.push({ path: '/login' })
-            }
-            */
-  },
-  beforeCreate: function () {
-    //alert('lll ' + (dataModel.currentUser == null));
+    return;
+  } else if (userToken) {
+    axios.post(baseURI, { userToken: userToken }).then((result) => {
+      //alert(JSON.stringify(result.data));
+      //console.log(result.data);
 
-    if (dataModel.currentUser == null) this.$router.push({ path: "/login" });
-    else this.$router.push({ path: "/home" });
-
-    //this.computed.test();
-    //this.computed.currentView() // Calls the method before page loads
-  },
-  /*
-        mounted: function () {
-            //alert(this.computed.isLoggedIn());
-            this.currentView() // Calls the method before page loads
-        },
-        beforeCreate: function () {
-            alert(this.isLoggedIn());
-            this.currentView(); // Calls the method before page loads
-        }
-        */
-};
-
-//    <Login v-if="!isLoggedIn" />
+      if (result.data.logIn) {
+        console.log("in");
+        dataModel.currentUser = result.data.user;
+        dataModel.currentUser.userToken = result.data.userToken;
+        loaded.value = true;
+      } else {
+        router.push("/login");
+        loaded.value = true;
+      }
+    });
+  } else {
+    router.push("/login");
+    loaded.value = true;
+  }
+});
 </script>
 
 <template>
-  <router-view></router-view>
+  <router-view v-if="loaded"> </router-view>
 </template>

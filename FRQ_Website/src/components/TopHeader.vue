@@ -9,9 +9,10 @@ const emit = defineEmits(["togglePopupVisibility"]);
 const loggedIn = ref(false);
 const visible = ref(false);
 const userPopupVisibility = ref(false);
-const firstLetter = props.user.currentUser.email.charAt(0).toUpperCase();
 
+let firstLetter;
 onMounted(() => {
+  firstLetter = props.user.currentUser.email.charAt(0).toUpperCase();
   if (props.user != null) {
     loggedIn.value = true;
   }

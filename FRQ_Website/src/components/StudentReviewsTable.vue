@@ -42,7 +42,7 @@ const updateCompletedReviews = () => {
     alert(reviewType);
     return;
   }
-
+  console.log(dataModel.currentUser);
   axios
     .post(baseURI, { userToken: dataModel.currentUser.userToken })
     .then((result) => {

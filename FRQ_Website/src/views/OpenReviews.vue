@@ -17,6 +17,7 @@ const items = ref([
         label: "Log out",
         command: () => {
           dataModel.currentUser = null;
+          localStorage.setItem("userToken", "");
           router.push("/login");
         },
       },
@@ -26,9 +27,7 @@ const items = ref([
     ],
   },
 ]);
-onBeforeMount(() => {
-  if (dataModel.currentUser == null) router.push({ path: "/login" });
-});
+onBeforeMount(() => {});
 const toggleUserPopup = (event) => {
   console.log(event);
   menu.value.toggle(event);

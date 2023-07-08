@@ -23,7 +23,7 @@ class AppLibrary {
     now = new Date(now);
     var tomorrow = Date.now();
     tomorrow = new Date(tomorrow);
-    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setDate(tomorrow.getDate() + 5);
 
     await this.addAccessToken(
       accessToken,
@@ -314,6 +314,42 @@ class AppLibrary {
       return result;
     } catch (error) {
       return null;
+    }
+  }
+
+  async getExpirationFromToken(token) {
+    console.log(token);
+    var query = `SELECT accesstokens.expirationTime FROM accesstokens where token = "${token}"`;
+
+    try {
+      const user = await this.getStudentFromToken(token);
+      if (user.length < 1) {
+        return {
+          logIn: false,
+        };
+      }
+      const result = await this.mySQLQuery(query);
+      var now = new Date();
+      console.log(result[0].expirationTime);
+      console.log(now);
+      console.log(result[0].expirationTime > now);
+      if (result[0].expirationTime > now) {
+        var data = {
+          logIn: true,
+          user: user[0],
+          userToken: token,
+        };
+        return data;
+      }
+      var data = {
+        logIn: false,
+      };
+      return data;
+    } catch (error) {
+      var data = {
+        logIn: false,
+      };
+      return data;
     }
   }
 

@@ -10,7 +10,7 @@ import { dataModel } from "../dataModel.js";
 const routes = [
   {
     path: "/",
-    name: "Home",
+    name: "default",
     component: CompletedReviews,
   },
   {
