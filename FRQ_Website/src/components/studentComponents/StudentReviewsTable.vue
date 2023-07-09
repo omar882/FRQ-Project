@@ -32,7 +32,6 @@ const viewData = (selectedRows) => {
 };
 
 const updateCompletedReviews = () => {
-  console.log("updating table... " + reviewType);
   var baseURI = null;
   if (reviewType == "Completed")
     baseURI = globals.serverUrl + "completedreviews";
@@ -42,7 +41,6 @@ const updateCompletedReviews = () => {
     alert(reviewType);
     return;
   }
-  console.log(dataModel.currentUser);
   axios
     .post(baseURI, { userToken: dataModel.currentUser.userToken })
     .then((result) => {
@@ -117,12 +115,9 @@ setInterval(updateTableInterval, 10000);
   border-collapse: collapse;
   width: 100%;
 }
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
 
 tr:hover {
-  background-color: #ddd;
+  background-color: #1e232d;
 }
 
 td,

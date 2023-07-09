@@ -14,7 +14,7 @@ const login = (event) => {
     });
 };
 const gotoLogin = () => {
-  $router.push({ path: "/login" });
+  $router.push({ path: "/studentlogin" });
 };
 </script>
 

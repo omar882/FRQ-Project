@@ -1,5 +1,8 @@
 <script setup>
 import { ref } from "vue";
+import { defineProps } from "vue";
+const props = defineProps(["reviewType"]);
+const reviewType = props.reviewType;
 let menu = ref();
 const items = ref([
   {
@@ -31,6 +34,7 @@ const loginOptions = ref([
   },
   {
     label: "Teacher Login",
+    to: "/teacherlogin",
   },
 ]);
 const toggleMenu = (event) => {

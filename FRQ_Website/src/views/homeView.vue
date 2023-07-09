@@ -4,7 +4,16 @@ import menuBar from "../components/menuBar.vue";
 </script>
 <template>
   <menuBar></menuBar>
-  <h1 class="text-center">Welcome To GradeYourFRQ</h1>
+  <div
+    class="flex flex-row h-screen w-screen bg-section justify-content-center"
+  >
+    <div class="flex card w-full">
+      <div class="w-8"></div>
+      <div class="w-4">
+        <img src="gradeboost.png" class="w-full" alt="" />
+      </div>
+    </div>
+  </div>
 </template>
 <style scoped>
 body {

@@ -3,52 +3,16 @@ import axios from "axios";
 import { computed, onBeforeMount, ref } from "vue";
 import { globals, dataModel } from "../../dataModel.js";
 import { useRouter } from "vue-router";
-import TopHeader from "../../components/studentComponents/TopHeader.vue";
-import StudentReviews from "../../components/studentComponents/StudentReviews.vue";
+import StudentReviews from "./StudentReviews.vue";
 
 const completedTable = ref(0);
 const router = useRouter();
-const menu = ref();
-const items = ref([
-  {
-    label: "wow",
-    items: [
-      {
-        label: "Log out",
-        command: () => {
-          dataModel.currentUser = null;
-          localStorage.setItem("userToken", "");
-          router.push("/login");
-        },
-      },
-      {
-        label: "My profile",
-      },
-    ],
-  },
-]);
-onBeforeMount(() => {});
-const toggleUserPopup = (event) => {
-  console.log(event);
-  menu.value.toggle(event);
-};
 </script>
 
 <template>
   <div class="card" style="width: 100%">
     <div style="width: 100%">
-      <div style="width: 100%">
-        <TopHeader :user="dataModel" @togglePopupVisibility="toggleUserPopup" />
-
-        <Menu
-          ref="menu"
-          :popup="true"
-          :model="items"
-          :pt="{
-            submenuHeader: { class: 'hidden' },
-          }"
-        ></Menu>
-      </div>
+      <div style="width: 100%"></div>
       <div>
         <Divider />
       </div>
@@ -62,10 +26,9 @@ const toggleUserPopup = (event) => {
             >
               <StudentReviews
                 :key="completedTable"
-                review-type="InReview"
+                review-type="Completed"
                 class=""
               />
-              <p>diff</p>
             </div>
           </div>
         </div>

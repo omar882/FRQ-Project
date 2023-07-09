@@ -1,10 +1,10 @@
 import { createWebHistory, createRouter } from "vue-router";
-import studentCompletedReviews from "@/views/studentViews/CompletedReviews.vue";
-import studentOpenReviews from "@/views/studentViews/OpenReviews.vue";
+import studentMainPage from "@/views/studentViews/studentMainView.vue";
 
 import studentLogin from "@/views/studentViews/LoginView.vue";
 import studentSignUp from "@/views/studentViews/SignUpView.vue";
 import homeView from "@/views/homeView.vue";
+import teacherLogin from "@/views/teacherViews/teacherLogin.vue";
 
 const routes = [
   {
@@ -19,7 +19,7 @@ const routes = [
   },
   {
     path: "/studentlogin",
-    name: "Login",
+    name: "Student Login",
     component: studentLogin,
   },
   {
@@ -28,14 +28,15 @@ const routes = [
     component: studentSignUp,
   },
   {
-    path: "/completedreviews",
-    name: "Completed Reviews",
-    component: studentCompletedReviews,
+    path: "/studenthome",
+    name: "Student Home",
+    component: studentMainPage,
   },
+
   {
-    path: "/openreviews",
-    name: "Open Reviews",
-    component: studentOpenReviews,
+    path: "/teacherlogin",
+    name: "Teacher Login",
+    component: teacherLogin,
   },
 ];
 

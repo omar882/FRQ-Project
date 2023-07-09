@@ -1,19 +1,20 @@
 <script setup>
-import { ref, defineProps, onMounted, defineEmits } from "vue";
+import { ref, defineProps, onMounted, defineEmits, watch } from "vue";
 import { globals, dataModel } from "../../dataModel.js";
 import { useRouter } from "vue-router";
 const router = useRouter();
 const props = defineProps(["user"]);
-const emit = defineEmits(["togglePopupVisibility"]);
+const emit = defineEmits(["togglePopupVisibility", "change"]);
 
 const loggedIn = ref(false);
 const visible = ref(false);
 const userPopupVisibility = ref(false);
+const activeIndex = ref(0);
 
 let firstLetter;
 onMounted(() => {
-  firstLetter = props.user.currentUser.email.charAt(0).toUpperCase();
-  if (props.user != null) {
+  firstLetter = dataModel.currentUser.email.charAt(0).toUpperCase();
+  if (dataModel != null) {
     loggedIn.value = true;
   }
 });
@@ -23,15 +24,14 @@ const toggleUserPopup = (event) => {
 const items = ref([
   {
     label: "My Completed Reviews",
-    icon: "pi pi-fw pi-file",
-    to: "/completedreviews",
   },
   {
     label: "My Open Reviews",
-    icon: "pi pi-fw pi-pencil",
-    to: "openreviews",
   },
 ]);
+const test = () => {
+  emit("change", 1 - activeIndex.value);
+};
 </script>
 
 <template>
@@ -40,17 +40,29 @@ const items = ref([
       class="flex justify-content-between flex-wrap card-container purple-container align-items-center"
     >
       <div
-        class="flex justify-content-center w-4rem h-4rem bg-purple-500 font-bold text-white border-round m-2"
+        class="flex justify-content-center w-4rem h-4rem font-bold text-white border-round m-2"
       >
         <Image
           src="logo.png"
-          class="card flex align-items-center justify-content-center"
+          class="card flex align-items-center justify-content-center ml-3"
           alt="Image"
           width="80"
         />
       </div>
       <div class="align-items-center">
-        <Menubar :model="items"> </Menubar>
+        <TabMenu
+          @click="test"
+          v-model:activeIndex="activeIndex"
+          :model="items"
+          :pt="{
+            action: ({ props, state, context }) => ({
+              class:
+                context.order === state.d_activeIndex
+                  ? 'bg-primary'
+                  : undefined,
+            }),
+          }"
+        />
       </div>
       <div
         class="flex align-items-center justify-content-center w-4rem h-4rem font-bold text-white border-round m-2"

@@ -20,17 +20,16 @@ onMounted(() => {
       //console.log(result.data);
 
       if (result.data.logIn) {
-        console.log("in");
         dataModel.currentUser = result.data.user;
         dataModel.currentUser.userToken = result.data.userToken;
         loaded.value = true;
       } else {
-        router.push("/login");
+        router.push("/studentlogin");
         loaded.value = true;
       }
     });
   } else {
-    router.push("/login");
+    router.push("/studentlogin");
     loaded.value = true;
   }
 });

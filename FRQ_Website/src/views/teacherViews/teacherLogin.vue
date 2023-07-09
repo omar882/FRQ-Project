@@ -1,5 +1,5 @@
 <script setup>
-import Login from "../../components/studentComponents/Login.vue";
+import Login from "../../components/teacherComponents/Login.vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 </script>
