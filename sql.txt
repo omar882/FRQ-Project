@@ -70,3 +70,26 @@ CREATE TABLE `subjects` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `teachers` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `firstName` varchar(45) NOT NULL,
+  `lastName` varchar(45) NOT NULL,
+  `birthDate` date NOT NULL,
+  `schoolId` int,
+  `yearsOfExperience` int,
+  `registrationDate` datetime NOT NULL,
+  `email` varchar(120) NOT NULL,
+  `passwordHash` varchar(120) NOT NULL,  
+  `linkInProfile` varchar(255),
+  `onlineResume` varchar(255),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `teachersubjects` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `teacherId` int NOT NULL,
+  `subjectId` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
