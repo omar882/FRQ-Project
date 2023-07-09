@@ -7,12 +7,7 @@ import menuBar from "../components/menuBar.vue";
   <div
     class="flex flex-row h-screen w-screen bg-section justify-content-center"
   >
-    <div class="flex card w-full">
-      <div class="w-8"></div>
-      <div class="w-4">
-        <img src="gradeboost.png" class="w-full" alt="" />
-      </div>
-    </div>
+    <div class="flex card w-full"></div>
   </div>
 </template>
 <style scoped>
