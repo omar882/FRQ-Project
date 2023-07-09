@@ -36,14 +36,10 @@ const storage = multer.diskStorage({
 const upload = multer({ dest: "uploads/" });
 app.post("/upload_files", upload.array("files"), uploadFiles);
 
-//
-//  SetInterval
-//
 setInterval(() => {
   callFindReviews();
 }, 10000);
-//
-//
+
 function callFindReviews() {
   autoReview.findReviews();
 }
@@ -104,6 +100,16 @@ app.post("/login", async (req, res) => {
       res.send(result);
     });
 });
+app.post("/teacherlogin", async (req, res) => {
+  const userCredential = req.body;
+  appLibrary
+    .teacherLogin(userCredential.userName, userCredential.password)
+    .then((result) => {
+      console.log(result);
+
+      res.send(result);
+    });
+});
 
 app.post("/signup", async (req, res) => {
   const userCredential = req.body;
@@ -116,6 +122,25 @@ app.post("/signup", async (req, res) => {
       userCredential.grade,
       userCredential.email,
       userCredential.password
+    )
+    .then((result) => {
+      res.send(result);
+    });
+});
+
+app.post("/teachersignup", async (req, res) => {
+  const userCredential = req.body;
+  appLibrary
+    .addTeacher(
+      userCredential.userName,
+      userCredential.lastname,
+      userCredential.dateofbirth,
+      1,
+      userCredential.yearsOfExperience,
+      userCredential.email,
+      userCredential.password,
+      userCredential.linkedIn,
+      userCredential.onlineResume
     )
     .then((result) => {
       res.send(result);

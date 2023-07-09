@@ -10,23 +10,26 @@ const lastname = ref("");
 
 const password = ref("");
 const school = ref("");
+const resume = ref("");
+const linkedIn = ref("");
 
-const grade = ref("");
+const yearsOfExperience = ref();
 const email = ref("");
 const dateofbirth = ref(null);
 
 const signup = (event) => {
   const formattedDate = dateofbirth.value.toISOString().split("T")[0];
-  const baseURI = globals.serverUrl + "signup";
-  console.log(dateofbirth.value);
+  const baseURI = globals.serverUrl + "teachersignup";
   axios
     .post(baseURI, {
       userName: username.value,
       password: password.value,
       dateofbirth: formattedDate,
-      grade: grade.value,
+      yearsOfExperience: yearsOfExperience.value,
       email: email.value,
       lastname: lastname.value,
+      linkedIn: linkedIn.value,
+      onlineResume: resume.value,
     })
     .then((result) => {
       router.push("/studentlogin");
@@ -36,7 +39,7 @@ const signup = (event) => {
 
 <template>
   <div class="justify-content-center flex align-items-center mt-3 h-1rem">
-    <h1 class="align-text-center text-blue-500">Sign Up</h1>
+    <h1 class="align-text-center text-blue-500">Apply!</h1>
   </div>
 
   <div class="card flex align-items-center justify-content-center">
@@ -93,12 +96,12 @@ const signup = (event) => {
             class="flex flex-row align-items-center justify-content-center w-6 gap-6"
           >
             <div class="w-5">
-              <label>Grade</label>
+              <label>Years of experience</label>
               <InputText
-                id="grade"
+                id="years of experience"
                 type="number"
                 class="w-full"
-                v-model="grade"
+                v-model="yearsOfExperience"
               />
             </div>
             <div class="w-5">
@@ -124,11 +127,35 @@ const signup = (event) => {
                 dateFormat="yy/mm/dd"
               />
             </div>
+            <div class="w-5">
+              <label>LinkedIn Profile</label>
+
+              <InputText
+                id="school"
+                type="text"
+                class="w-full"
+                v-model="linkedIn"
+              />
+            </div>
+          </div>
+          <div
+            class="flex flex-row align-items-center justify-content-center w-6 gap-6"
+          >
+            <div class="w-5">
+              <label>Resume</label>
+
+              <InputText
+                showIcon
+                class="w-full"
+                v-model="resume"
+                dateFormat="yy/mm/dd"
+              />
+            </div>
           </div>
         </div>
 
         <div
-          class="w-full flex align-items-center justify-content-center py-5 flex h-3rem"
+          class="w-full flex align-items-center justify-content-center py-4 flex h-3rem"
         >
           <Button
             @click="signup"

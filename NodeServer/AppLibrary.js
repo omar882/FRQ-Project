@@ -42,6 +42,37 @@ class AppLibrary {
 
     return loginResponse;
   }
+  async teacherLogin(email, password) {
+    const teacher = await this.getTeacher(email, password);
+    //console.log(student.length);
+    //console.log(student);
+
+    if (teacher.length == 0) return "";
+
+    var accessToken = this.createAccessToken();
+    var now = Date.now();
+    now = new Date(now);
+    var tomorrow = Date.now();
+    tomorrow = new Date(tomorrow);
+    tomorrow.setDate(tomorrow.getDate() + 5);
+
+    await this.addAccessToken(
+      accessToken,
+      teacher[0].id,
+      this.formatDate(now),
+      this.formatDate(tomorrow)
+    );
+
+    var loginResponse = {
+      firstName: teacher[0].firstName,
+      lastName: teacher[0].lastName,
+      email: teacher[0].email,
+      userToken: accessToken,
+      tokenExpiration: this.formatDate(tomorrow),
+    };
+
+    return loginResponse;
+  }
 
   async postReview(
     userToken,
@@ -111,6 +142,11 @@ class AppLibrary {
       myDate.getSeconds()
     );
   }
+  formateToDateTime(date) {
+    return (
+      date.toISOString().split("T")[0] + " " + date.toTimeString().split(" ")[0]
+    );
+  }
 
   async addSchool(name, state, address) {
     var insertQuery = `INSERT INTO schools (name, state, address) VALUES ('${name}', '${state}', '${address}')`;
@@ -146,7 +182,32 @@ class AppLibrary {
       return null;
     }
   }
+  async addTeacher(
+    firstName,
+    lastName,
+    birthDate,
+    schoolId,
+    yearsOfExperience,
+    email,
+    password,
+    linkedIn,
+    onlineResume
+  ) {
+    var today = Date.now();
+    today = new Date(today);
+    var todayDate = this.formateToDateTime(today);
+    var passwordHash = this.createHash(password);
+    var insertQuery = `INSERT INTO teachers (firstName, lastName, birthDate, schoolId, yearsOfExperience, registrationDate,email, passwordHash, linkInProfile, onlineResume) VALUES ('${firstName}', '${lastName}', '${birthDate}', ${schoolId}, ${yearsOfExperience}, '${todayDate}', '${email}', '${passwordHash}', '${linkedIn}', '${onlineResume}')`;
+    //;
 
+    try {
+      const result = await this.mySQLInsert(insertQuery);
+      return result;
+    } catch (error) {
+      console.log(JSON.stringify(error));
+      return null;
+    }
+  }
   async getStudent(email, password) {
     var passwordHash = this.createHash(password);
 
@@ -157,6 +218,20 @@ class AppLibrary {
       return result;
     } catch (error) {
       console.log("Error while getting student");
+      return null;
+    }
+  }
+  async getTeacher(email, password) {
+    var passwordHash = this.createHash(password);
+    console.log(passwordHash);
+
+    var query = `select * from teachers where email = '${email}' and passwordHash = '${passwordHash}'`;
+    try {
+      const result = await this.mySQLQuery(query);
+      //console.log(JSON.stringify(result));
+      return result;
+    } catch (error) {
+      console.log("Error while getting teacher");
       return null;
     }
   }

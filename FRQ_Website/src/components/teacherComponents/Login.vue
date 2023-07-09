@@ -9,7 +9,7 @@ const username = ref("");
 const password = ref("");
 
 const login = (event) => {
-  const baseURI = globals.serverUrl + "login";
+  const baseURI = globals.serverUrl + "teacherlogin";
   axios
     .post(baseURI, { userName: username.value, password: password.value })
     .then((result) => {
@@ -27,7 +27,7 @@ const login = (event) => {
         dataModel.currentUser = result.data;
 
         //this.loadData();
-        router.push("/home");
+        router.push("/teacherhome");
       }
     });
 };
@@ -84,7 +84,7 @@ const login = (event) => {
             icon="pi pi-user-plus"
             severity="success"
             class="w-10rem"
-            @click="router.push('/signup')"
+            @click="router.push('/teachersignup')"
           ></Button>
         </div>
       </div>

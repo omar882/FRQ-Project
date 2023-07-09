@@ -24,12 +24,12 @@ onMounted(() => {
         dataModel.currentUser.userToken = result.data.userToken;
         loaded.value = true;
       } else {
-        router.push("/studentlogin");
+        router.push("/home");
         loaded.value = true;
       }
     });
   } else {
-    router.push("/studentlogin");
+    router.push("/home");
     loaded.value = true;
   }
 });

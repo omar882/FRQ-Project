@@ -1,10 +1,12 @@
 import { createWebHistory, createRouter } from "vue-router";
-import studentMainPage from "@/views/studentViews/studentMainView.vue";
+import studentMainView from "@/views/studentViews/studentMainView.vue";
+import teacherMainView from "@/views/teacherViews/teacherMainView.vue";
 
-import studentLogin from "@/views/studentViews/LoginView.vue";
-import studentSignUp from "@/views/studentViews/SignUpView.vue";
+import studentLoginView from "@/views/studentViews/LoginView.vue";
+import studentSignUpView from "@/views/studentViews/SignUpView.vue";
 import homeView from "@/views/homeView.vue";
-import teacherLogin from "@/views/teacherViews/teacherLogin.vue";
+import teacherLoginView from "@/views/teacherViews/TeacherLoginView.vue";
+import teacherSignUpView from "@/views/teacherViews/TeacherSignUpView.vue";
 
 const routes = [
   {
@@ -20,23 +22,33 @@ const routes = [
   {
     path: "/studentlogin",
     name: "Student Login",
-    component: studentLogin,
+    component: studentLoginView,
   },
   {
     path: "/studentsignup",
     name: "Signup",
-    component: studentSignUp,
+    component: studentSignUpView,
   },
   {
     path: "/studenthome",
     name: "Student Home",
-    component: studentMainPage,
+    component: studentMainView,
   },
 
   {
     path: "/teacherlogin",
     name: "Teacher Login",
-    component: teacherLogin,
+    component: teacherLoginView,
+  },
+  {
+    path: "/teachersignup",
+    name: "Teacher Signup",
+    component: teacherSignUpView,
+  },
+  {
+    path: "/teacherhome",
+    name: "Teacher Main View",
+    component: teacherMainView,
   },
 ];
 

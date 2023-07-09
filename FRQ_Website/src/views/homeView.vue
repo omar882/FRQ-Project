@@ -1,14 +1,45 @@
 <script setup>
-let type = "none";
-import menuBar from "../components/menuBar.vue";
+import { ref } from "vue";
+let menu = ref();
+
+const loginOptions = ref([
+  {
+    label: "Student Login",
+    to: "/studentlogin",
+  },
+  {
+    label: "Teacher Login",
+    to: "/teacherlogin",
+  },
+]);
+
+const toggleMenu = (event) => {
+  menu.value.toggle(event);
+};
 </script>
 <template>
-  <menuBar></menuBar>
   <div
-    class="flex flex-row h-screen w-screen bg-section justify-content-center"
+    class="flex flex-row w-full justify-content-between align-items-center p-3"
   >
-    <div class="flex card w-full"></div>
+    <img src="logo.png" class="w-4rem" alt="" />
+
+    <Avatar
+      icon="pi pi-user"
+      class="mr-2"
+      size="xlarge"
+      shape="circle"
+      style="cursor: pointer"
+      @click="toggleMenu"
+    />
   </div>
+  <Menu
+    ref="menu"
+    :popup="true"
+    :model="loginOptions"
+    :pt="{
+      submenuHeader: { class: 'hidden' },
+    }"
+  ></Menu>
 </template>
 <style scoped>
 body {
