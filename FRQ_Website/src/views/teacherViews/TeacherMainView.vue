@@ -1,10 +1,12 @@
 <script setup>
 import { ref } from "vue";
 import TopHeader from "../../components/teacherComponents/TopHeader.vue";
+import OpenReviews from "../../components/teacherComponents/OpenReviews.vue";
+import CompletedReviews from "../../components/teacherComponents/CompletedReviews.vue";
 import { dataModel } from "../../dataModel.js";
 import { useRouter } from "vue-router";
 const router = useRouter();
-
+const active = ref(0);
 const menu = ref();
 const items = ref([
   {
@@ -46,5 +48,8 @@ const toggleUserPopup = (event) => {
       @togglePopupVisibility="toggleUserPopup"
       :user="dataModel"
     ></TopHeader>
+    <OpenReviews v-if="active === 0"></OpenReviews>
+    <OpenReviews v-if="active === 1"></OpenReviews>
+    <OpenReviews v-if="active === 2"></OpenReviews>
   </div>
 </template>

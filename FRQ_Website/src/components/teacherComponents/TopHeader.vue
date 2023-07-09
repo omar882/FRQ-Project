@@ -23,10 +23,13 @@ const toggleUserPopup = (event) => {
 };
 const items = ref([
   {
-    label: "My Completed Reviews",
+    label: "Open Reviews",
   },
   {
-    label: "My Open Reviews",
+    label: "Active Reviews",
+  },
+  {
+    label: "My Completed Reviews",
   },
   {
     label: "Statistics",

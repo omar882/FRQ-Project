@@ -1,10 +1,13 @@
 <script setup>
 import axios from "axios";
 import { globals, dataModel } from "../../dataModel.js";
-import { ref } from "vue";
+import { ref, onBeforeMount, watch } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 const name = "Vue.js";
+
+const selectedSubjects = ref();
+const subjects = ref([]);
 const username = ref("");
 const lastname = ref("");
 
@@ -16,10 +19,26 @@ const linkedIn = ref("");
 const yearsOfExperience = ref();
 const email = ref("");
 const dateofbirth = ref(null);
-
+watch(selectedSubjects, () => {
+  console.log(selectedSubjects.value);
+});
+const loadSubjects = () => {
+  const baseURI = globals.serverUrl + "subjects";
+  axios.post(baseURI, {}).then((result) => {
+    //alert(JSON.stringify(result.data));
+    if (result.data != null) {
+      console.log(result.data);
+      subjects.value = result.data;
+    }
+  });
+};
+onBeforeMount(() => {
+  loadSubjects();
+});
 const signup = (event) => {
   const formattedDate = dateofbirth.value.toISOString().split("T")[0];
-  const baseURI = globals.serverUrl + "teachersignup";
+
+  let baseURI = globals.serverUrl + "teachersignup";
   axios
     .post(baseURI, {
       userName: username.value,
@@ -32,7 +51,17 @@ const signup = (event) => {
       onlineResume: resume.value,
     })
     .then((result) => {
-      router.push("/studentlogin");
+      selectedSubjects.value.forEach((subject) => {
+        baseURI = globals.serverUrl + "addteachersubject";
+        console.log(subject);
+        console.log(subject.id);
+        axios.post(baseURI, {
+          subjectId: subject.id,
+          email: email.value,
+          password: password.value,
+        });
+      });
+      router.push("/teacherlogin");
     });
 };
 </script>
@@ -149,6 +178,17 @@ const signup = (event) => {
                 class="w-full"
                 v-model="resume"
                 dateFormat="yy/mm/dd"
+              />
+            </div>
+            <div class="w-5">
+              <label>Subjects </label>
+
+              <MultiSelect
+                v-model="selectedSubjects"
+                :options="subjects"
+                optionLabel="name"
+                placeholder="Select Subjects"
+                class="w-full"
               />
             </div>
           </div>

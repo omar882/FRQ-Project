@@ -16,7 +16,7 @@ const { x, y, sourceType } = useMouse();
 const props = defineProps(["reviewType"]);
 const emit = defineEmits(["updateTable"]);
 let reviewType = props.reviewType;
-const questions = ref(null);
+const questions = ref([]);
 const columns = ref(null);
 const selectedRows = ref();
 const showData = ref(false);
@@ -32,26 +32,40 @@ const viewData = (selectedRows) => {
   }
 };
 
-const updateCompletedReviews = () => {
+const updateReviews = () => {
+  questions.value = [];
   var baseURI = null;
-  if (reviewType == "Completed")
-    baseURI = globals.serverUrl + "completedreviews";
-  else if (reviewType == "InReview")
-    baseURI = globals.serverUrl + "openreviews";
-  else {
-    alert(reviewType);
-    return;
-  }
+  let subjects = [];
+  baseURI = globals.serverUrl + "teachersubjects";
   axios
     .post(baseURI, { userToken: dataModel.currentUser.userToken })
     .then((result) => {
-      if (result.data != null) {
-        questions.value = JSON.parse(JSON.stringify(result.data));
-        console.log(questions.value);
+      subjects = result.data;
+
+      console.log("in " + reviewType);
+      if (reviewType == "Completed")
+        baseURI = globals.serverUrl + "teachercompletedreviews";
+      else if (reviewType == "InReview") {
+        baseURI = globals.serverUrl + "teacheropenreviews";
+        //console.log(dataModel.currentUser);
+      } else {
+        alert(reviewType);
+        return;
       }
+      console.log(subjects);
+      subjects.forEach((subject) => {
+        axios.post(baseURI, { subjectId: subject.subjectId }).then((result) => {
+          console.log(result);
+          if (result.data != null) {
+            //console.log(JSON.parse(JSON.stringify(result.data)));
+            result.data.forEach((question) => {
+              questions.value.push(question);
+            });
+          }
+        });
+      });
     });
 };
-defineExpose({ updateCompletedReviews });
 
 const formatDate = (dateField) => {
   var date = new Date(dateField);
@@ -69,20 +83,13 @@ onMounted(() => {
     { field: "subjectId", header: "Subject" },
     { field: "customQuestionText", header: "Question" },
   ];
-  updateCompletedReviews();
-  //this.questions = [{ code: '123', name: '123', category: '123', quantity: '123' }, { code: '123', name: '123', category: '123', quantity: '123' }];
-  //alert(JSON.stringify(this.products));
+  updateReviews();
 });
-const updateTableInterval = () => {
-  if (questions.value.length > 0 && reviewType === "InReview") {
-    emit("updateTable");
-    updateCompletedReviews();
-  }
-};
+
 const updateTable = () => {
-  updateCompletedReviews();
+  updateReviews();
 };
-const interval = setInterval(updateTableInterval, 10000);
+const interval = setInterval(updateTable, 10000);
 onBeforeUnmount(() => {
   clearInterval(interval);
 });

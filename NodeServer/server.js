@@ -100,7 +100,24 @@ app.post("/removeFRQ", (req, res) => {
     //console.log(result);
   });
 });
+app.post("/addteachersubject", async (req, res) => {
+  const body = req.body;
+  //console.log(body);
+  let teacherId;
+  appLibrary.getTeacher(body.email, body.password).then((result) => {
+    //console.log("result: ");
+    //console.log(result[0]);
+    teacherId = result[0].id;
 
+    //console.log("teacherId:");
+    //console.log(teacherId);
+    appLibrary.addTeacherSubject(teacherId, body.subjectId).then((result) => {
+      console.log(result);
+
+      res.send(result);
+    });
+  });
+});
 app.post("/login", async (req, res) => {
   const userCredential = req.body;
   appLibrary
@@ -159,17 +176,12 @@ app.post("/teachersignup", async (req, res) => {
 });
 
 app.post("/postreview", async (req, res) => {
-  //console.log("Post review");
   const reviewData = req.body;
-
-  //console.log(reviewData);
-  //console.log(reviewData.selectedSubject.id);
   var studentId = null;
   appLibrary.getStudentFromToken(reviewData.token).then((result) => {
     studentId = result.studentId;
   });
-  //console.log(studentId);
-  //console.log(reviewData.userAnswer);
+
   appLibrary
     .postReview(
       reviewData.userToken,
@@ -208,19 +220,32 @@ app.post("/completedreviews", async (req, res) => {
 
 app.post("/openreviews", async (req, res) => {
   //console.log("openreviews");
+  console.log(req.body);
+  console.log("in");
   const reviewData = req.body;
 
-  //console.log(JSON.stringify(reviewData));
-  //console.log(reviewData.selectedSubject.id);
   var studentId = null;
   await appLibrary.getStudentFromToken(reviewData.userToken).then((result) => {
-    //console.log(result);
-    //console.log(JSON.parse(JSON.stringify(result))); //.studentId;
     studentId = JSON.parse(JSON.stringify(result))[0].studentId;
-    //console.log(studentId);
     appLibrary.getStudentNotCompletedFRQs(studentId).then((result) => {
       res.send(result);
     });
+  });
+});
+app.post("/teacheropenreviews", async (req, res) => {
+  //console.log("openreviews");
+  const body = req.body;
+
+  appLibrary.getAllOpenSubjectFRQs(body.subjectId).then((result) => {
+    res.send(result);
+  });
+});
+app.post("/teachersubjects", async (req, res) => {
+  //console.log("openreviews");
+  const body = req.body;
+
+  appLibrary.getAllTeacherSubjects(body.userToken).then((result) => {
+    res.send(result);
   });
 });
 

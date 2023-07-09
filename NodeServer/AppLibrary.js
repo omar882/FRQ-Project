@@ -223,20 +223,32 @@ class AppLibrary {
     }
   }
   async getTeacher(email, password) {
+    console.log("email: " + email + " password: " + password);
     var passwordHash = this.createHash(password);
-    console.log(passwordHash);
 
     var query = `select * from teachers where email = '${email}' and passwordHash = '${passwordHash}'`;
     try {
+      console.log("in");
       const result = await this.mySQLQuery(query);
-      //console.log(JSON.stringify(result));
+      console.log("wow");
+      console.log(JSON.stringify(result));
       return result;
     } catch (error) {
       console.log("Error while getting teacher");
       return null;
     }
   }
-
+  async addTeacherSubject(teacherId, subjectId) {
+    var insertQuery = `INSERT INTO teachersubjects (subjectId, teacherId) VALUES (${subjectId}, ${teacherId})`;
+    try {
+      const result = await this.mySQLInsert(insertQuery);
+      return result;
+    } catch (error) {
+      console.log("Error while adding subject");
+      console.log(error);
+      return null;
+    }
+  }
   async addAccessToken(token, studentId, teacherId, startTime, expirationTime) {
     var insertQuery = `INSERT INTO accesstokens (token, studentId,teacherId, startTime, expirationTime) VALUES ('${token}', ${studentId},${teacherId}, '${startTime}', '${expirationTime}')`;
 
@@ -326,6 +338,22 @@ class AppLibrary {
       return null;
     }
   }
+  async getAllTeacherSubjects(userToken) {
+    let teacher = await this.getTeacherFromToken(userToken);
+
+    let teacherId = teacher[0].teacherId;
+    var query = `SELECT * from frq.teachersubjects where (teacherId = ${teacherId});`;
+
+    try {
+      var result = await this.mySQLQuery(query);
+      result = JSON.parse(JSON.stringify(result));
+      return result;
+    } catch (error) {
+      console.log("error here");
+      console.log(error);
+      return null;
+    }
+  }
 
   async getStudentNotCompletedFRQs(studentId) {
     var query = `Select frqsList.*, subjects.name as subjectName from frq.subjects inner join 
@@ -367,6 +395,31 @@ class AppLibrary {
       result = JSON.parse(JSON.stringify(result));
       return result;
     } catch (error) {
+      return null;
+    }
+  }
+  async getAllOpenSubjectFRQs(subjectId) {
+    console.log("subject:");
+    console.log(subjectId);
+    /*
+ 
+    */
+    var query = `(
+      Select frqsList.*, subjects.name as subjectName from frq.subjects inner join 
+        (
+        SELECT * FROM frq.frqs where (isReviewed = false and isAutoReview=false and subjectId = ${subjectId})
+        ) as frqsList on frqsList.subjectId = subjects.id
+      )`;
+    try {
+      var result = await this.mySQLQuery(query);
+      result = JSON.parse(JSON.stringify(result));
+
+      console.log("result:");
+      console.log(result);
+      return result;
+    } catch (error) {
+      //console.log("error maybe here");
+
       return null;
     }
   }
