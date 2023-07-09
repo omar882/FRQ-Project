@@ -24,6 +24,8 @@ const login = (event) => {
 
         localStorage.setItem("userToken", result.data.userToken);
         localStorage.setItem("expiration", now);
+        localStorage.setItem("type", "student");
+
         console.log(result.data);
 
         dataModel.currentUser = result.data;

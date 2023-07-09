@@ -40,6 +40,7 @@ const toggleMenu = (event) => {
       submenuHeader: { class: 'hidden' },
     }"
   ></Menu>
+  <h1>Home View</h1>
 </template>
 <style scoped>
 body {

@@ -73,12 +73,23 @@ app.post("/subjects", (req, res) => {
   });
 });
 
-app.post("/getExpirationtime", (req, res) => {
+app.post("/getStudentExpirationtime", (req, res) => {
   const body = req.body;
 
-  appLibrary.getExpirationFromToken(req.body.userToken).then((result) => {
-    res.send(result);
-  });
+  appLibrary
+    .getStudentExpirationFromToken(req.body.userToken)
+    .then((result) => {
+      res.send(result);
+    });
+});
+app.post("/getTeacherExpirationtime", (req, res) => {
+  const body = req.body;
+
+  appLibrary
+    .getTeacherExpirationFromToken(req.body.userToken)
+    .then((result) => {
+      res.send(result);
+    });
 });
 app.post("/removeFRQ", (req, res) => {
   console.log();

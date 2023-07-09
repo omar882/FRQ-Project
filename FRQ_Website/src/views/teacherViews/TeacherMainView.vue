@@ -1,4 +1,50 @@
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+import TopHeader from "../../components/teacherComponents/TopHeader.vue";
+import { dataModel } from "../../dataModel.js";
+import { useRouter } from "vue-router";
+const router = useRouter();
+
+const menu = ref();
+const items = ref([
+  {
+    label: "wow",
+    items: [
+      {
+        label: "Log out",
+        command: () => {
+          console.log("test");
+          dataModel.currentUser = null;
+          localStorage.setItem("userToken", "");
+          localStorage.setItem("type", "");
+
+          router.push("/studentlogin");
+        },
+      },
+      {
+        label: "My profile",
+      },
+    ],
+  },
+]);
+const toggleUserPopup = (event) => {
+  menu.value.toggle(event);
+};
+</script>
 <template>
-  <h1>teacher Main View</h1>
+  <div>
+    <Menu
+      ref="menu"
+      :popup="true"
+      :model="items"
+      :pt="{
+        submenuHeader: { class: 'hidden' },
+      }"
+    ></Menu>
+    <TopHeader
+      @change="change"
+      @togglePopupVisibility="toggleUserPopup"
+      :user="dataModel"
+    ></TopHeader>
+  </div>
 </template>

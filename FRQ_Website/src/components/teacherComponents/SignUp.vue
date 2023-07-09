@@ -163,7 +163,7 @@ const signup = (event) => {
             icon="pi pi-user"
             class="w-10rem mr-5"
           ></Button>
-          <a @click="router.push('/studentlogin')" class="anchor">
+          <a @click="router.push('/teacherlogin')" class="anchor">
             Or go to login...
           </a>
         </div>

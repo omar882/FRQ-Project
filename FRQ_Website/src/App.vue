@@ -7,9 +7,14 @@ const router = useRouter();
 const loaded = ref(false);
 onMounted(() => {
   console.log("mounting...");
-
-  const baseURI = globals.serverUrl + "getExpirationtime";
   var userToken = localStorage.getItem("userToken");
+  var type = localStorage.getItem("type");
+  let baseURI;
+  if (type === "teacher") {
+    baseURI = globals.serverUrl + "getTeacherExpirationtime";
+  } else {
+    baseURI = globals.serverUrl + "getStudentExpirationtime";
+  }
   if (dataModel.currentUser != null) {
     loaded.value = true;
 

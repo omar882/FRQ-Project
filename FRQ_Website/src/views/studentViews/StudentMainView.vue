@@ -19,6 +19,8 @@ const items = ref([
           console.log("test");
           dataModel.currentUser = null;
           localStorage.setItem("userToken", "");
+          localStorage.setItem("type", "");
+
           router.push("/studentlogin");
         },
       },

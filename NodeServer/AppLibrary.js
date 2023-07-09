@@ -28,6 +28,7 @@ class AppLibrary {
     await this.addAccessToken(
       accessToken,
       student[0].id,
+      null,
       this.formatDate(now),
       this.formatDate(tomorrow)
     );
@@ -44,8 +45,7 @@ class AppLibrary {
   }
   async teacherLogin(email, password) {
     const teacher = await this.getTeacher(email, password);
-    //console.log(student.length);
-    //console.log(student);
+    console.log(teacher);
 
     if (teacher.length == 0) return "";
 
@@ -58,6 +58,7 @@ class AppLibrary {
 
     await this.addAccessToken(
       accessToken,
+      null,
       teacher[0].id,
       this.formatDate(now),
       this.formatDate(tomorrow)
@@ -236,8 +237,8 @@ class AppLibrary {
     }
   }
 
-  async addAccessToken(token, studentId, startTime, expirationTime) {
-    var insertQuery = `INSERT INTO accesstokens (token, studentId, startTime, expirationTime) VALUES ('${token}', ${studentId}, '${startTime}', '${expirationTime}')`;
+  async addAccessToken(token, studentId, teacherId, startTime, expirationTime) {
+    var insertQuery = `INSERT INTO accesstokens (token, studentId,teacherId, startTime, expirationTime) VALUES ('${token}', ${studentId},${teacherId}, '${startTime}', '${expirationTime}')`;
 
     try {
       const result = await this.mySQLInsert(insertQuery);
@@ -391,8 +392,18 @@ class AppLibrary {
       return null;
     }
   }
+  async getTeacherFromToken(token) {
+    var query = `SELECT teachers.id as teacherId, teachers.firstName, teachers.lastName, teachers.birthDate, teachers.schoolId, teachers.yearsOfExperience, teachers.registrationDate, teachers.email, teachers.linkInProfile,teachers.onlineResume FROM teachers as teachers inner join (select * from accesstokens where token = "${token}" ) as tokens where teachers.id = tokens.teacherId`;
 
-  async getExpirationFromToken(token) {
+    try {
+      const result = await this.mySQLQuery(query);
+      return result;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async getStudentExpirationFromToken(token) {
     console.log(token);
     var query = `SELECT accesstokens.expirationTime FROM accesstokens where token = "${token}"`;
 
@@ -427,7 +438,41 @@ class AppLibrary {
       return data;
     }
   }
+  async getTeacherExpirationFromToken(token) {
+    console.log(token);
+    var query = `SELECT accesstokens.expirationTime FROM accesstokens where token = "${token}"`;
 
+    try {
+      const user = await this.getTeacherFromToken(token);
+      if (user.length < 1) {
+        return {
+          logIn: false,
+        };
+      }
+      const result = await this.mySQLQuery(query);
+      var now = new Date();
+      console.log(result[0].expirationTime);
+      console.log(now);
+      console.log(result[0].expirationTime > now);
+      if (result[0].expirationTime > now) {
+        var data = {
+          logIn: true,
+          user: user[0],
+          userToken: token,
+        };
+        return data;
+      }
+      var data = {
+        logIn: false,
+      };
+      return data;
+    } catch (error) {
+      var data = {
+        logIn: false,
+      };
+      return data;
+    }
+  }
   async updateReview(reviewId, autoReviewAnswer) {
     console.log("updating review...");
     var now = Date.now();
