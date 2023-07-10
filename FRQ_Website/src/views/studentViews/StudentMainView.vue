@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
 import OpenReviews from "../../components/studentComponents/OpenReviews.vue";
 import CompletedReviews from "../../components/studentComponents/CompletedReviews.vue";
 import TopHeader from "../../components/studentComponents/TopHeader.vue";
@@ -36,6 +36,12 @@ const toggleUserPopup = (event) => {
 const change = (value) => {
   active.value = value;
 };
+
+onBeforeMount(() => {
+  if (localStorage.getItem("type") === "teacher") {
+    router.push("/home");
+  }
+});
 </script>
 <template>
   <div>

@@ -52,10 +52,8 @@ const updateReviews = () => {
         alert(reviewType);
         return;
       }
-      console.log(subjects);
       subjects.forEach((subject) => {
         axios.post(baseURI, { subjectId: subject.subjectId }).then((result) => {
-          console.log(result);
           if (result.data != null) {
             //console.log(JSON.parse(JSON.stringify(result.data)));
             result.data.forEach((question) => {
@@ -89,7 +87,7 @@ onMounted(() => {
 const updateTable = () => {
   updateReviews();
 };
-const interval = setInterval(updateTable, 10000);
+const interval = setInterval(updateTable, 30000);
 onBeforeUnmount(() => {
   clearInterval(interval);
 });

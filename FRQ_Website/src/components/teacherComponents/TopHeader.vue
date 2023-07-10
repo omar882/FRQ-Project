@@ -41,7 +41,7 @@ const test = () => {
 </script>
 
 <template>
-  <div class="card" style="width: 100%">
+  <div class="card flex flex-column w-full" style="width: 100%">
     <div
       class="flex justify-content-between flex-wrap card-container purple-container align-items-center"
     >
@@ -55,21 +55,7 @@ const test = () => {
           width="80"
         />
       </div>
-      <div class="align-items-center">
-        <TabMenu
-          @click="test"
-          v-model:activeIndex="activeIndex"
-          :model="items"
-          :pt="{
-            action: ({ props, state, context }) => ({
-              class:
-                context.order === state.d_activeIndex
-                  ? 'bg-primary'
-                  : undefined,
-            }),
-          }"
-        />
-      </div>
+
       <div
         class="flex align-items-center justify-content-center w-4rem h-4rem font-bold text-white border-round m-2"
       >
@@ -83,6 +69,20 @@ const test = () => {
           @click="toggleUserPopup"
         />
       </div>
+    </div>
+
+    <div class="align-items-center flex justify-content-center">
+      <TabMenu
+        @click="test"
+        v-model:activeIndex="activeIndex"
+        :model="items"
+        :pt="{
+          action: ({ props, state, context }) => ({
+            class:
+              context.order === state.d_activeIndex ? 'bg-primary' : undefined,
+          }),
+        }"
+      />
     </div>
   </div>
 </template>

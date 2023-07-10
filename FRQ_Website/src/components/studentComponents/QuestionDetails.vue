@@ -5,20 +5,31 @@ import axios from "axios";
 import DeleteModal from "./DeleteModal.vue";
 
 const emit = defineEmits(["updateTable"]);
-let header =
-  props.data.info.subjectName +
-  " Question" +
-  " - " +
-  props.data.info.reviewDate.substring(0, 10);
-if (props.data.info.isAutoReview === 1) {
-  header = header + " - AI Review";
-}
+
 const props = defineProps(["data", "reviewType"]);
 const visible = ref(props.data.showData);
 const reviewType = props.reviewType;
 const showDeleteModal = ref(false);
 let deleteModalData = {};
 let DeleteModalKey = ref(0);
+let header = "";
+
+if (reviewType === "Completed") {
+  header =
+    props.data.info.subjectName +
+    " Question" +
+    " - " +
+    props.data.info.reviewDate.substring(0, 10);
+} else {
+  header =
+    props.data.info.subjectName +
+    " Question" +
+    " - " +
+    props.data.info.submissionDate.substring(0, 10);
+}
+if (props.data.info.isAutoReview === 1) {
+  header = header + " - AI Review";
+}
 const viewDeleteModal = () => {
   DeleteModalKey.value++;
   showDeleteModal.value = true;
@@ -73,7 +84,7 @@ const handleDelete = () => {
         {{ props.data.info.customQuestionText }}</span
       >
 
-      <h2>
+      <h2 v-if="reviewType === 'Completed'">
         <span>Your Answer was: </span>
       </h2>
       <span style="font-weight: initial">

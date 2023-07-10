@@ -4,12 +4,12 @@ import { globals, dataModel } from "../../dataModel.js";
 import axios from "axios";
 
 const emit = defineEmits(["updateTable"]);
-let header = "";
-/* let header =
+let header =
   props.data.info.subjectName +
   " Question" +
   " - " +
-  props.data.info.reviewDate.substring(0, 10); */
+  props.data.info.submissionDate.substring(0, 10);
+
 if (props.data.info.isAutoReview === 1) {
   header = header + " - AI Review";
 }
@@ -42,20 +42,6 @@ const reviewType = props.reviewType;
       </h2>
       <span style="font-weight: initial" class="">
         {{ props.data.info.customQuestionText }}</span
-      >
-
-      <h2>
-        <span>Your Answer was: </span>
-      </h2>
-      <span style="font-weight: initial">
-        {{ props.data.info.userAnswer }}</span
-      >
-
-      <h2 v-if="reviewType === 'Completed'">
-        <span>Feedback: </span>
-      </h2>
-      <span style="font-weight: initial">
-        {{ props.data.info.autoReviewAnswer }}</span
       >
 
       <template #footer>
