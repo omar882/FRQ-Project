@@ -129,7 +129,6 @@ export default router;
 const app = createApp(App);
 
 app.use(PrimeVue, { ripple: true });
-app.use(ConfirmationService);
 app.use(ToastService);
 app.use(DialogService);
 app.use(router);
@@ -229,5 +228,6 @@ app.component("TriStateCheckbox", TriStateCheckbox);
 app.component("VirtualScroller", VirtualScroller);
 
 app.use(router);
+app.use(ConfirmationService);
 
 app.mount("#app");

@@ -13,8 +13,6 @@ var con = mysql.createConnection(dbConnection);
 class AppLibrary {
   async login(email, password) {
     const student = await this.getStudent(email, password);
-    //console.log(student.length);
-    //console.log(student);
 
     if (student.length == 0) return "";
 
@@ -36,6 +34,7 @@ class AppLibrary {
     var loginResponse = {
       firstName: student[0].firstName,
       lastName: student[0].lastName,
+      studentId: student[0].studentId,
       email: student[0].email,
       userToken: accessToken,
       tokenExpiration: this.formatDate(tomorrow),
@@ -45,7 +44,6 @@ class AppLibrary {
   }
   async teacherLogin(email, password) {
     const teacher = await this.getTeacher(email, password);
-    console.log(teacher);
 
     if (teacher.length == 0) return "";
 
@@ -67,6 +65,7 @@ class AppLibrary {
     var loginResponse = {
       firstName: teacher[0].firstName,
       lastName: teacher[0].lastName,
+      teacherId: teacher[0].id,
       email: teacher[0].email,
       userToken: accessToken,
       tokenExpiration: this.formatDate(tomorrow),
@@ -87,15 +86,12 @@ class AppLibrary {
     userAnswer
   ) {
     var serverGeneratedReviewId = crypto.randomUUID();
-    //console.log(userToken, isCustom, isAutoReview, urgencySelection, selectedQuestion, selectedSubjectYear, selectedSubject, customQuestionText);
-    //console.log(serverGeneratedReviewId);
 
     var today = Date.now();
     today = new Date(today);
     var todayDate = this.formatDate(today);
 
     var student = await this.getStudentFromToken(userToken);
-    //console.log(subjectId);
 
     await this.addFRQ(
       subjectId,
@@ -215,22 +211,19 @@ class AppLibrary {
     var query = `select * from students where email = '${email}' and passwordHash = '${passwordHash}'`;
     try {
       const result = await this.mySQLQuery(query);
-      //console.log(JSON.stringify(result));
       return result;
     } catch (error) {
+      console.log(error);
       console.log("Error while getting student");
       return null;
     }
   }
   async getTeacher(email, password) {
-    console.log("email: " + email + " password: " + password);
     var passwordHash = this.createHash(password);
 
     var query = `select * from teachers where email = '${email}' and passwordHash = '${passwordHash}'`;
     try {
-      console.log("in");
       const result = await this.mySQLQuery(query);
-      console.log("wow");
       console.log(JSON.stringify(result));
       return result;
     } catch (error) {
@@ -302,11 +295,9 @@ class AppLibrary {
   }
 
   async deleteFRQ(id) {
-    //console.log(id);
     var insertQuery = `DELETE FROM frq.frqs WHERE (id = ${id})`;
     //DELETE FROM frq.frqs WHERE (id = 45);
-    //console.log("----------");
-    //console.log(insertQuery);
+
     try {
       const result = await this.mySQLInsert(insertQuery);
       return result;
@@ -350,6 +341,22 @@ class AppLibrary {
       return result;
     } catch (error) {
       console.log("error here");
+      console.log(error);
+      return null;
+    }
+  }
+  async getAllTeacherActiveReviews(teacherId) {
+    var query = ` Select frqsList.*, subjects.name as subjectName from frq.subjects inner join 
+    (
+    SELECT * FROM frq.frqs where (assignedTo = ${teacherId})
+    ) as frqsList on frqsList.subjectId = subjects.id
+  `;
+
+    try {
+      var result = await this.mySQLQuery(query);
+      result = JSON.parse(JSON.stringify(result));
+      return result;
+    } catch (error) {
       console.log(error);
       return null;
     }
@@ -399,26 +406,19 @@ class AppLibrary {
     }
   }
   async getAllOpenSubjectFRQs(subjectId) {
-    console.log("subject:");
-    console.log(subjectId);
-    /*
- 
-    */
     var query = `(
       Select frqsList.*, subjects.name as subjectName from frq.subjects inner join 
         (
-        SELECT * FROM frq.frqs where (isReviewed = false and isAutoReview=false and subjectId = ${subjectId})
+        SELECT * FROM frq.frqs where (isReviewed = false and isAutoReview=false and subjectId = ${subjectId} and assignedTo is NULL)
         ) as frqsList on frqsList.subjectId = subjects.id
       )`;
     try {
       var result = await this.mySQLQuery(query);
       result = JSON.parse(JSON.stringify(result));
 
-      console.log("result:");
-      console.log(result);
       return result;
     } catch (error) {
-      //console.log("error maybe here");
+      console.log("error maybe here");
 
       return null;
     }
@@ -457,7 +457,6 @@ class AppLibrary {
   }
 
   async getStudentExpirationFromToken(token) {
-    console.log(token);
     var query = `SELECT accesstokens.expirationTime FROM accesstokens where token = "${token}"`;
 
     try {
@@ -469,9 +468,7 @@ class AppLibrary {
       }
       const result = await this.mySQLQuery(query);
       var now = new Date();
-      console.log(result[0].expirationTime);
-      console.log(now);
-      console.log(result[0].expirationTime > now);
+
       if (result[0].expirationTime > now) {
         var data = {
           logIn: true,
@@ -492,7 +489,6 @@ class AppLibrary {
     }
   }
   async getTeacherExpirationFromToken(token) {
-    console.log(token);
     var query = `SELECT accesstokens.expirationTime FROM accesstokens where token = "${token}"`;
 
     try {
@@ -504,9 +500,7 @@ class AppLibrary {
       }
       const result = await this.mySQLQuery(query);
       var now = new Date();
-      console.log(result[0].expirationTime);
-      console.log(now);
-      console.log(result[0].expirationTime > now);
+
       if (result[0].expirationTime > now) {
         var data = {
           logIn: true,
@@ -527,7 +521,6 @@ class AppLibrary {
     }
   }
   async updateReview(reviewId, autoReviewAnswer) {
-    console.log("updating review...");
     var now = Date.now();
     now = new Date(now);
     var query = `UPDATE frq.frqs SET isReviewed = 1, autoReviewAnswer = "${con.escape(
@@ -536,7 +529,18 @@ class AppLibrary {
 
     try {
       var result = await this.mySQLUpdate(query);
-      console.log(result);
+      result = JSON.parse(JSON.stringify(result));
+      return result;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+  async assignReview(teacherId, questionId) {
+    var query = `UPDATE frq.frqs SET assignedTo = ${teacherId} WHERE (id = ${questionId})`;
+
+    try {
+      var result = await this.mySQLUpdate(query);
       result = JSON.parse(JSON.stringify(result));
       return result;
     } catch (error) {

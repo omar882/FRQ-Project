@@ -45,19 +45,14 @@ function callFindReviews() {
 }
 
 function uploadFiles(req, res) {
-  //console.log(req.body);
-  //console.log(req.files);
-  //console.log(req.header("serverGeneratedReviewId"));
   res.json({ message: "Successfully uploaded files" });
 }
 
 app.post("/upload", upload.array("files", 6), (req, res, next) => {
   const reqFiles = [];
   const url = req.protocol + "://" + req.get("host");
-  //console.log(req.files[0].filename);
   for (var i = 0; i < req.files.length; i++) {
     reqFiles.push(url + "/public/" + req.files[i].filename);
-    //console.log(url + "/public/" + req.files[i].filename);
   }
 });
 
@@ -68,7 +63,6 @@ app.get("/", (req, res) => {
 app.post("/subjects", (req, res) => {
   const body = req.body;
   appLibrary.getAllSubjects().then((result) => {
-    //console.log(result);
     res.send(result);
   });
 });
@@ -92,28 +86,18 @@ app.post("/getTeacherExpirationtime", (req, res) => {
     });
 });
 app.post("/removeFRQ", (req, res) => {
-  console.log();
   const body = req.body;
 
   appLibrary.deleteFRQ(body.id).then((result) => {
     res.send(result);
-    //console.log(result);
   });
 });
 app.post("/addteachersubject", async (req, res) => {
   const body = req.body;
-  //console.log(body);
   let teacherId;
   appLibrary.getTeacher(body.email, body.password).then((result) => {
-    //console.log("result: ");
-    //console.log(result[0]);
     teacherId = result[0].id;
-
-    //console.log("teacherId:");
-    //console.log(teacherId);
     appLibrary.addTeacherSubject(teacherId, body.subjectId).then((result) => {
-      console.log(result);
-
       res.send(result);
     });
   });
@@ -123,8 +107,6 @@ app.post("/login", async (req, res) => {
   appLibrary
     .login(userCredential.userName, userCredential.password)
     .then((result) => {
-      console.log(result);
-
       res.send(result);
     });
 });
@@ -133,8 +115,6 @@ app.post("/teacherlogin", async (req, res) => {
   appLibrary
     .teacherLogin(userCredential.userName, userCredential.password)
     .then((result) => {
-      console.log(result);
-
       res.send(result);
     });
 });
@@ -196,22 +176,17 @@ app.post("/postreview", async (req, res) => {
     )
     .then((result) => {
       res.send(result);
-      //console.log(result);
     });
 });
 
 app.post("/completedreviews", async (req, res) => {
-  //console.log("completedreviews");
   const reviewData = req.body;
   console.log(reviewData);
-  //console.log(JSON.stringify(reviewData));
-  //console.log(reviewData.selectedSubject.id);
   var studentId = null;
   await appLibrary.getStudentFromToken(reviewData.userToken).then((result) => {
     console.log(result);
     console.log(JSON.parse(JSON.stringify(result))[0]); //.studentId;
     studentId = JSON.parse(JSON.stringify(result))[0].studentId;
-    //console.log(studentId);
     appLibrary.getStudentCompletedFRQs(studentId).then((result) => {
       res.send(result);
     });
@@ -219,9 +194,6 @@ app.post("/completedreviews", async (req, res) => {
 });
 
 app.post("/openreviews", async (req, res) => {
-  //console.log("openreviews");
-  console.log(req.body);
-  console.log("in");
   const reviewData = req.body;
 
   var studentId = null;
@@ -233,15 +205,29 @@ app.post("/openreviews", async (req, res) => {
   });
 });
 app.post("/teacheropenreviews", async (req, res) => {
-  //console.log("openreviews");
   const body = req.body;
 
   appLibrary.getAllOpenSubjectFRQs(body.subjectId).then((result) => {
     res.send(result);
   });
 });
+app.post("/assignreview", async (req, res) => {
+  const body = req.body;
+  console.log("------- ");
+  console.log(body);
+  appLibrary.assignReview(body.teacherId, body.questionId).then((result) => {
+    res.send(result);
+  });
+});
+app.post("/teacheractivereviews", async (req, res) => {
+  const body = req.body;
+
+  appLibrary.getAllTeacherActiveReviews(body.teacherId).then((result) => {
+    res.send(result);
+  });
+});
+
 app.post("/teachersubjects", async (req, res) => {
-  //console.log("openreviews");
   const body = req.body;
 
   appLibrary.getAllTeacherSubjects(body.userToken).then((result) => {
@@ -250,7 +236,6 @@ app.post("/teachersubjects", async (req, res) => {
 });
 
 app.post("/upload2", (req, res) => {
-  //console.log(req);
   res.send("Submitted");
 });
 

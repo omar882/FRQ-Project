@@ -103,12 +103,14 @@ onBeforeUnmount(() => {
         <th>Subject</th>
         <th>Question</th>
       </tr>
-      <tr v-for="question in questions" @click="viewData(question)">
+      <tr
+        v-for="question in questions"
+        @click="viewData(question)"
+        :class="{ tr: question.assignedTo != null }"
+      >
         <td>{{ formatDate(question.submissionDate) }}</td>
         <td>{{ question.subjectName }}</td>
-        <td>
-          {{ question.customQuestionText }}
-        </td>
+        <td>{{ question.customQuestionText }}</td>
       </tr>
     </table>
   </div>
@@ -120,9 +122,8 @@ onBeforeUnmount(() => {
   border-collapse: collapse;
   width: 100%;
 }
-
-tr:hover {
-  background-color: #eceef1;
+.tr {
+  background-color: #f7f7f7;
 }
 
 td,

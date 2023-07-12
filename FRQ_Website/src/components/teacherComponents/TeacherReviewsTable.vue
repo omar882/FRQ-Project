@@ -47,21 +47,39 @@ const updateReviews = () => {
         baseURI = globals.serverUrl + "teachercompletedreviews";
       else if (reviewType == "InReview") {
         baseURI = globals.serverUrl + "teacheropenreviews";
-        //console.log(dataModel.currentUser);
+        // Change this so it queries the database once with sql join
+        subjects.forEach((subject) => {
+          axios
+            .post(baseURI, { subjectId: subject.subjectId })
+            .then((result) => {
+              if (result.data != null) {
+                //console.log(JSON.parse(JSON.stringify(result.data)));
+                result.data.forEach((question) => {
+                  questions.value.push(question);
+                });
+              }
+            });
+        });
+      } else if (reviewType == "Active") {
+        baseURI = globals.serverUrl + "teacheractivereviews";
+        // Change this so it queries the database once with sql join
+        console.log("teacherId: ");
+        console.log(dataModel.currentUser);
+        axios
+          .post(baseURI, { teacherId: dataModel.currentUser.teacherId })
+          .then((result) => {
+            if (result.data != null) {
+              console.log(result.data);
+              result.data.forEach((question) => {
+                questions.value.push(question);
+                console.log(questions.value);
+              });
+            }
+          });
       } else {
         alert(reviewType);
         return;
       }
-      subjects.forEach((subject) => {
-        axios.post(baseURI, { subjectId: subject.subjectId }).then((result) => {
-          if (result.data != null) {
-            //console.log(JSON.parse(JSON.stringify(result.data)));
-            result.data.forEach((question) => {
-              questions.value.push(question);
-            });
-          }
-        });
-      });
     });
 };
 

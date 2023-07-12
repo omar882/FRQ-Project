@@ -6,6 +6,7 @@ import axios from "axios";
 const router = useRouter();
 const loaded = ref(false);
 onMounted(() => {
+  console.log(localStorage.getItem("userToken"));
   console.log("mounting...");
   var userToken = localStorage.getItem("userToken");
   var type = localStorage.getItem("type");
@@ -22,7 +23,7 @@ onMounted(() => {
   } else if (userToken) {
     axios.post(baseURI, { userToken: userToken }).then((result) => {
       //alert(JSON.stringify(result.data));
-      //console.log(result.data);
+      console.log(result.data);
 
       if (result.data.logIn) {
         dataModel.currentUser = result.data.user;

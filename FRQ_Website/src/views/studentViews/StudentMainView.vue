@@ -6,7 +6,7 @@ import TopHeader from "../../components/studentComponents/TopHeader.vue";
 import { dataModel } from "../../dataModel.js";
 import { useRouter } from "vue-router";
 const router = useRouter();
-const active = ref(1);
+const active = ref(-1);
 
 const menu = ref();
 const items = ref([
@@ -40,6 +40,8 @@ const change = (value) => {
 onBeforeMount(() => {
   if (localStorage.getItem("type") === "teacher") {
     router.push("/home");
+  } else {
+    active.value = 0;
   }
 });
 </script>
@@ -58,8 +60,8 @@ onBeforeMount(() => {
       @togglePopupVisibility="toggleUserPopup"
       :user="dataModel"
     ></TopHeader>
-    <CompletedReviews v-if="active"></CompletedReviews>
-    <OpenReviews v-if="1 - active"></OpenReviews>
+    <CompletedReviews v-if="active == 0"></CompletedReviews>
+    <OpenReviews v-if="active == 1"></OpenReviews>
   </div>
 </template>
 <style scoped></style>

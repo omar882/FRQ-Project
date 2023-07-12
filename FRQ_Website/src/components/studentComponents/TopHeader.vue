@@ -30,7 +30,7 @@ const items = ref([
   },
 ]);
 const test = () => {
-  emit("change", 1 - activeIndex.value);
+  emit("change", activeIndex.value);
 };
 </script>
 

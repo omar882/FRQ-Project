@@ -17,8 +17,10 @@ const getTitle = () => {
   //console.log(reviewType);
   if (reviewType == "Completed") {
     return "My Completed Reviews";
+  } else if (reviewType == "Active") {
+    return "My Active Reviews";
   }
-  return "My Open Reviews";
+  return "Open Reviews";
 };
 
 onMounted(() => {});

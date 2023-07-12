@@ -25,7 +25,7 @@ const router = useRouter();
             >
               <TeacherReviews
                 :key="completedTable"
-                review-type="Completed"
+                review-type="Active"
                 class=""
               />
             </div>
