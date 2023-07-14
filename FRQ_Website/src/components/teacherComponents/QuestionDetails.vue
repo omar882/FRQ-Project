@@ -5,6 +5,12 @@ import { useConfirm } from "primevue/useconfirm";
 import ConfirmDialog from "primevue/confirmdialog";
 import axios from "axios";
 import { useToast } from "primevue/usetoast";
+const quillModules = {
+  ImageResize: {
+    modules: ["Resize", "DisplaySize", "Toolbar"],
+  },
+};
+
 const toast = useToast();
 const confirm = useConfirm();
 const showAddReview = ref(false);
@@ -67,13 +73,15 @@ const toggleAddReview = () => {
 const buttonText = ref("Start Review");
 const reviewText = ref("");
 watch(reviewText, () => {
+  console.log(reviewText.value);
   if (reviewText.value != "") {
     buttonText.value = "Continue Review";
   } else {
     buttonText.value = "Start Review";
   }
 });
-
+console.log(props.data.info);
+const editorValue = ref(props.data.info.reviewAnswer);
 const postReview = () => {
   const baseURI = globals.serverUrl + "postteacherreview";
 
@@ -110,17 +118,12 @@ const postReview = () => {
         >Please grade the student's review based on the appropriate rubric and
         provide feedback.
       </label>
-      <Editor v-model="reviewText" editorStyle="height: 320px" class="mt-3">
-        <template #toolbar>
-          <span class="ql-formats">
-            <button v-tooltip.bottom="'Bold'" class="ql-bold"></button>
-            <button v-tooltip.bottom="'Italic'" class="ql-italic"></button>
-            <button
-              v-tooltip.bottom="'Underline'"
-              class="ql-underline"
-            ></button>
-          </span>
-        </template>
+      <Editor
+        v-model="reviewText"
+        editorStyle="height: 320px"
+        class="mt-3"
+        :modules="quillModules"
+      >
       </Editor>
     </div>
 
@@ -147,12 +150,26 @@ const postReview = () => {
       </template>
 
       <h2>
-        <span> The Question is: </span>
+        <span> The Question was: </span>
       </h2>
       <span style="font-weight: initial" class="">
         {{ props.data.info.customQuestionText }}</span
       >
-
+      <div v-if="props.data.info.userAnswer">
+        <h2>
+          <span> The Student's answer was: </span>
+        </h2>
+        <span style="font-weight: initial" class="">
+          {{ props.data.info.userAnswer }}</span
+        >
+      </div>
+      <div v-if="props.data.info.reviewAnswer">
+        <h2>
+          <span> Your feedback was: </span>
+        </h2>
+        <span style="font-weight: initial" class=""></span>
+        <div v-html="editorValue"></div>
+      </div>
       <template #footer>
         <div class="flex flex-wrap justify-content-between">
           <Button

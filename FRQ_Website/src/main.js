@@ -5,6 +5,7 @@ import "primevue/resources/themes/bootstrap4-light-blue/theme.css";
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
 import "./index.css";
+
 import Editor from "primevue/editor";
 import PrimeVue from "primevue/config";
 import AutoComplete from "primevue/autocomplete";
@@ -124,6 +125,9 @@ const router = createRouter({
 
 export default router;
 */
+import Quill from "quill";
+import ImageResize from "quill-image-resize";
+Quill.register("modules/ImageResize", ImageResize);
 
 const app = createApp(App);
 

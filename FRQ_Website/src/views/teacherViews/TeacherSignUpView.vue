@@ -9,6 +9,5 @@ import SignUp from "../../components/teacherComponents/SignUp.vue";
     alt="Image"
     width="250"
   />
-
   <SignUp></SignUp>
 </template>

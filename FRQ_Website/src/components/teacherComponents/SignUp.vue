@@ -68,7 +68,7 @@ const signup = (event) => {
 
 <template>
   <div class="justify-content-center flex align-items-center mt-3 h-1rem">
-    <h1 class="align-text-center text-blue-500">Apply!</h1>
+    <h1 class="align-text-center text-blue-500">Apply to become a teacher!</h1>
   </div>
 
   <div class="card flex align-items-center justify-content-center">

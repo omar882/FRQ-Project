@@ -568,7 +568,9 @@ class AppLibrary {
     var now = Date.now();
     now = new Date(now);
     var reviewDate = this.formateToDateTime(now);
-    var query = `UPDATE frq.frqs SET reviewAnswer = "${questionAnswer}", reviewDate = "${reviewDate}", isReviewed = true  WHERE (id = ${questionId})`;
+    var query = `UPDATE frq.frqs SET reviewAnswer = "${con.escape(
+      questionAnswer
+    )}", reviewDate = "${reviewDate}", isReviewed = true  WHERE (id = ${questionId})`;
 
     try {
       var result = await this.mySQLUpdate(query);
