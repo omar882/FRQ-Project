@@ -33,7 +33,7 @@ const items = ref([
           localStorage.setItem("userToken", "");
           localStorage.setItem("type", "");
 
-          router.push("/studentlogin");
+          router.push("/teacherlogin");
         },
       },
       {

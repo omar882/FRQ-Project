@@ -90,14 +90,28 @@ const handleDelete = () => {
       <span style="font-weight: initial">
         {{ props.data.info.userAnswer }}</span
       >
-
-      <h2 v-if="reviewType === 'Completed'">
-        <span>Feedback: </span>
-      </h2>
-      <span style="font-weight: initial">
-        {{ props.data.info.autoReviewAnswer }}</span
+      <div
+        v-if="
+          reviewType === 'Completed' && props.data.info.isAutoReview == true
+        "
       >
-
+        <h2>
+          <span>Feedback: </span>
+        </h2>
+        <span style="font-weight: initial">
+          {{ props.data.info.autoReviewAnswer }}</span
+        >
+      </div>
+      <div
+        v-if="
+          reviewType === 'Completed' && props.data.info.isAutoReview == false
+        "
+      >
+        <h2>
+          <span>Teacher Feedback: </span>
+        </h2>
+        <div v-html="props.data.info.reviewAnswer"></div>
+      </div>
       <template #footer>
         <div class="flex flex-wrap justify-content-between">
           <Button

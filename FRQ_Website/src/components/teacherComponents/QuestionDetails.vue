@@ -5,12 +5,20 @@ import { useConfirm } from "primevue/useconfirm";
 import ConfirmDialog from "primevue/confirmdialog";
 import axios from "axios";
 import { useToast } from "primevue/usetoast";
-const quillModules = {
-  ImageResize: {
-    modules: ["Resize", "DisplaySize", "Toolbar"],
-  },
-};
+var toolbarOptions = [
+  [{ header: [1, 2, 3, 4, 5, 6, false] }],
+  [{ font: [] }],
 
+  ["bold", "italic", "underline", "strike"],
+  [{ color: [] }, { background: [] }],
+  [{ list: "ordered" }, { list: "bullet" }],
+  [{ align: [] }],
+  ["blockquote", "code-block"],
+  [{ script: "sub" }, { script: "super" }],
+];
+const quillModules = {
+  toolbar: toolbarOptions,
+};
 const toast = useToast();
 const confirm = useConfirm();
 const showAddReview = ref(false);
@@ -113,9 +121,9 @@ const postReview = () => {
         Grading FRQ
       </h2>
     </template>
-    <div style="height: 30vw">
+    <div class="">
       <label
-        >Please grade the student's review based on the appropriate rubric and
+        >Please grade the student's FRQ based on the appropriate rubric and
         provide feedback.
       </label>
       <Editor
@@ -124,11 +132,32 @@ const postReview = () => {
         class="mt-3"
         :modules="quillModules"
       >
+        <template v-slot:toolbar>
+          <span class="ql-formats"> </span>
+        </template>
       </Editor>
     </div>
-
+    <FileUpload
+      class="flex mt-1"
+      ref="fileUploader"
+      name="files"
+      url="http://127.0.0.1:3001/upload_files"
+      @upload="onAdvancedUpload($event)"
+      :multiple="true"
+      accept="image/*"
+      :maxFileSize="1000000"
+      :showUploadButton="false"
+      :showCancelButton="false"
+      @select="onSelectedFiles"
+      :auto="false"
+      @before-send="beforeUpload"
+      @progress="uploadProgress"
+    >
+    </FileUpload>
     <template #footer>
-      <Button label="Submit" icon="pi pi-upload" @click="postReview" />
+      <div class="flex justify-content-end">
+        <Button label="Submit" icon="pi pi-upload" @click="postReview" />
+      </div>
     </template>
   </Dialog>
   <div class="card flex">
