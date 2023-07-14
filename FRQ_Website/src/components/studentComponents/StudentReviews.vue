@@ -41,6 +41,7 @@ const uploadControl = ref(null);
 const serverGeneratedReviewId = ref(null);
 const customQuestionAnswer = ref("");
 const fileUploader = ref(null);
+const questionId = ref(null);
 //reviewType: String,
 
 const addNewReview = () => {
@@ -54,7 +55,6 @@ function onAdvancedUpload() {
     life: 3000,
   });
 }
-function questionTypeChange(evt) {}
 function submit() {
   const baseURI = globals.serverUrl + "postreview";
 
@@ -71,13 +71,22 @@ function submit() {
   };
 
   axios.post(baseURI, reqBody).then((result) => {
+    console.log(result);
     if (result.data != null) {
       serverGeneratedReviewId.value = result.data.serverGeneratedReviewId;
 
       if (files.value.length > 0 && !isAutoReview.value) {
+        console.log("in");
+        questionId.value = result.data.qId;
         fileUploader.value.upload();
+        newReviewDialogVisible.value = false;
+
+        questionList.value.updateCompletedReviews();
+        studentTable.value++;
       } else {
-        //this.dataModel.recentlyAddedItemsForReview.push(itemToBeReviewed);
+        console.log("int");
+
+        //dataModel.recentlyAddedItemsForReview.push(itemToBeReviewed);
         newReviewDialogVisible.value = false;
         questionList.value.updateCompletedReviews();
         studentTable.value++;
@@ -86,11 +95,13 @@ function submit() {
   });
 }
 const beforeUpload = (request) => {
-  //alert("beforeUpload " + JSON.stringify(request));
+  console.log("in");
+  request.xhr.setRequestHeader("qId", questionId.value);
 
+  console.log(request);
   request.xhr.setRequestHeader(
     "serverGeneratedReviewId",
-    this.serverGeneratedReviewId
+    serverGeneratedReviewId.value
   );
 
   return request;
@@ -268,8 +279,8 @@ onMounted(() => {
             <FileUpload
               ref="fileUploader"
               name="files"
-              url="http://127.0.0.1:3001/upload_files"
-              @upload="onAdvancedUpload($event)"
+              url="http://127.0.0.1:3001/upload"
+              @upload="onAdvancedUpload(event)"
               :multiple="true"
               accept="image/*"
               :maxFileSize="1000000"

@@ -23,6 +23,14 @@ const showData = ref(false);
 
 let questionData;
 const viewData = (selectedRows) => {
+  console.log(selectedRows);
+  var answerFilesList = false;
+  var questionFilesList = false;
+  var reviewFilesList = false;
+
+  if (selectedRows.answerFilesList) {
+    answerFilesList = true;
+  }
   if (selectedRows != null) {
     showData.value = true;
     questionData = {
@@ -47,7 +55,6 @@ const updateCompletedReviews = () => {
     .then((result) => {
       if (result.data != null) {
         questions.value = JSON.parse(JSON.stringify(result.data));
-        console.log(questions.value);
       }
     });
 };

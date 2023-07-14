@@ -34,6 +34,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ dest: "uploads/" });
+
 app.post("/upload_files", upload.array("files"), uploadFiles);
 
 setInterval(() => {
@@ -45,15 +46,29 @@ function callFindReviews() {
 }
 
 function uploadFiles(req, res) {
+  const body = req.body;
+  console.log(body);
+  console.log("trying to upload files");
   res.json({ message: "Successfully uploaded files" });
 }
 
 app.post("/upload", upload.array("files", 6), (req, res, next) => {
+  console.log("in ---------------------------------");
+  console.log(req.headers);
+
+  console.log(req.headers.qid);
   const reqFiles = [];
   const url = req.protocol + "://" + req.get("host");
+  let answerFileList = "";
   for (var i = 0; i < req.files.length; i++) {
     reqFiles.push(url + "/public/" + req.files[i].filename);
+    //console.log(url + "/public/" + req.files[i].filename);
+    answerFileList += url + "/public/" + req.files[i].filename;
+    if (i != req.files.length - 1) {
+      answerFileList += ",";
+    }
   }
+  appLibrary.addAnswerFileList(answerFileList, req.headers.qid);
 });
 
 app.get("/", (req, res) => {
@@ -161,7 +176,7 @@ app.post("/postreview", async (req, res) => {
   appLibrary.getStudentFromToken(reviewData.token).then((result) => {
     studentId = result.studentId;
   });
-
+  //console.log(reviewData);
   appLibrary
     .postReview(
       reviewData.userToken,

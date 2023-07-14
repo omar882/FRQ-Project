@@ -93,7 +93,7 @@ class AppLibrary {
 
     var student = await this.getStudentFromToken(userToken);
 
-    await this.addFRQ(
+    const res = await this.addFRQ(
       subjectId,
       student[0].studentId,
       isAutoReview,
@@ -107,7 +107,11 @@ class AppLibrary {
       serverGeneratedReviewId
     );
 
-    var data = { serverGeneratedReviewId: serverGeneratedReviewId };
+    var data = {
+      serverGeneratedReviewId: serverGeneratedReviewId,
+      qId: res.insertId,
+    };
+    //console.log({ "my data": data });
     return data;
   }
 
@@ -238,6 +242,22 @@ class AppLibrary {
       return result;
     } catch (error) {
       console.log("Error while adding subject");
+      console.log(error);
+      return null;
+    }
+  }
+  async addAnswerFileList(answerFileList, questionId) {
+    console.log("adding answer file list");
+    var updateQuery = `UPDATE frq.frqs SET answerFilesList = "${con.escape(
+      answerFileList
+    )}" WHERE id = ${questionId}`;
+    try {
+      const result = await this.mySQLUpdate(updateQuery);
+      console.log("result ");
+      console.log(result);
+      return result;
+    } catch (error) {
+      console.log("Error while adding answerFileList");
       console.log(error);
       return null;
     }
