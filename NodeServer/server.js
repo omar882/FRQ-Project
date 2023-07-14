@@ -219,10 +219,28 @@ app.post("/assignreview", async (req, res) => {
     res.send(result);
   });
 });
+app.post("/postteacherreview", async (req, res) => {
+  const body = req.body;
+  console.log("------- ");
+  console.log(body);
+  appLibrary
+    .postTeacherReview(body.questionId, body.questionAnswer)
+    .then((result) => {
+      res.send(result);
+    });
+});
+
 app.post("/teacheractivereviews", async (req, res) => {
   const body = req.body;
 
   appLibrary.getAllTeacherActiveReviews(body.teacherId).then((result) => {
+    res.send(result);
+  });
+});
+app.post("/teachercompletedreviews", async (req, res) => {
+  const body = req.body;
+
+  appLibrary.getAllTeacherCompletedReviews(body.teacherId).then((result) => {
     res.send(result);
   });
 });

@@ -7,6 +7,7 @@ import axios from "axios";
 import { useToast } from "primevue/usetoast";
 const toast = useToast();
 const confirm = useConfirm();
+const showAddReview = ref(false);
 const emit = defineEmits(["updateTable"]);
 let header =
   props.data.info.subjectName +
@@ -56,6 +57,34 @@ const selectReview = () => {
       questionId: props.data.info.id,
     })
     .then((result) => {
+      visible.value = false;
+      emit("updateTable");
+    });
+};
+const toggleAddReview = () => {
+  showAddReview.value = !showAddReview.value;
+};
+const buttonText = ref("Start Review");
+const reviewText = ref("");
+watch(reviewText, () => {
+  if (reviewText.value != "") {
+    buttonText.value = "Continue Review";
+  } else {
+    buttonText.value = "Start Review";
+  }
+});
+
+const postReview = () => {
+  const baseURI = globals.serverUrl + "postteacherreview";
+
+  axios
+    .post(baseURI, {
+      questionId: props.data.info.id,
+      questionAnswer: reviewText.value,
+    })
+    .then((result) => {
+      visible.value = false;
+
       emit("updateTable");
     });
 };
@@ -64,6 +93,41 @@ const selectReview = () => {
 <template>
   <Toast />
   <ConfirmDialog></ConfirmDialog>
+  <Dialog
+    maximizable
+    :draggable="true"
+    :style="{ width: '70vw' }"
+    v-model:visible="showAddReview"
+    appendToBody="true"
+  >
+    <template #header>
+      <h2 class="m-0 p-0 flex justify-content-center text-center w-full">
+        Grading FRQ
+      </h2>
+    </template>
+    <div style="height: 30vw">
+      <label
+        >Please grade the student's review based on the appropriate rubric and
+        provide feedback.
+      </label>
+      <Editor v-model="reviewText" editorStyle="height: 320px" class="mt-3">
+        <template #toolbar>
+          <span class="ql-formats">
+            <button v-tooltip.bottom="'Bold'" class="ql-bold"></button>
+            <button v-tooltip.bottom="'Italic'" class="ql-italic"></button>
+            <button
+              v-tooltip.bottom="'Underline'"
+              class="ql-underline"
+            ></button>
+          </span>
+        </template>
+      </Editor>
+    </div>
+
+    <template #footer>
+      <Button label="Submit" icon="pi pi-upload" @click="postReview" />
+    </template>
+  </Dialog>
   <div class="card flex">
     <Dialog
       maximizable
@@ -103,6 +167,14 @@ const selectReview = () => {
             label="Select Review"
             icon=""
             @click="confirmSelect"
+            text
+            justify-content-end
+          />
+          <Button
+            v-if="reviewType == 'Active'"
+            :label="buttonText"
+            icon=""
+            @click="toggleAddReview"
             text
             justify-content-end
           />

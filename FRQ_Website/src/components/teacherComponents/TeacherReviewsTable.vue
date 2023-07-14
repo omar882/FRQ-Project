@@ -43,9 +43,20 @@ const updateReviews = () => {
       subjects = result.data;
 
       console.log("in " + reviewType);
-      if (reviewType == "Completed")
+      if (reviewType == "Completed") {
         baseURI = globals.serverUrl + "teachercompletedreviews";
-      else if (reviewType == "InReview") {
+        axios
+          .post(baseURI, { teacherId: dataModel.currentUser.teacherId })
+          .then((result) => {
+            if (result.data != null) {
+              console.log(result.data);
+              result.data.forEach((question) => {
+                questions.value.push(question);
+                console.log(questions.value);
+              });
+            }
+          });
+      } else if (reviewType == "InReview") {
         baseURI = globals.serverUrl + "teacheropenreviews";
         // Change this so it queries the database once with sql join
         subjects.forEach((subject) => {

@@ -66,7 +66,7 @@ const change = (e) => {
     ></TopHeader>
     <OpenReviews v-if="active === 1"></OpenReviews>
     <ActiveReviews v-if="active === 0"></ActiveReviews>
-    <OpenReviews v-if="active === -1"></OpenReviews>
+    <CompletedReviews v-if="active === -1"></CompletedReviews>
     <OpenReviews v-if="active === -2"></OpenReviews>
   </div>
 </template>

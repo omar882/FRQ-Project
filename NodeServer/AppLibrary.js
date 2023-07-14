@@ -348,7 +348,23 @@ class AppLibrary {
   async getAllTeacherActiveReviews(teacherId) {
     var query = ` Select frqsList.*, subjects.name as subjectName from frq.subjects inner join 
     (
-    SELECT * FROM frq.frqs where (assignedTo = ${teacherId})
+    SELECT * FROM frq.frqs where (assignedTo = ${teacherId} and isReviewed = false )
+    ) as frqsList on frqsList.subjectId = subjects.id
+  `;
+
+    try {
+      var result = await this.mySQLQuery(query);
+      result = JSON.parse(JSON.stringify(result));
+      return result;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+  async getAllTeacherCompletedReviews(teacherId) {
+    var query = ` Select frqsList.*, subjects.name as subjectName from frq.subjects inner join 
+    (
+    SELECT * FROM frq.frqs where (assignedTo = ${teacherId} and isReviewed = true )
     ) as frqsList on frqsList.subjectId = subjects.id
   `;
 
@@ -538,6 +554,21 @@ class AppLibrary {
   }
   async assignReview(teacherId, questionId) {
     var query = `UPDATE frq.frqs SET assignedTo = ${teacherId} WHERE (id = ${questionId})`;
+
+    try {
+      var result = await this.mySQLUpdate(query);
+      result = JSON.parse(JSON.stringify(result));
+      return result;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+  async postTeacherReview(questionId, questionAnswer) {
+    var now = Date.now();
+    now = new Date(now);
+    var reviewDate = this.formateToDateTime(now);
+    var query = `UPDATE frq.frqs SET reviewAnswer = "${questionAnswer}", reviewDate = "${reviewDate}", isReviewed = true  WHERE (id = ${questionId})`;
 
     try {
       var result = await this.mySQLUpdate(query);
