@@ -41,9 +41,8 @@ const uploadControl = ref(null);
 const serverGeneratedReviewId = ref(null);
 const customQuestionAnswer = ref("");
 const fileUploader = ref(null);
+const questionfileUploader = ref(null);
 const questionId = ref(null);
-//reviewType: String,
-
 const addNewReview = () => {
   newReviewDialogVisible.value = true;
 };
@@ -79,6 +78,8 @@ function submit() {
         console.log("in");
         questionId.value = result.data.qId;
         fileUploader.value.upload();
+        questionfileUploader.value.upload();
+
         newReviewDialogVisible.value = false;
 
         questionList.value.updateCompletedReviews();
@@ -221,6 +222,56 @@ onMounted(() => {
             >
           </div>
         </div>
+        <div class="card flex flex-column justify-content-left">
+          <div class="flex align-items-left">
+            <Checkbox
+              v-model="isAutoReview"
+              inputId="autoReview"
+              :binary="true"
+              name="isAutoReview"
+              @click="!isAutoReview"
+            />
+            <label for="autoReview" class="ml-2"
+              >Do you want to use auto review?</label
+            >
+          </div>
+        </div>
+        <div v-if="isCustom">
+          <Divider align="center" type="solid">
+            <b> Custom Question Text </b>
+          </Divider>
+          <div div class="card flex justify-content-left" v-if="isCustom">
+            <Textarea
+              v-model="customQuestionText"
+              rows="5"
+              style="width: 100%"
+            />
+          </div>
+          <div v-if="!isAutoReview">
+            <Divider align="center" type="solid">
+              <b> Your Question Attachments </b>
+            </Divider>
+            <FileUpload
+              ref="questionfileUploader"
+              name="files"
+              url="http://127.0.0.1:3001/uploadquestion"
+              @upload="onAdvancedUpload(event)"
+              :multiple="true"
+              accept="image/*"
+              :maxFileSize="1000000"
+              :showUploadButton="false"
+              :showCancelButton="false"
+              @select="onSelectedFiles"
+              :auto="false"
+              @before-send="beforeUpload"
+              @progress="uploadProgress"
+            >
+              <template #empty>
+                <p>Drag and drop files to here to upload.</p>
+              </template>
+            </FileUpload>
+          </div>
+        </div>
 
         <div
           div
@@ -243,25 +294,6 @@ onMounted(() => {
           />
         </div>
 
-        <div div class="card flex justify-content-left" v-if="isCustom">
-          <Textarea v-model="customQuestionText" rows="5" style="width: 100%" />
-        </div>
-
-        <div class="card flex justify-content-left">
-          <div class="flex align-items-left">
-            <Checkbox
-              v-model="isAutoReview"
-              inputId="autoReview"
-              :binary="true"
-              name="isAutoReview"
-              @click="!isAutoReview"
-            />
-            <label for="autoReview" class="ml-2"
-              >Do you want to use auto review?</label
-            >
-          </div>
-        </div>
-
         <div class="card flex justify-content-left" v-if="!isAutoReview">
           <SelectButton
             v-model="urgencySelection"
@@ -270,16 +302,27 @@ onMounted(() => {
             aria-labelledby="basic"
           />
         </div>
-
+        <div>
+          <Divider align="center" type="solid">
+            <b> Your Answer </b>
+          </Divider>
+          <div div class="card flex justify-content-left">
+            <Textarea
+              v-model="customQuestionAnswer"
+              rows="5"
+              style="width: 100%"
+            />
+          </div>
+        </div>
         <div v-if="!isAutoReview">
           <Divider align="center" type="solid">
-            <b>My Answer Attachments</b>
+            <b>Your Answer Attachments</b>
           </Divider>
           <div class="card">
             <FileUpload
               ref="fileUploader"
               name="files"
-              url="http://127.0.0.1:3001/upload"
+              url="http://127.0.0.1:3001/uploadanswer"
               @upload="onAdvancedUpload(event)"
               :multiple="true"
               accept="image/*"
@@ -298,19 +341,6 @@ onMounted(() => {
           </div>
         </div>
 
-        <div v-if="isAutoReview">
-          <Divider align="center" type="solid">
-            <b> Your Answer </b>
-          </Divider>
-          <div div class="card flex justify-content-left">
-            <Textarea
-              v-model="customQuestionAnswer"
-              rows="5"
-              style="width: 100%"
-            />
-          </div>
-        </div>
-
         <Button label="Submit" @click="submit"></Button>
       </div>
     </Dialog>
@@ -319,6 +349,6 @@ onMounted(() => {
 <style scoped>
 .container {
   width: 100%;
-  height: 35rem;
+  height: 34rem;
 }
 </style>

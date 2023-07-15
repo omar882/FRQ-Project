@@ -50,17 +50,11 @@ function callFindReviews() {
   autoReview.findReviews();
 }
 
-app.post("/upload", upload.array("files"), (req, res, next) => {
-  console.log("in ---------------------------------");
-  console.log(req.files);
-
-  console.log(req.headers);
-  console.log(req.headers.qid);
+app.post("/uploadanswer", upload.array("files"), (req, res, next) => {
   const reqFiles = [];
   const url = req.protocol + "://" + req.get("host");
   let answerFileList = "";
   for (var i = 0; i < req.files.length; i++) {
-    console.log(url + "/public/" + req.files[i].filename);
     reqFiles.push(url + "/public/" + req.files[i].filename);
     req.files[i].fileName;
     answerFileList += url + "/" + req.files[i].filename;
@@ -70,6 +64,36 @@ app.post("/upload", upload.array("files"), (req, res, next) => {
   }
 
   appLibrary.addAnswerFileList(answerFileList, req.headers.qid);
+});
+app.post("/uploadreview", upload.array("files"), (req, res, next) => {
+  const reqFiles = [];
+  const url = req.protocol + "://" + req.get("host");
+  let reviewFileList = "";
+  for (var i = 0; i < req.files.length; i++) {
+    reqFiles.push(url + "/public/" + req.files[i].filename);
+    req.files[i].fileName;
+    reviewFileList += url + "/" + req.files[i].filename;
+    if (i != req.files.length - 1) {
+      reviewFileList += ",";
+    }
+  }
+
+  appLibrary.addReviewFileList(reviewFileList, req.headers.qid);
+});
+app.post("/uploadquestion", upload.array("files"), (req, res, next) => {
+  const reqFiles = [];
+  const url = req.protocol + "://" + req.get("host");
+  let questionFileList = "";
+  for (var i = 0; i < req.files.length; i++) {
+    reqFiles.push(url + "/public/" + req.files[i].filename);
+    req.files[i].fileName;
+    questionFileList += url + "/" + req.files[i].filename;
+    if (i != req.files.length - 1) {
+      questionFileList += ",";
+    }
+  }
+
+  appLibrary.addQuestionFileList(questionFileList, req.headers.qid);
 });
 
 app.get("/", (req, res) => {

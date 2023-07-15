@@ -15,9 +15,7 @@ onBeforeMount(() => {});
   <div class="card" style="width: 100%">
     <div style="width: 100%">
       <div style="width: 100%"></div>
-      <div>
-        <Divider />
-      </div>
+
       <div class="card">
         <div class="card-container blue-container overflow-hidden">
           <div

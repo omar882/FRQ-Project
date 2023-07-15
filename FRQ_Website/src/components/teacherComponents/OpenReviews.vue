@@ -3,7 +3,7 @@ import axios from "axios";
 import { computed, onBeforeMount, ref } from "vue";
 import { globals, dataModel } from "../../dataModel.js";
 import { useRouter } from "vue-router";
-import TeacherReviews from "./teacherReviews.vue";
+import TeacherReviews from "./TeacherReviews.vue";
 
 const completedTable = ref(0);
 const router = useRouter();
@@ -15,9 +15,7 @@ onBeforeMount(() => {});
   <div class="card" style="width: 100%">
     <div style="width: 100%">
       <div style="width: 100%"></div>
-      <div>
-        <Divider />
-      </div>
+
       <div class="card">
         <div class="card-container blue-container overflow-hidden">
           <div

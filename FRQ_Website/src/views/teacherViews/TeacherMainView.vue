@@ -17,7 +17,7 @@ onBeforeMount(() => {
 
     router.push("/home");
   } else {
-    active.value = 1;
+    active.value = 0;
   }
 });
 const menu = ref();
@@ -64,9 +64,13 @@ const change = (e) => {
       @togglePopupVisibility="toggleUserPopup"
       :user="dataModel"
     ></TopHeader>
-    <OpenReviews v-if="active === 1"></OpenReviews>
-    <ActiveReviews v-if="active === 0"></ActiveReviews>
-    <CompletedReviews v-if="active === -1"></CompletedReviews>
-    <OpenReviews v-if="active === -2"></OpenReviews>
+    <div class="flex w-full justify-content-center">
+      <div class="flex w-11 justify-content-center">
+        <OpenReviews v-if="active === 0"></OpenReviews>
+        <ActiveReviews v-if="active === 1"></ActiveReviews>
+        <CompletedReviews v-if="active === 2"></CompletedReviews>
+        <OpenReviews v-if="active === 3"></OpenReviews>
+      </div>
+    </div>
   </div>
 </template>

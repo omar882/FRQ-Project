@@ -56,6 +56,6 @@ onMounted(() => {});
 <style scoped>
 .container {
   width: 100%;
-  height: 35rem;
+  height: 34rem;
 }
 </style>

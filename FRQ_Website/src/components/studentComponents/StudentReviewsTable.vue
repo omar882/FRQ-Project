@@ -113,11 +113,7 @@ onBeforeUnmount(() => {
         <th>Subject</th>
         <th>Question</th>
       </tr>
-      <tr
-        v-for="question in questions"
-        @click="viewData(question)"
-        :class="{ tr: question.assignedTo != null }"
-      >
+      <tr v-for="question in questions" @click="viewData(question)">
         <td>{{ formatDate(question.submissionDate) }}</td>
         <td>{{ question.subjectName }}</td>
         <td>{{ question.customQuestionText }}</td>
@@ -132,10 +128,10 @@ onBeforeUnmount(() => {
   border-collapse: collapse;
   width: 100%;
 }
-.tr {
-  background-color: #f7f7f7;
-}
 
+tr:hover {
+  background-color: #272727;
+}
 td,
 th {
   border: 1px solid #ddd;
@@ -150,14 +146,5 @@ th {
   text-align: left;
   background-color: rgb(0, 119, 255);
   color: white;
-}
-table::-webkit-scrollbar {
-  background-color: red;
-}
-table::-webkit-scrollbar-thumb {
-  background-color: red;
-}
-table::-webkit-scrollbar-thumb:window-inactive {
-  background-color: red;
 }
 </style>

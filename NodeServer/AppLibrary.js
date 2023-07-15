@@ -262,6 +262,39 @@ class AppLibrary {
       return null;
     }
   }
+  async addReviewFileList(reviewFileList, questionId) {
+    console.log("adding reviewFileList");
+    var updateQuery = `UPDATE frq.frqs SET reviewFileList = ${con.escape(
+      reviewFileList
+    )} WHERE id = ${questionId}`;
+    try {
+      const result = await this.mySQLUpdate(updateQuery);
+      console.log("result ");
+      console.log(result);
+      return result;
+    } catch (error) {
+      console.log("Error while adding reviewFileList");
+      console.log(error);
+      return null;
+    }
+  }
+  async addQuestionFileList(questionFileList, questionId) {
+    console.log("adding questionFileList");
+    var updateQuery = `UPDATE frq.frqs SET questionFileList = ${con.escape(
+      questionFileList
+    )} WHERE id = ${questionId}`;
+    try {
+      const result = await this.mySQLUpdate(updateQuery);
+      console.log("result ");
+      console.log(result);
+      return result;
+    } catch (error) {
+      console.log("Error while adding questionFileList");
+      console.log(error);
+      return null;
+    }
+  }
+
   async addAccessToken(token, studentId, teacherId, startTime, expirationTime) {
     var insertQuery = `INSERT INTO accesstokens (token, studentId,teacherId, startTime, expirationTime) VALUES ('${token}', ${studentId},${teacherId}, '${startTime}', '${expirationTime}')`;
 

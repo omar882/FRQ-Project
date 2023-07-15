@@ -8,8 +8,7 @@ CREATE TABLE `accesstokens` (
   `teacherId` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=446 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
+) ENGINE=InnoDB AUTO_INCREMENT=520 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `frqs` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -29,9 +28,12 @@ CREATE TABLE `frqs` (
   `assignedTo` int DEFAULT NULL,
   `serverGeneratedReviewId` varchar(120) NOT NULL,
   `userAnswer` longtext NOT NULL,
+  `reviewAnswer` longtext,
+  `reviewFileList` mediumtext,
+  `questionFileList` mediumtext,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=218 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `questions` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -71,22 +73,22 @@ CREATE TABLE `subjects` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `teachers` (
   `id` int NOT NULL AUTO_INCREMENT,
   `firstName` varchar(45) NOT NULL,
   `lastName` varchar(45) NOT NULL,
   `birthDate` date NOT NULL,
-  `schoolId` int,
-  `yearsOfExperience` int,
+  `schoolId` int DEFAULT NULL,
+  `yearsOfExperience` int DEFAULT NULL,
   `registrationDate` datetime NOT NULL,
   `email` varchar(120) NOT NULL,
-  `passwordHash` varchar(120) NOT NULL,  
-  `linkInProfile` varchar(255),
-  `onlineResume` varchar(255),
+  `passwordHash` varchar(120) NOT NULL,
+  `linkInProfile` varchar(255) DEFAULT NULL,
+  `onlineResume` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `teachersubjects` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -94,4 +96,4 @@ CREATE TABLE `teachersubjects` (
   `subjectId` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

@@ -5,6 +5,34 @@ import { useConfirm } from "primevue/useconfirm";
 import ConfirmDialog from "primevue/confirmdialog";
 import axios from "axios";
 import { useToast } from "primevue/usetoast";
+let answerImages = "";
+let reviewImages = "";
+let questionImages = "";
+
+const files = ref([]);
+const uploadControl = ref(null);
+const fileUploader = ref(null);
+console.log(props.data.info.questionFileList);
+if (props.data.info.answerFilesList) {
+  answerImages = props.data.info.answerFilesList.split(",");
+}
+if (props.data.info.reviewFileList) {
+  reviewImages = props.data.info.reviewFileList.split(",");
+}
+if (props.data.info.questionFileList) {
+  questionImages = props.data.info.questionFileList.split(",");
+  console.log(questionImages);
+}
+function trim(str, ch) {
+  var start = 0,
+    end = str.length;
+
+  while (start < end && str[start] === ch) ++start;
+
+  while (end > start && str[end - 1] === ch) --end;
+
+  return start > 0 || end < str.length ? str.substring(start, end) : str;
+}
 var toolbarOptions = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
   [{ font: [] }],
@@ -79,7 +107,7 @@ const toggleAddReview = () => {
   showAddReview.value = !showAddReview.value;
 };
 const buttonText = ref("Start Review");
-const reviewText = ref("");
+const reviewText = ref();
 watch(reviewText, () => {
   console.log(reviewText.value);
   if (reviewText.value != "") {
@@ -99,11 +127,36 @@ const postReview = () => {
       questionAnswer: reviewText.value,
     })
     .then((result) => {
+      fileUploader.value.upload();
       visible.value = false;
 
       emit("updateTable");
     });
 };
+const getImgUrl = (image) => {
+  console.log(image);
+  return new URL(image).href;
+};
+function onAdvancedUpload() {
+  toast.add({
+    severity: "info",
+    summary: "Success",
+    detail: "File Uploaded",
+    life: 3000,
+  });
+}
+const onSelectedFiles = (event) => {
+  files.value = event.files;
+  //alert(JSON.stringify(event));
+  uploadControl.value = event.src;
+};
+const beforeUpload = (request) => {
+  console.log("in");
+  request.xhr.setRequestHeader("qId", props.data.info.id);
+
+  return request;
+};
+const uploadProgress = (progress) => {};
 </script>
 
 <template>
@@ -141,7 +194,7 @@ const postReview = () => {
       class="flex mt-1"
       ref="fileUploader"
       name="files"
-      url="http://127.0.0.1:3001/upload_files"
+      url="http://127.0.0.1:3001/uploadreview"
       @upload="onAdvancedUpload($event)"
       :multiple="true"
       accept="image/*"
@@ -177,27 +230,106 @@ const postReview = () => {
           </h2>
         </div>
       </template>
-
       <h2>
         <span> The Question was: </span>
       </h2>
       <span style="font-weight: initial" class="">
         {{ props.data.info.customQuestionText }}</span
       >
-      <div v-if="props.data.info.userAnswer">
+      <div class="flex flex-row">
+        <Image alt="Image" preview v-for="image in questionImages" class="mr-4">
+          <template #indicatoricon>
+            <i class="pi pi-check"></i>
+          </template>
+          <template #image>
+            <img
+              class="w-3rem mt-3"
+              crossorigin="anonymous"
+              :src="getImgUrl(image)"
+              alt="image"
+            />
+          </template>
+          <template #preview="slotProps">
+            <div class="flex justify-content-center">
+              <img
+                crossorigin="anonymous"
+                class="w-6 justify-"
+                :src="getImgUrl(image)"
+                alt="preview"
+                :style="slotProps.style"
+                @click="slotProps.onClick"
+              />
+            </div>
+          </template>
+        </Image>
+      </div>
+      <div v-if="props.data.info.userAnswer || props.data.info.answerFilesList">
         <h2>
           <span> The Student's answer was: </span>
         </h2>
+
         <span style="font-weight: initial" class="">
           {{ props.data.info.userAnswer }}</span
         >
+        <div class="flex flex-row">
+          <Image alt="Image" preview v-for="image in answerImages" class="mr-4">
+            <template #indicatoricon>
+              <i class="pi pi-check"></i>
+            </template>
+            <template #image>
+              <img
+                class="w-3rem mt-3"
+                crossorigin="anonymous"
+                :src="getImgUrl(image)"
+                alt="image"
+              />
+            </template>
+            <template #preview="slotProps">
+              <div class="flex justify-content-center">
+                <img
+                  crossorigin="anonymous"
+                  class="w-6 justify-"
+                  :src="getImgUrl(image)"
+                  alt="preview"
+                  :style="slotProps.style"
+                  @click="slotProps.onClick"
+                />
+              </div>
+            </template>
+          </Image>
+        </div>
       </div>
       <div v-if="props.data.info.reviewAnswer">
         <h2>
           <span> Your feedback was: </span>
         </h2>
         <span style="font-weight: initial" class=""></span>
-        <div v-html="editorValue"></div>
+        <div v-html="trim(editorValue, '\'')"></div>
+        <Image alt="Image" preview v-for="image in reviewImages" class="mr-4">
+          <template #indicatoricon>
+            <i class="pi pi-check"></i>
+          </template>
+          <template #image>
+            <img
+              class="w-3rem mt-3"
+              crossorigin="anonymous"
+              :src="getImgUrl(image)"
+              alt="image"
+            />
+          </template>
+          <template #preview="slotProps">
+            <div class="flex justify-content-center">
+              <img
+                crossorigin="anonymous"
+                class="w-6 justify-"
+                :src="getImgUrl(image)"
+                alt="preview"
+                :style="slotProps.style"
+                @click="slotProps.onClick"
+              />
+            </div>
+          </template>
+        </Image>
       </div>
       <template #footer>
         <div class="flex flex-wrap justify-content-between">

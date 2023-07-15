@@ -60,8 +60,13 @@ onBeforeMount(() => {
       @togglePopupVisibility="toggleUserPopup"
       :user="dataModel"
     ></TopHeader>
-    <CompletedReviews v-if="active == 0"></CompletedReviews>
-    <OpenReviews v-if="active == 1"></OpenReviews>
+
+    <div class="flex w-full justify-content-center">
+      <div class="flex w-11 justify-content-center">
+        <CompletedReviews v-if="active == 0"></CompletedReviews>
+        <OpenReviews v-if="active == 1"></OpenReviews>
+      </div>
+    </div>
   </div>
 </template>
 <style scoped></style>

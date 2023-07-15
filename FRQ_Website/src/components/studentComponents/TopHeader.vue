@@ -44,7 +44,7 @@ const test = () => {
       >
         <Image
           src="logo.png"
-          class="card flex align-items-center justify-content-center ml-3"
+          class="card flex align-items-center justify-content-center ml-5"
           alt="Image"
           width="80"
         />
@@ -56,7 +56,7 @@ const test = () => {
         <Avatar
           v-if="loggedIn"
           :label="firstLetter"
-          class="mr-2 userSelect"
+          class="mr-3 userSelect"
           size="large"
           style="background-color: #2196f3; color: #ffffff; cursor: pointer"
           shape="circle"

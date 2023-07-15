@@ -36,12 +36,13 @@ const items = ref([
   },
 ]);
 const test = () => {
-  emit("change", 1 - activeIndex.value);
+  console.log(activeIndex.value);
+  emit("change", activeIndex.value);
 };
 </script>
 
 <template>
-  <div class="card flex flex-column w-full" style="width: 100%">
+  <div class="card flex flex-column" style="width: 100%">
     <div
       class="flex justify-content-between flex-wrap card-container purple-container align-items-center"
     >
@@ -50,7 +51,7 @@ const test = () => {
       >
         <Image
           src="logo.png"
-          class="card flex align-items-center justify-content-center ml-3"
+          class="card flex align-items-center justify-content-center ml-5"
           alt="Image"
           width="80"
         />
@@ -62,7 +63,7 @@ const test = () => {
         <Avatar
           v-if="loggedIn"
           :label="firstLetter"
-          class="mr-2 userSelect"
+          class="mr-3 userSelect"
           size="large"
           style="background-color: #2196f3; color: #ffffff; cursor: pointer"
           shape="circle"
