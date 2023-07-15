@@ -6,11 +6,13 @@ const morgan = require("morgan");
 const multer = require("multer");
 const AppLibrary = require("./AppLibrary");
 const AutoReview = require("./AutoReview");
-
+const path = require("path");
 const app = express();
 
 const appLibrary = new AppLibrary();
 const autoReview = new AutoReview();
+
+const uuidv4 = require("uuid").v4;
 app.use(helmet());
 
 // using bodyParser to parse JSON bodies into JS objects
@@ -21,22 +23,25 @@ app.use(cors());
 
 // adding morgan to log HTTP requests
 app.use(morgan("combined"));
-
 const DIR = "./public/";
-const storage = multer.diskStorage({
+var dir = path.join(__dirname, "public");
+app.use(express.static("public"));
+
+const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, DIR);
+    cb(null, "public");
   },
   filename: (req, file, cb) => {
-    const fileName = file.originalname.toLowerCase().split(" ").join("-");
-    cb(null, uuidv4() + "-" + fileName);
+    console.log(file);
+    const ext = file.mimetype.split("/")[1];
+    cb(null, uuidv4() + "." + ext);
   },
 });
 
-const upload = multer({ dest: "uploads/" });
-
-app.post("/upload_files", upload.array("files"), uploadFiles);
-
+//const upload = multer({ dest: "public/" });
+let upload = multer({
+  storage: multerStorage,
+});
 setInterval(() => {
   callFindReviews();
 }, 10000);
@@ -45,29 +50,25 @@ function callFindReviews() {
   autoReview.findReviews();
 }
 
-function uploadFiles(req, res) {
-  const body = req.body;
-  console.log(body);
-  console.log("trying to upload files");
-  res.json({ message: "Successfully uploaded files" });
-}
-
-app.post("/upload", upload.array("files", 6), (req, res, next) => {
+app.post("/upload", upload.array("files"), (req, res, next) => {
   console.log("in ---------------------------------");
-  console.log(req.headers);
+  console.log(req.files);
 
+  console.log(req.headers);
   console.log(req.headers.qid);
   const reqFiles = [];
   const url = req.protocol + "://" + req.get("host");
   let answerFileList = "";
   for (var i = 0; i < req.files.length; i++) {
+    console.log(url + "/public/" + req.files[i].filename);
     reqFiles.push(url + "/public/" + req.files[i].filename);
-    //console.log(url + "/public/" + req.files[i].filename);
-    answerFileList += url + "/public/" + req.files[i].filename;
+    req.files[i].fileName;
+    answerFileList += url + "/" + req.files[i].filename;
     if (i != req.files.length - 1) {
       answerFileList += ",";
     }
   }
+
   appLibrary.addAnswerFileList(answerFileList, req.headers.qid);
 });
 

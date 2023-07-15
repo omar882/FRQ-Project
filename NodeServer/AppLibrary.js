@@ -248,9 +248,9 @@ class AppLibrary {
   }
   async addAnswerFileList(answerFileList, questionId) {
     console.log("adding answer file list");
-    var updateQuery = `UPDATE frq.frqs SET answerFilesList = "${con.escape(
+    var updateQuery = `UPDATE frq.frqs SET answerFilesList = ${con.escape(
       answerFileList
-    )}" WHERE id = ${questionId}`;
+    )} WHERE id = ${questionId}`;
     try {
       const result = await this.mySQLUpdate(updateQuery);
       console.log("result ");

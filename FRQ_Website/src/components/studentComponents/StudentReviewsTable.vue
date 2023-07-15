@@ -36,6 +36,9 @@ const viewData = (selectedRows) => {
     questionData = {
       info: selectedRows,
       showData: showData,
+      answerFilesList: answerFilesList,
+      questionFilesList: questionFilesList,
+      reviewFilesList: reviewFilesList,
     };
   }
 };
