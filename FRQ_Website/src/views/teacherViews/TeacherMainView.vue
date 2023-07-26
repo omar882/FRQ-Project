@@ -7,19 +7,26 @@ import CompletedReviews from "../../components/teacherComponents/CompletedReview
 
 import { dataModel } from "../../dataModel.js";
 import { useRouter } from "vue-router";
-
+const loaded = ref(-1);
 const router = useRouter();
 const active = ref(-1);
+const redirect = () => {
+  window.location.href =
+    "http://127.0.0.1:5500/FRQ_Website/bootstrap_website/home.html";
+};
 
 onBeforeMount(() => {
-  if (localStorage.getItem("type") != "teacher") {
+  console.log(dataModel);
+  if (dataModel.currentUser != null) {
+    loaded.value = 1;
+    active.value = 0;
+  } else {
     console.log("in");
 
-    router.push("/home");
-  } else {
-    active.value = 0;
+    redirect();
   }
 });
+
 const menu = ref();
 const items = ref([
   {
@@ -50,7 +57,7 @@ const change = (e) => {
 };
 </script>
 <template>
-  <div>
+  <div v-if="loaded != -1">
     <Menu
       ref="menu"
       :popup="true"

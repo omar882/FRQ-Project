@@ -1,10 +1,9 @@
 import { createWebHistory, createRouter } from "vue-router";
 import studentMainView from "@/views/studentViews/studentMainView.vue";
 import teacherMainView from "@/views/teacherViews/teacherMainView.vue";
-
+import homeView from "@/views/homeView.vue";
 import studentLoginView from "@/views/studentViews/LoginView.vue";
 import studentSignUpView from "@/views/studentViews/SignUpView.vue";
-import homeView from "@/views/homeView.vue";
 import teacherLoginView from "@/views/teacherViews/TeacherLoginView.vue";
 import teacherSignUpView from "@/views/teacherViews/TeacherSignUpView.vue";
 

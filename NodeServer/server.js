@@ -97,7 +97,10 @@ app.post("/uploadquestion", upload.array("files"), (req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.send(ads);
+  console.log("in");
+  res.send(
+    "<html> <head>server Response</head><body><h1> This page was render direcly from the server <p>Hello there welcome to my website</p></h1></body></html>"
+  );
 });
 
 app.post("/subjects", (req, res) => {

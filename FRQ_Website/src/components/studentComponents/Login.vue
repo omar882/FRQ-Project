@@ -49,7 +49,7 @@ const login = (event) => {
           <div
             class="justify-content-center flex align-items-center mt-3 h-1rem"
           >
-            <h1 class="align-text-center text-blue-500">Student Login</h1>
+            <h1 class="align-text-center text-primary">Student Login</h1>
           </div>
           <div class="flex align-items-center justify-content-center gap-2 w-5">
             <label class="flex w-1 justify-content-end">Username</label>

@@ -12,7 +12,7 @@ const router = useRouter();
 const toast = useToast();
 let reviewType = props.reviewType;
 const questionList = ref(null);
-const isCustom = ref(false);
+const isCustom = ref(true);
 const isAutoReview = ref(false);
 const newReviewDialogVisible = ref(false);
 const urgencyOptions = ref([
@@ -27,11 +27,7 @@ const questions = ref([
   { name: "Question 3", value: 3 },
 ]);
 const selectedQuestion = ref({ name: "Question 1", value: 1 });
-const years = ref([
-  { name: "2022", value: 1 },
-  { name: "2021", value: 2 },
-  { name: "2020", value: 3 },
-]);
+const years = ref([]);
 const selectedSubjectYear = ref({ name: "2022", value: 1 });
 const subjects = ref([]);
 const selectedSubject = ref(null); //{ name: 'AP English', code: 'AP_ENG' },//dataModel.subjects[0], //{ name: 'AP English', code: 'AP_ENG' },
@@ -203,25 +199,11 @@ onMounted(() => {
           :options="subjects"
           optionLabel="name"
           placeholder="Select a Subject"
-          :class="['w-full md:w-14rem']"
+          :class="['w-full md:w-20rem']"
         />
 
         <SelectButton v-model="value" aria-labelledby="basic" />
 
-        <div class="card flex justify-content-left">
-          <div class="flex align-items-left">
-            <Checkbox
-              v-model="isCustom"
-              inputId="officialQuestion"
-              :binary="true"
-              name="isCustomQuestion"
-              @click="questionTypeChange"
-            />
-            <label for="officialQuestion" class="ml-2"
-              >Is Custom Question?</label
-            >
-          </div>
-        </div>
         <div class="card flex flex-column justify-content-left">
           <div class="flex align-items-left">
             <Checkbox

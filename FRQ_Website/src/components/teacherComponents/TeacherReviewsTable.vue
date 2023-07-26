@@ -54,6 +54,10 @@ const updateReviews = () => {
                 questions.value.push(question);
                 console.log(questions.value);
               });
+              questions.value.sort((a, b) => {
+                console.log(a.reviewDate);
+                return a.reviewDate < b.reviewDate;
+              });
             }
           });
       } else if (reviewType == "InReview") {

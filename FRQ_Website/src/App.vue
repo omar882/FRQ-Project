@@ -17,6 +17,7 @@ onMounted(() => {
     baseURI = globals.serverUrl + "getStudentExpirationtime";
   }
   if (dataModel.currentUser != null) {
+    console.log("already loaded");
     loaded.value = true;
 
     return;
@@ -27,17 +28,17 @@ onMounted(() => {
 
       if (result.data.logIn) {
         dataModel.currentUser = result.data.user;
+        console.log("updated dataModel");
         dataModel.currentUser.userToken = result.data.userToken;
         loaded.value = true;
-      } else {
-        router.push("/home");
-        loaded.value = true;
       }
+      console.log("failed to updated");
+      console.log("done");
+
+      loaded.value = true;
     });
-  } else {
-    router.push("/home");
-    loaded.value = true;
   }
+  loaded.value = true;
 });
 </script>
 

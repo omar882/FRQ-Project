@@ -58,6 +58,10 @@ const updateCompletedReviews = () => {
     .then((result) => {
       if (result.data != null) {
         questions.value = JSON.parse(JSON.stringify(result.data));
+        questions.value.sort((a, b) => {
+          console.log(a.reviewDate);
+          return a.reviewDate < b.reviewDate;
+        });
       }
     });
 };

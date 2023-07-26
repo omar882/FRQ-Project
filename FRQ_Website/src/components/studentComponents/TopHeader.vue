@@ -13,6 +13,7 @@ const activeIndex = ref(0);
 
 let firstLetter;
 onMounted(() => {
+  console.log(JSON.parse(JSON.stringify(dataModel)));
   firstLetter = dataModel.currentUser.email.charAt(0).toUpperCase();
   if (dataModel != null) {
     loggedIn.value = true;
